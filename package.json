@@ -10,7 +10,8 @@
     "astro": "astro",
     "format": "rome format ./src",
     "lint": "rome check ./src --apply",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "astro": "^2.10.12",
