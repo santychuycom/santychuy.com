@@ -30,7 +30,8 @@ jobs:
         uses: cloudflare/pages-action@v1
         with:
             apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-            accountId: 778027cc77aeea12311a84eb026ffb42
-            projectName: santychuy.com
+            accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+            projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
             directory: dist
             branch: develop
+            gitHubToken: ${{ secrets.GITHUB_TOKEN }}
