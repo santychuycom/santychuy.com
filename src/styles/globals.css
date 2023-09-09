@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Satoshi Medium';
+  src: url('/fonts/Satoshi-Medium.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Satoshi Bold';
+  src: url('/fonts/Satoshi-Bold.woff') format('woff');
+}
+
+@layer base {
+  :root {
+    --background: 229 68% 5%;
+
+    --gradient-main: linear-gradient(50deg, hsl(229, 67%, 31%) 0%, hsl(123, 43%, 73%) 100%);
+
+    --primary-blue-1: 229 31% 93%;
+    --primary-blue-2: 228 29% 83%;
+    --primary-blue-3: 229 30% 70%;
+    --primary-blue-4: 229 30% 57%;
+    --primary-blue-5: 228 39% 43%;
+    --primary-blue-6: 229 67% 31%;
+    --primary-blue-7: 229 67% 26%;
+    --primary-blue-8: 228 68% 22%;
+    --primary-blue-9: 229 67% 18%;
+    --primary-blue-10: 229 66% 14%;
+
+    --primary-green-1: 120 43% 97%;
+    --primary-green-2: 124 45% 94%;
+    --primary-green-3: 125 43% 88%;
+    --primary-green-4: 123 43% 83%;
+    --primary-green-5: 122 43% 78%;
+    --primary-green-6: 123 43% 73%;
+    --primary-green-7: 122 26% 62%;
+    --primary-green-8: 123 17% 52%;
+    --primary-green-9: 124 16% 42%;
+    --primary-green-10: 124 16% 33%;
+
+    --secondary-dark-green-1: 180 7% 91%;
+    --secondary-dark-green-2: 180 6% 79%;
+    --secondary-dark-green-3: 185 7% 62%;
+    --secondary-dark-green-4: 183 9% 44%;
+    --secondary-dark-green-5: 182 18% 27%;
+    --secondary-dark-green-6: 184 56% 11%;
+    --secondary-dark-green-7: 184 57% 9%;
+    --secondary-dark-green-8: 185 55% 8%;
+    --secondary-dark-green-9: 187 56% 6%;
+    --secondary-dark-green-10: 184 58% 5%;
+
+    --secondary-dark-purple-1: 240 10% 92%;
+    --secondary-dark-purple-2: 252 10% 81%;
+    --secondary-dark-purple-3: 247 10% 66%;
+    --secondary-dark-purple-4: 250 10% 50%;
+    --secondary-dark-purple-5: 249 19% 34%;
+    --secondary-dark-purple-6: 249 39% 20%;
+    --secondary-dark-purple-7: 249 40% 17%;
+    --secondary-dark-purple-8: 249 39% 14%;
+    --secondary-dark-purple-9: 248 38% 11%;
+    --secondary-dark-purple-10: 250 39% 9%;
+
+    --secondary-dark-fiusha-1: 300 4% 91%;
+    --secondary-dark-fiusha-2: 300 5% 78%;
+    --secondary-dark-fiusha-3: 300 5% 62%;
+    --secondary-dark-fiusha-4: 300 6% 44%;
+    --secondary-dark-fiusha-5: 300 14% 26%;
+    --secondary-dark-fiusha-6: 300 43% 10%;
+    --secondary-dark-fiusha-7: 300 42% 9%;
+    --secondary-dark-fiusha-8: 300 42% 7%;
+    --secondary-dark-fiusha-9: 300 42% 6%;
+    --secondary-dark-fiusha-10: 300 42% 5%;
+
+    --supporting-error-1: 0 60% 97%;
+    --supporting-error-2: 0 60% 93%;
+    --supporting-error-3: 0 61% 88%;
+    --supporting-error-4: 0 61% 82%;
+    --supporting-error-5: 0 61% 77%;
+    --supporting-error-6: 0 61% 72%;
+    --supporting-error-7: 0 38% 61%;
+    --supporting-error-8: 0 25% 51%;
+    --supporting-error-9: 0 24% 41%;
+    --supporting-error-10: 0 24% 32%;
+
+    --supporting-info-1: 216 71% 97%;
+    --supporting-info-2: 215 65% 93%;
+    --supporting-info-3: 215 67% 88%;
+    --supporting-info-4: 216 66% 83%;
+    --supporting-info-5: 216 66% 77%;
+    --supporting-info-6: 216 66% 72%;
+    --supporting-info-7: 215 40% 61%;
+    --supporting-info-8: 216 27% 51%;
+    --supporting-info-9: 216 26% 41%;
+    --supporting-info-10: 216 25% 33%;
+
+    --supporting-success-1: 147 47% 96%;
+    --supporting-success-2: 144 43% 91%;
+    --supporting-success-3: 145 44% 84%;
+    --supporting-success-4: 144 45% 76%;
+    --supporting-success-5: 145 45% 69%;
+    --supporting-success-6: 145 45% 63%;
+    --supporting-success-7: 145 31% 53%;
+    --supporting-success-8: 145 27% 44%;
+    --supporting-success-9: 145 26% 36%;
+    --supporting-success-10: 144 26% 28%;
+
+    --supporting-warning-1: 21 78% 96%;
+    --supporting-warning-2: 23 73% 91%;
+    --supporting-warning-3: 22 72% 85%;
+    --supporting-warning-4: 22 72% 77%;
+    --supporting-warning-5: 21 73% 71%;
+    --supporting-warning-6: 21 73% 64%;
+    --supporting-warning-7: 21 49% 55%;
+    --supporting-warning-8: 21 40% 46%;
+    --supporting-warning-9: 22 40% 37%;
+    --supporting-warning-10: 21 40% 29%;
+
+    --neutral-1: 0 0% 100%;
+    --neutral-2: 0 0% 99%;
+    --neutral-3: 0 0% 96%;
+    --neutral-4: 0 0% 94%;
+    --neutral-5: 0 0% 85%;
+    --neutral-6: 0 0% 75%;
+    --neutral-7: 0 0% 55%;
+    --neutral-8: 0 0% 35%;
+    --neutral-9: 0 0% 27%;
+    --neutral-10: 0 0% 15%;
+    --neutral-11: 0 0% 12%;
+    --neutral-12: 0 0% 8%;
+    --neutral-13: 0 0% 0%;
+ 
+    --radius: 0.5rem;
+  }
+}
+ 
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  * {
+    margin: 0;
+  }
+
+  html, body {
+    height: 100%;
+    @apply bg-background text-neutral-1;
+  }
+
+  html {
+    font-family: 'Satoshi', system-ui, sans-serif;
+  }
+
+  body {
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Satoshi Bold', system-ui, sans-serif;
+  }
+
+  #root,
+  #__next {
+    isolation: isolate;
+  }
+
+  code {
+    font-family:
+      Menlo,
+      Monaco,
+      Lucida Console,
+      Liberation Mono,
+      DejaVu Sans Mono,
+      Bitstream Vera Sans Mono,
+      Courier New,
+      monospace;
+  }
+}
