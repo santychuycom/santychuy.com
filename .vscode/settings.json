@@ -1,7 +1,13 @@
 {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "rome.rome",
-    "[astro]": {
-        "editor.defaultFormatter": "astro-build.astro-vscode"
-    },
+  "editor.formatOnSave": true,
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "astro",
+    "typescript",
+    "typescriptreact"
+  ]
 }
