@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
 @font-face {
   font-family: 'Satoshi';
   src: url('/fonts/Satoshi-Regular.woff') format('woff');
@@ -21,7 +20,11 @@
   :root {
     --background: 229 68% 5%;
 
-    --gradient-main: linear-gradient(50deg, hsl(229, 67%, 31%) 0%, hsl(123, 43%, 73%) 100%);
+    --gradient-main: linear-gradient(
+      50deg,
+      hsl(229, 67%, 31%) 0%,
+      hsl(123, 43%, 73%) 100%
+    );
 
     --primary-blue-1: 229 31% 93%;
     --primary-blue-2: 228 29% 83%;
@@ -135,13 +138,15 @@
     --neutral-11: 0 0% 12%;
     --neutral-12: 0 0% 8%;
     --neutral-13: 0 0% 0%;
- 
+
     --radius: 0.5rem;
   }
 }
- 
+
 @layer base {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
   }
 
@@ -149,7 +154,8 @@
     margin: 0;
   }
 
-  html, body {
+  html,
+  body {
     height: 100%;
     @apply bg-background text-neutral-1;
   }
