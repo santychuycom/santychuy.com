@@ -1,0 +1,27 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <header>Header</header>
+    <main>
+      <slot />
+    </main>
+    <footer>Footer</footer>
+  </body>
+</html>
