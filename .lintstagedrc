@@ -1,0 +1,7 @@
+{
+  "*.{astro,ts}": [
+    "prettier -w . --cache",
+    "eslint --ext .ts,.astro src",
+    "git add"
+  ]
+}

@@ -9,7 +9,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "format": "prettier -w . --cache",
-    "lint": "eslint --ext .js,.astro src"
+    "lint": "eslint --ext .ts,.astro src",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "Santiago Carrasco <hi@santychuy.com>",
@@ -21,6 +22,8 @@
     "@typescript-eslint/parser": "6.19.0",
     "eslint": "8.56.0",
     "eslint-plugin-astro": "0.31.3",
+    "husky": "^8.0.0",
+    "lint-staged": "15.2.0",
     "prettier": "3.2.2",
     "prettier-plugin-astro": "0.12.3"
   }
