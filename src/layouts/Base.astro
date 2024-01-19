@@ -2,7 +2,10 @@
 import '@styles/reset.css';
 import '@styles/vars.css';
 import '@styles/globals.css';
+
 import Background from '@components/Background.astro';
+import Header from '@components/layout/Header.astro';
+import Footer from '@components/layout/Footer.astro';
 
 interface Props {
   title: string;
@@ -26,11 +29,17 @@ const { title, description } = Astro.props;
     <meta name="description" content={description} />
   </head>
   <body>
-    <header>Header</header>
+    <Header />
     <main>
       <slot />
     </main>
-    <footer>Footer</footer>
+    <Footer />
     <Background />
   </body>
 </html>
+
+<style>
+  main {
+    padding: 0 1rem;
+  }
+</style>
