@@ -1,0 +1,19 @@
+---
+import { Image } from 'astro:assets';
+
+import SantychuyLogo from '../../assets/icons/santychuyISO.svg';
+---
+
+<footer>
+  <Image src={SantychuyLogo} alt="Santychuy Logo" width={60} />
+</footer>
+
+<style>
+  footer {
+    display: grid;
+    height: 150px;
+    place-items: center;
+    background-color: var(--main-background);
+    backdrop-filter: blur(10px);
+  }
+</style>
