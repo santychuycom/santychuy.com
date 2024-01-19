@@ -35,3 +35,14 @@ h5,
 h6 {
   font-family: 'Satoshi Bold';
 }
+
+a {
+  color: var(--neutrals---black--1);
+  text-decoration: none;
+  font-family: 'Satoshi Bold';
+  transition: 0.2s;
+
+  &:hover {
+    color: var(--primary---green--6);
+  }
+}
