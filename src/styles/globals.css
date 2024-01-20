@@ -25,6 +25,10 @@
 body {
   color: var(--neutrals---black--1);
   font-family: 'Satoshi Regular', 'Helvetica', sans-serif;
+
+  @media screen and (min-width: 68.75rem) {
+    font-size: 1.3rem;
+  }
 }
 
 h1,
