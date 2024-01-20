@@ -15,23 +15,35 @@ import SantychuyIcon from '../../assets/icons/santychuyISO.svg';
   <a href="/blog/">Blog</a>
   <span></span>
   <a href="https://discord.gg/5qjwJwq" target="_blank" rel="noopener">
-    <Image src={DiscordIcon} alt="Discord Icon" width="30" />
+    <Image
+      src={DiscordIcon}
+      alt="Discord Icon"
+      width={30}
+      class="social-icon"
+    />
   </a>
   <a href="https://github.com/santychuy" target="_blank" rel="noopener">
-    <Image src={GithubIcon} alt="Github Icon" width="30" />
+    <Image src={GithubIcon} alt="Github Icon" width={30} class="social-icon" />
   </a>
 </header>
 
 <style>
   header {
     display: flex;
-    height: 90px;
     align-items: center;
+    max-width: 1400px;
+    margin-inline: auto;
     gap: 1.2rem;
-    padding: 0 1rem;
+    padding-block-start: 1rem;
+    padding-inline: 1rem;
 
     @media screen and (min-width: 34.375rem) {
       gap: 2rem;
+      padding-inline: 2rem;
+    }
+
+    @media screen and (min-width: 68.75rem) {
+      padding-block-start: 3rem;
     }
   }
 
@@ -39,9 +51,27 @@ import SantychuyIcon from '../../assets/icons/santychuyISO.svg';
     margin-right: auto;
   }
 
+  .logo {
+    width: 65px;
+
+    @media screen and (min-width: 68.75rem) {
+      width: 85px;
+    }
+  }
+
+  .social-icon {
+    width: 30px;
+    height: 30px;
+
+    @media screen and (min-width: 34.375rem) {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
   span {
     width: 1px;
-    height: 30%;
+    height: 30px;
     background-color: var(--primary---green--10);
   }
 </style>
