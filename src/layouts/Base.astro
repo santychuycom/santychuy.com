@@ -40,6 +40,16 @@ const { title, description } = Astro.props;
 
 <style>
   main {
-    margin: 120px 1rem;
+    display: flex;
+    flex-direction: column;
+    padding-block: 120px;
+    padding-inline: 1rem;
+    gap: 10rem;
+    max-width: 1300px;
+    margin-inline: auto;
+
+    @media screen and (min-width: 68.75rem) {
+      padding-inline: 4rem;
+    }
   }
 </style>
