@@ -5,6 +5,8 @@
   --primary---green--4: hsl(123, 42.5%, 82.9%);
   --primary---green--5: hsl(122, 43.4%, 77.8%);
   --primary---green--6: hsl(123, 43.5%, 72.9%);
+  --primary---green--6--alpha: hsla(123, 43.5%, 72.9%, 0.15);
+  --primary---green--6--alpha--2: hsla(123, 43.5%, 72.9%, 0.05);
   --primary---green--7: hsl(122, 26.4%, 62.2%);
   --primary---green--8: hsl(123, 17.1%, 51.8%);
   --primary---green--9: hsl(124, 16%, 41.6%);
@@ -112,5 +114,6 @@
   --supporting---warning--9: hsl(22, 40.1%, 36.7%);
   --supporting---warning--10: hsl(21, 40.1%, 28.8%);
 
-  --main-background: hsl(229, 68%, 5%);
+  --main---background: hsl(229, 68%, 5%);
+  --main---background--alpha: hsla(229, 68%, 5%, 0.4);
 }
