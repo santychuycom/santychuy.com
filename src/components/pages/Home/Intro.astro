@@ -1,0 +1,91 @@
+---
+import { Image } from 'astro:assets';
+---
+
+<section>
+  <Image
+    src="https://avatars.githubusercontent.com/u/28853786?v=4"
+    alt="Santychuy Image"
+    width="150"
+    height="150"
+    class="img-avatar"
+  />
+  <h1>Santiago Carrasco</h1>
+  <h2>Frontend Developer from Hermosillo, SON</h2>
+  <button
+    >Read articles
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M19.2798 14.8688L10.8423 23.3063C10.7116 23.4374 10.5564 23.5414 10.3855 23.6124C10.2145 23.6833 10.0313 23.7199 9.84619 23.7199C9.66111 23.7199 9.47785 23.6833 9.30691 23.6124C9.13598 23.5414 8.98074 23.4374 8.8501 23.3063L0.412596 14.8688C0.148415 14.6046 -3.9366e-09 14.2463 0 13.8727C3.9366e-09 13.4991 0.148415 13.1408 0.412596 12.8766C0.676776 12.6124 1.03508 12.464 1.40869 12.464C1.7823 12.464 2.1406 12.6124 2.40478 12.8766L8.44111 18.9129V1.68636C8.44111 1.31339 8.58927 0.95571 8.85299 0.691987C9.11672 0.428264 9.4744 0.280106 9.84736 0.280106C10.2203 0.280106 10.578 0.428264 10.8417 0.691987C11.1055 0.95571 11.2536 1.31339 11.2536 1.68636V18.9129L17.2899 12.8754C17.5541 12.6112 17.9124 12.4628 18.286 12.4628C18.6596 12.4628 19.0179 12.6112 19.2821 12.8754C19.5463 13.1396 19.6947 13.4979 19.6947 13.8715C19.6947 14.2451 19.5463 14.6034 19.2821 14.8676L19.2798 14.8688Z"
+        fill="white"></path>
+    </svg>
+  </button>
+</section>
+
+<style>
+  section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .img-avatar {
+    border-radius: 50%;
+    border: 8px solid hsla(210, 53%, 6%, 40);
+    opacity: 0.6;
+    transition: opacity 0.1s ease-in-out;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  h1 {
+    font-size: clamp(3rem, 2.8199rem + 0.9938vw, 5rem);
+    line-height: 1.3;
+    margin-block-start: 28px;
+    margin-block-end: 8px;
+    background: linear-gradient(70deg, #1a2e84 0%, #9cd89f 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-block-start: 40px;
+    font-family: 'Satoshi Bold';
+    color: var(--neutral---black--1);
+    border: none;
+    padding-inline: 20px;
+    padding-block: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 3px 55px 0px rgba(89, 112, 209, 0.8);
+    background-image: linear-gradient(
+      60deg,
+      hsl(229deg 93% 42%) 0%,
+      hsl(227deg 85% 43%) 8%,
+      hsl(226deg 78% 44%) 15%,
+      hsl(224deg 70% 45%) 23%,
+      hsl(221deg 68% 44%) 31%,
+      hsl(217deg 67% 42%) 38%,
+      hsl(213deg 66% 40%) 46%,
+      hsl(210deg 59% 43%) 54%,
+      hsl(211deg 46% 49%) 62%,
+      hsl(211deg 34% 55%) 69%,
+      hsl(209deg 24% 60%) 77%,
+      hsl(201deg 24% 61%) 85%,
+      hsl(192deg 23% 62%) 92%,
+      hsl(184deg 24% 63%) 100%
+    );
+    cursor: pointer;
+  }
+</style>
