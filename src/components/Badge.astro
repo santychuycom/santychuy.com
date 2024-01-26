@@ -1,0 +1,20 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<div class="badge">
+  <p>{title}</p>
+</div>
+
+<style>
+  .badge {
+    background-color: var(--primary---green--6--alpha);
+    border-radius: 20px;
+    padding-block: 8px;
+    padding-inline: 12px;
+  }
+</style>
