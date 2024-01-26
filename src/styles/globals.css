@@ -22,6 +22,10 @@
   font-display: swap;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   color: var(--neutrals---black--1);
   font-family: 'Satoshi Regular', 'Helvetica', sans-serif;
@@ -46,4 +50,8 @@ a {
   &:hover {
     color: var(--primary---green--6);
   }
+}
+
+svg {
+  fill: currentColor;
 }
