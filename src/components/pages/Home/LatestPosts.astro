@@ -1,176 +1,41 @@
 ---
-import { Image } from 'astro:assets';
+import PreviewPost from '@components/PreviewPost.astro';
+import Newsletter from '@components/Newsletter.astro';
 ---
 
 <section class="content">
-  <!-- TODO: Improve this element to a semantic one -->
   <div class="posts-container">
-    <h2 class="title-section">Latest Posts</h2>
+    <h2 class="title-section" id="latest-posts">Latest Posts</h2>
 
-    <div class="post">
-      <h2>Error boundaries on React</h2>
-      <p class="date">09/10/2023</p>
-
-      <p class="description">
-        Error boundaries are React components that catch JavaScript errors
-        anywhere in their child component tree, log those errors, and display a
-        fallback UI instead of the component tree that crashed.
-      </p>
-
-      <div class="badges-container">
-        <div class="badge">
-          <p>react</p>
-        </div>
-        <div class="badge">
-          <p>react</p>
-        </div>
-      </div>
-
-      <button class="read-button"
-        >Read more
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          class="read-arrow"
-        >
-          <path
-            d="M19.2798 14.8688L10.8423 23.3063C10.7116 23.4374 10.5564 23.5414 10.3855 23.6124C10.2145 23.6833 10.0313 23.7199 9.84619 23.7199C9.66111 23.7199 9.47785 23.6833 9.30691 23.6124C9.13598 23.5414 8.98074 23.4374 8.8501 23.3063L0.412596 14.8688C0.148415 14.6046 -3.9366e-09 14.2463 0 13.8727C3.9366e-09 13.4991 0.148415 13.1408 0.412596 12.8766C0.676776 12.6124 1.03508 12.464 1.40869 12.464C1.7823 12.464 2.1406 12.6124 2.40478 12.8766L8.44111 18.9129V1.68636C8.44111 1.31339 8.58927 0.95571 8.85299 0.691987C9.11672 0.428264 9.4744 0.280106 9.84736 0.280106C10.2203 0.280106 10.578 0.428264 10.8417 0.691987C11.1055 0.95571 11.2536 1.31339 11.2536 1.68636V18.9129L17.2899 12.8754C17.5541 12.6112 17.9124 12.4628 18.286 12.4628C18.6596 12.4628 19.0179 12.6112 19.2821 12.8754C19.5463 13.1396 19.6947 13.4979 19.6947 13.8715C19.6947 14.2451 19.5463 14.6034 19.2821 14.8676L19.2798 14.8688Z"
-            fill="white"></path>
-        </svg>
-      </button>
-    </div>
-    <div class="post">
-      <h2>Error boundaries on React</h2>
-      <p class="date">09/10/2023</p>
-
-      <p class="description">
-        Error boundaries are React components that catch JavaScript errors
-        anywhere in their child component tree, log those errors, and display a
-        fallback UI instead of the component tree that crashed.
-      </p>
-
-      <div class="badges-container">
-        <div class="badge">
-          <p>react</p>
-        </div>
-        <div class="badge">
-          <p>react</p>
-        </div>
-      </div>
-
-      <button class="read-button"
-        >Read more
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          class="read-arrow"
-        >
-          <path
-            d="M19.2798 14.8688L10.8423 23.3063C10.7116 23.4374 10.5564 23.5414 10.3855 23.6124C10.2145 23.6833 10.0313 23.7199 9.84619 23.7199C9.66111 23.7199 9.47785 23.6833 9.30691 23.6124C9.13598 23.5414 8.98074 23.4374 8.8501 23.3063L0.412596 14.8688C0.148415 14.6046 -3.9366e-09 14.2463 0 13.8727C3.9366e-09 13.4991 0.148415 13.1408 0.412596 12.8766C0.676776 12.6124 1.03508 12.464 1.40869 12.464C1.7823 12.464 2.1406 12.6124 2.40478 12.8766L8.44111 18.9129V1.68636C8.44111 1.31339 8.58927 0.95571 8.85299 0.691987C9.11672 0.428264 9.4744 0.280106 9.84736 0.280106C10.2203 0.280106 10.578 0.428264 10.8417 0.691987C11.1055 0.95571 11.2536 1.31339 11.2536 1.68636V18.9129L17.2899 12.8754C17.5541 12.6112 17.9124 12.4628 18.286 12.4628C18.6596 12.4628 19.0179 12.6112 19.2821 12.8754C19.5463 13.1396 19.6947 13.4979 19.6947 13.8715C19.6947 14.2451 19.5463 14.6034 19.2821 14.8676L19.2798 14.8688Z"
-            fill="white"></path>
-        </svg>
-      </button>
-    </div>
-    <div class="post">
-      <h2>Error boundaries on React</h2>
-      <p class="date">09/10/2023</p>
-
-      <p class="description">
-        Error boundaries are React components that catch JavaScript errors
-        anywhere in their child component tree, log those errors, and display a
-        fallback UI instead of the component tree that crashed.
-      </p>
-
-      <div class="badges-container">
-        <div class="badge">
-          <p>react</p>
-        </div>
-        <div class="badge">
-          <p>react</p>
-        </div>
-      </div>
-
-      <button class="read-button"
-        >Read more
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          class="read-arrow"
-        >
-          <path
-            d="M19.2798 14.8688L10.8423 23.3063C10.7116 23.4374 10.5564 23.5414 10.3855 23.6124C10.2145 23.6833 10.0313 23.7199 9.84619 23.7199C9.66111 23.7199 9.47785 23.6833 9.30691 23.6124C9.13598 23.5414 8.98074 23.4374 8.8501 23.3063L0.412596 14.8688C0.148415 14.6046 -3.9366e-09 14.2463 0 13.8727C3.9366e-09 13.4991 0.148415 13.1408 0.412596 12.8766C0.676776 12.6124 1.03508 12.464 1.40869 12.464C1.7823 12.464 2.1406 12.6124 2.40478 12.8766L8.44111 18.9129V1.68636C8.44111 1.31339 8.58927 0.95571 8.85299 0.691987C9.11672 0.428264 9.4744 0.280106 9.84736 0.280106C10.2203 0.280106 10.578 0.428264 10.8417 0.691987C11.1055 0.95571 11.2536 1.31339 11.2536 1.68636V18.9129L17.2899 12.8754C17.5541 12.6112 17.9124 12.4628 18.286 12.4628C18.6596 12.4628 19.0179 12.6112 19.2821 12.8754C19.5463 13.1396 19.6947 13.4979 19.6947 13.8715C19.6947 14.2451 19.5463 14.6034 19.2821 14.8676L19.2798 14.8688Z"
-            fill="white"></path>
-        </svg>
-      </button>
-    </div>
-    <div class="post">
-      <h2>Error boundaries on React</h2>
-      <p class="date">09/10/2023</p>
-
-      <p class="description">
-        Error boundaries are React components that catch JavaScript errors
-        anywhere in their child component tree, log those errors, and display a
-        fallback UI instead of the component tree that crashed.
-      </p>
-
-      <div class="badges-container">
-        <div class="badge">
-          <p>react</p>
-        </div>
-        <div class="badge">
-          <p>react</p>
-        </div>
-      </div>
-
-      <button class="read-button"
-        >Read more
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          class="read-arrow"
-        >
-          <path
-            d="M19.2798 14.8688L10.8423 23.3063C10.7116 23.4374 10.5564 23.5414 10.3855 23.6124C10.2145 23.6833 10.0313 23.7199 9.84619 23.7199C9.66111 23.7199 9.47785 23.6833 9.30691 23.6124C9.13598 23.5414 8.98074 23.4374 8.8501 23.3063L0.412596 14.8688C0.148415 14.6046 -3.9366e-09 14.2463 0 13.8727C3.9366e-09 13.4991 0.148415 13.1408 0.412596 12.8766C0.676776 12.6124 1.03508 12.464 1.40869 12.464C1.7823 12.464 2.1406 12.6124 2.40478 12.8766L8.44111 18.9129V1.68636C8.44111 1.31339 8.58927 0.95571 8.85299 0.691987C9.11672 0.428264 9.4744 0.280106 9.84736 0.280106C10.2203 0.280106 10.578 0.428264 10.8417 0.691987C11.1055 0.95571 11.2536 1.31339 11.2536 1.68636V18.9129L17.2899 12.8754C17.5541 12.6112 17.9124 12.4628 18.286 12.4628C18.6596 12.4628 19.0179 12.6112 19.2821 12.8754C19.5463 13.1396 19.6947 13.4979 19.6947 13.8715C19.6947 14.2451 19.5463 14.6034 19.2821 14.8676L19.2798 14.8688Z"
-            fill="white"></path>
-        </svg>
-      </button>
-    </div>
+    <PreviewPost
+      title="Error Boundaries on React"
+      description="Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the component tree that crashed."
+      date="09/10/2023"
+      topics={['react', 'typescript']}
+    />
+    <PreviewPost
+      title="Error Boundaries on React"
+      description="Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the component tree that crashed."
+      date="09/10/2023"
+      topics={['react', 'typescript']}
+    />
+    <PreviewPost
+      title="Error Boundaries on React"
+      description="Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the component tree that crashed."
+      date="09/10/2023"
+      topics={['react', 'typescript']}
+    />
+    <PreviewPost
+      title="Error Boundaries on React"
+      description="Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the component tree that crashed."
+      date="09/10/2023"
+      topics={['react', 'typescript']}
+    />
   </div>
 
   <aside class="newsletter-aside">
-    <div class="profile">
-      <Image
-        src="https://avatars.githubusercontent.com/u/28853786?v=4"
-        alt="Santychuy Image"
-        width="150"
-        height="150"
-        class="img-avatar"
-      />
-      <h3 class="name">Santiago Carrasco</h3>
-    </div>
-    <div class="newsletter">
-      <h3>Suscribe to my newsletter</h3>
-      <p>
-        You’ll received my latest blog posts and articles related to frontend
-        development and many more. <b>No Spam!</b>
-      </p>
-      <form>
-        <input type="email" placeholder="Your email" />
-        <button>Send</button>
-      </form>
-    </div>
+    <h3 class="name">Santiago Carrasco</h3>
+    <Newsletter />
   </aside>
 </section>
 
@@ -201,58 +66,6 @@ import { Image } from 'astro:assets';
       max-width: 720px;
       margin-right: auto;
     }
-
-    .post {
-      display: flex;
-      flex-direction: column;
-
-      .date {
-        color: var(--neutrals---black--7);
-        margin-block-start: 4px;
-      }
-
-      .description {
-        font-family: 'Satoshi Medium';
-        margin-block: 12px;
-      }
-
-      .badges-container {
-        display: flex;
-        align-items: center;
-        font-family: 'Satoshi Bold';
-        gap: 0.8rem;
-      }
-
-      .badge {
-        background-color: var(--primary---green--6--alpha);
-        border-radius: 20px;
-        padding-block: 8px;
-        padding-inline: 12px;
-      }
-
-      .read-button {
-        color: var(--neutrals---black--1);
-        cursor: pointer;
-        font-family: 'Satoshi Bold';
-        background-color: transparent;
-        border: none;
-        display: flex;
-        flex-direction: row;
-        gap: 4px;
-        align-items: center;
-        max-width: 160px;
-        margin-block-start: 24px;
-
-        .read-arrow {
-          rotate: 225deg;
-          transition: transform 0.2s ease;
-        }
-
-        &:hover .read-arrow {
-          transform: translateY(4px);
-        }
-      }
-    }
   }
 
   .newsletter-aside {
@@ -264,52 +77,15 @@ import { Image } from 'astro:assets';
 
     @media screen and (min-width: 68.75rem) {
       position: sticky;
-      top: 40px;
+      top: 15%;
     }
 
-    .profile {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-
-      .img-avatar {
-        border-radius: 50%;
-        border: 8px solid hsla(210, 53%, 6%, 40);
-        opacity: 0.6;
-        transition: opacity 0.1s ease-in-out;
-
-        &:hover {
-          opacity: 1;
-        }
-      }
-
-      .name {
-        font-size: 2rem;
-        line-height: 1.3;
-        background: linear-gradient(70deg, #1a2e84 0%, #9cd89f 80%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-    }
-
-    .newsletter {
-      background-color: var(--primary---green--6--alpha--2);
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-      border-radius: 0.8rem;
-      max-width: 320px;
-      text-align: center;
-      align-items: center;
-      padding-block: 40px;
-      padding-inline: 20px;
-
-      form {
-        display: flex;
-        gap: 8px;
-        width: 100%;
-      }
+    .name {
+      font-size: 2rem;
+      line-height: 1.3;
+      background: linear-gradient(70deg, #1a2e84 0%, #9cd89f 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   }
 </style>
