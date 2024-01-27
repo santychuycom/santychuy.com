@@ -1,0 +1,161 @@
+---
+import { Image } from 'astro:assets';
+
+import Camera from '@assets/icons/camera.svg';
+import Notebook from '@assets/icons/notebook.svg';
+import Monitor from '@assets/icons/monitor.svg';
+import Idea from '@assets/icons/idea.svg';
+import Mail from '@assets/icons/mail.svg';
+---
+
+<section class="container">
+  <div class="info-container">
+    <h1>I’m Santiago Carrasco</h1>
+    <!-- TODO: Improve this description -->
+    <p>
+      Experienced Web Developer with 4+ years of hands-on expertise in startups
+      and established companies. Proficient in web product design and
+      architecture planning.
+    </p>
+    <a href="#contact-me">
+      <!-- TODO: refactor button -->
+      <button>Contact me</button>
+    </a>
+  </div>
+  <div class="illustration-container">
+    <Image
+      src={Notebook}
+      alt="Notebook Illustration"
+      class="illustration notebook"
+    />
+    <Image src={Camera} alt="Camera Illustration" class="illustration camera" />
+    <Image
+      src={Monitor}
+      alt="Monitor Illustration"
+      class="illustration monitor"
+    />
+    <Image src={Idea} alt="Idea Illustration" class="illustration idea" />
+    <Image src={Mail} alt="Mail Illustration" class="illustration mail" />
+  </div>
+</section>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+
+    @media screen and (min-width: 68.75rem) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0;
+    }
+  }
+
+  .info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 32px;
+
+    @media screen and (min-width: 68.75rem) {
+      align-items: flex-start;
+      text-align: left;
+      flex-shrink: 999;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+    }
+
+    p {
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+      font-family: 'Satoshi Medium';
+    }
+
+    a {
+      color: inherit;
+      align-self: center;
+
+      @media screen and (min-width: 68.75rem) {
+        align-self: flex-start;
+      }
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      color: var(--neutral---black--1);
+      background-color: var(--primary---green--10);
+      border-radius: 8px;
+      padding-block: 10px;
+      padding-inline: 20px;
+      /* TODO: Add this color shadows to the vars colors */
+      box-shadow: 0 4px 35px 0 #466148;
+      transition: all 100ms ease-in;
+
+      &:hover {
+        background-color: var(--primary---green--8);
+        box-shadow: 0 4px 50px 0 #80a183;
+      }
+    }
+  }
+
+  .illustration-container {
+    position: relative;
+    aspect-ratio: 1;
+    /* TODO: Improve this with the min, max func */
+    width: 100%;
+    max-width: 450px;
+    margin-inline: auto;
+
+    @media screen and (min-width: 68.75rem) {
+      max-width: 520px;
+    }
+
+    .illustration {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .monitor {
+      width: 60%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      animation: appear-top-bottom 0.5s ease-in 0.3s forwards;
+    }
+
+    .notebook {
+      width: 27%;
+      bottom: 0;
+      right: 40%;
+      animation: appear-top-bottom 0.5s ease-in 1.5s forwards;
+    }
+
+    .camera {
+      width: 27%;
+      bottom: 17%;
+      right: 5%;
+      animation: appear-top-bottom 0.5s ease-in 2s forwards;
+    }
+
+    .idea {
+      width: 20%;
+      top: 7%;
+      left: 40%;
+      animation: appear-top-bottom 0.5s ease-in 0.5s forwards;
+    }
+
+    .mail {
+      width: 27%;
+      bottom: 10%;
+      left: 5px;
+      animation: appear-top-bottom 0.5s ease-in 1s forwards;
+    }
+  }
+</style>
