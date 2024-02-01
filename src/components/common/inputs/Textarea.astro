@@ -1,0 +1,36 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'textarea'> {}
+
+const { ...attrb } = Astro.props;
+---
+
+<textarea {...attrb}></textarea>
+
+<style>
+  textarea {
+    background-color: transparent;
+    color: var(--neutrals---black--1);
+    min-height: 170px;
+    padding-inline: 0.6rem;
+    padding-block: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid var(--neutrals---black--8);
+  }
+
+  textarea::placeholder {
+    color: var(--neutrals---black--9);
+  }
+
+  textarea:focus {
+    outline: none;
+    border: 1px solid var(--neutrals---black--1);
+    transition: border 110ms ease-in;
+  }
+
+  textarea:not(:focus) {
+    border: 1px solid var(--neutrals---black--8);
+    transition: border 110ms ease-in;
+  }
+</style>
