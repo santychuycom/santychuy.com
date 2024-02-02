@@ -10,8 +10,13 @@ import Button from '@components/common/Button.astro';
     development and many more. <b>No Spam!</b>
   </p>
   <form>
-    <InputText type="email" placeholder="Your email" class="input" />
-    <Button>
+    <InputText
+      type="email"
+      placeholder="Coming soon..."
+      class="input"
+      disabled
+    />
+    <Button disabled>
       <svg
         width="25"
         height="20"
@@ -50,6 +55,12 @@ import Button from '@components/common/Button.astro';
 
     .input {
       flex: 1;
+    }
+
+    b {
+      /* TODO: Fix this to not declare a font family, instead declare the weight */
+      font-family: 'Satoshi Bold';
+      text-decoration: underline;
     }
   }
 </style>

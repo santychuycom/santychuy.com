@@ -23,13 +23,18 @@ const { ...attrs } = Astro.props;
     transition: transform 100ms linear;
   }
 
-  button:active {
+  button:active:is(:not(:disabled)) {
     transform: scale(0.95);
   }
 
   /* TODO: Add better style for a11y */
   button:focus {
     outline: none;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+    background-color: var(--neutrals---black--10);
   }
 </style>
 
