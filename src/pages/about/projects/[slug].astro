@@ -1,0 +1,16 @@
+---
+import { data } from '@content/projects.json';
+import BaseLayout from '@layouts/Base.astro';
+import ProjectDetailContent from '@components/pages/Projects/index.astro';
+
+export function getStaticPaths() {
+  return data;
+}
+
+const { slug } = Astro.params;
+const props = Astro.props;
+---
+
+<BaseLayout title={slug} description="Project page">
+  <ProjectDetailContent {...props} />
+</BaseLayout>

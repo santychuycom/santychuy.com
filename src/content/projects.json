@@ -1,0 +1,39 @@
+{
+  "data": [
+    {
+      "params": {
+        "slug": "gbm"
+      },
+      "props": {
+        "name": "GBM",
+        "description": "Worked on the area of prevention of money laundry with the creation of a new platform to visualize and review data for the users to see if it’s any suspicious information they received; planning and making proposals of design and technologies to use.",
+        "link": "https://www.gbm.com.mx/",
+        "img": "https://gbm.com/plus/wp-content/uploads/sites/2/2022/04/trading-screen-01.jpg",
+        "iconImg": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Gbm%2B_logo.png",
+        "tags": ["Frontend", "Design Page"]
+      }
+    },
+    {
+      "params": { "slug": "magnumai" },
+      "props": {
+        "name": "Magnum.ai",
+        "description": "Worked on the area of prevention of money laundry with the creation of a new platform to visualize and review data for the users to see if it’s any suspicious information they received; planning and making proposals of design and technologies to use.",
+        "link": "https://www.magnumai.io/",
+        "img": "https://www.magnumai.io/poster.a6abb4f4.png",
+        "iconImg": "https://pbs.twimg.com/profile_images/1518806654506070017/Xh7IPHGW_400x400.png",
+        "tags": ["Web3", "Fullstack"]
+      }
+    },
+    {
+      "params": { "slug": "zebrands" },
+      "props": {
+        "name": "Zebrands",
+        "description": "Worked on the area of prevention of money laundry with the creation of a new platform to visualize and review data for the users to see if it’s any suspicious information they received; planning and making proposals of design and technologies to use.",
+        "link": "https://zebrands.mx/",
+        "img": "https://s3.amazonaws.com/businessinsider.mx/wp-content/uploads/2021/08/20175749/luuna-01-1.jpg",
+        "iconImg": "https://zebrands.mx/wp-content/uploads/2021/07/zebrands.jpg",
+        "tags": ["Frontend", "Mobile Development"]
+      }
+    }
+  ]
+}
