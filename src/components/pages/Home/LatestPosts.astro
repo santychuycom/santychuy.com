@@ -1,36 +1,12 @@
 ---
-import PreviewPost from '@components/PreviewPost.astro';
 import Newsletter from '@components/Newsletter.astro';
 ---
 
 <section class="content">
   <div class="posts-container">
-    <h2 class="title-section" id="latest-posts">Latest Posts</h2>
+    <h2 class="subtitle-section" id="latest-posts">Latest Posts</h2>
 
-    <PreviewPost
-      title="Error Boundaries on React"
-      description="Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the component tree that crashed."
-      date="09/10/2023"
-      topics={['react', 'typescript']}
-    />
-    <PreviewPost
-      title="Error Boundaries on React"
-      description="Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the component tree that crashed."
-      date="09/10/2023"
-      topics={['react', 'typescript']}
-    />
-    <PreviewPost
-      title="Error Boundaries on React"
-      description="Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the component tree that crashed."
-      date="09/10/2023"
-      topics={['react', 'typescript']}
-    />
-    <PreviewPost
-      title="Error Boundaries on React"
-      description="Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the component tree that crashed."
-      date="09/10/2023"
-      topics={['react', 'typescript']}
-    />
+    <h3 class="no-posts">No posts yet...</h3>
   </div>
 
   <aside class="newsletter-aside">
@@ -40,14 +16,10 @@ import Newsletter from '@components/Newsletter.astro';
 </section>
 
 <style>
-  .title-section {
-    color: var(--primary---green--6);
-  }
-
   .content {
     display: flex;
     flex-direction: column;
-    gap: 5rem;
+    gap: 7rem;
     position: relative;
 
     @media screen and (min-width: 68.75rem) {
@@ -60,11 +32,19 @@ import Newsletter from '@components/Newsletter.astro';
     display: flex;
     flex-direction: column;
     gap: 5rem;
-    flex: 0 999 100%;
+
+    .subtitle-section {
+      color: var(--primary---green--6);
+    }
+
+    .no-posts {
+      font-size: clamp(1.5rem, 2vw, 5rem);
+    }
 
     @media screen and (min-width: 68.75rem) {
+      flex-shrink: 999;
+      width: 50vw;
       max-width: 720px;
-      margin-right: auto;
     }
   }
 
