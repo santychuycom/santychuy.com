@@ -4,6 +4,8 @@ import '@styles/vars.css';
 import '@styles/globals.css';
 import '@styles/animations.css';
 
+import { ViewTransitions } from 'astro:transitions';
+
 import Background from '@components/Background.astro';
 import Header from '@components/layout/Header.astro';
 import Footer from '@components/layout/Footer.astro';
@@ -26,6 +28,7 @@ const { title, description } = Astro.props;
     <meta name="theme-color" content="#040715" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    <ViewTransitions />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
   </head>
@@ -38,19 +41,3 @@ const { title, description } = Astro.props;
     <Background />
   </body>
 </html>
-
-<style>
-  main {
-    display: flex;
-    flex-direction: column;
-    padding-block: 120px;
-    padding-inline: 1rem;
-    gap: 10rem;
-    max-width: 1300px;
-    margin-inline: auto;
-
-    @media screen and (min-width: 68.75rem) {
-      padding-inline: 4rem;
-    }
-  }
-</style>
