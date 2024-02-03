@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+
 import type { Project } from '@types/project';
 import Badge from '@components/Badge.astro';
 
@@ -10,8 +12,14 @@ const { name, description, img, iconImg, link, tags } = Astro.props;
 <section class="container">
   <div class="top-info-container">
     <!-- TODO: Add a back button to go back to projects page -->
-    <img src={iconImg} alt={`${name} icon`} class="project-icon" />
-    <a href={link} class="link-project">
+    <Image
+      src={iconImg}
+      alt={`${name} icon`}
+      class="project-icon"
+      width={85}
+      height={85}
+    />
+    <a href={link} class="link-project" target="_blank" rel="noopener">
       View project
       <svg
         width="25"
@@ -34,7 +42,7 @@ const { name, description, img, iconImg, link, tags } = Astro.props;
     </div>
   </div>
 
-  <img src={img} alt={`${name} illustration`} />
+  <Image src={img} alt={`${name} illustration`} width={840} height={475} />
 </section>
 
 <style>
@@ -53,7 +61,6 @@ const { name, description, img, iconImg, link, tags } = Astro.props;
   }
 
   .project-icon {
-    width: 85px;
     height: 85px;
     border-radius: 50%;
     object-fit: cover;
