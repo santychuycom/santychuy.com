@@ -26,6 +26,7 @@ jobs:
       - name: Build
         run: npm run build
 
+        # Replace this with using the CLI of Wrangler directly
       - name: Publish to Cloudlfare Pages
         uses: cloudflare/pages-action@v1
         with:
