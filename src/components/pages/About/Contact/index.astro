@@ -1,0 +1,68 @@
+---
+
+---
+
+<section class="container">
+  <h2 class="subtitle-section" id="contact-me">Let’s get in touch!</h2>
+  <p class="description-section">
+    I’m always open to new opportunities. Feel free to reach out to me if you
+    have any questions or just want to say hi!
+  </p>
+
+  <!-- TODO: Add form component with functionality -->
+  <a
+    href="https://cal.com/santychuy"
+    target="_blank"
+    rel="noopener"
+    id="contact-me"
+  >
+    <button>Schedule meeting</button>
+  </a>
+</section>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    margin-inline: auto;
+    max-width: 840px;
+  }
+
+  .subtitle-section {
+    color: var(--primary---green--6);
+    margin-block-end: 2rem;
+  }
+
+  .description-section {
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    font-family: 'Satoshi Medium';
+  }
+
+  a {
+    width: fit-content;
+    align-self: center;
+    margin-block-start: 3rem;
+
+    &:hover {
+      color: var(--neutrals---black--1);
+    }
+  }
+
+  button {
+    cursor: pointer;
+    border: none;
+    color: var(--neutral---black--1);
+    background-color: var(--primary---green--10);
+    border-radius: 8px;
+    padding-block: 10px;
+    padding-inline: 20px;
+    /* TODO: Add this color shadows to the vars colors */
+    box-shadow: 0 4px 35px 0 #466148;
+    transition: all 100ms ease-in;
+
+    &:hover {
+      background-color: var(--primary---green--8);
+      box-shadow: 0 4px 50px 0 #80a183;
+    }
+  }
+</style>
