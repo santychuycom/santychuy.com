@@ -1,0 +1,37 @@
+{
+  "name": "santychuy.com",
+  "version": "1.0.0",
+  "description": "Santychuy's Website",
+  "main": "index.js",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "wrangler pages dev ./dist",
+    "format": "prettier -w . --cache",
+    "lint": "eslint --ext .ts,.astro src",
+    "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "Santiago Carrasco <hello@santychuy.com>",
+  "license": "LGPL-3.0-only",
+  "dependencies": {
+    "@astrojs/cloudflare": "9.0.0",
+    "astro": "4.3.2"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "6.0.3",
+    "@semantic-release/git": "10.0.1",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "6.19.0",
+    "eslint": "8.56.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-astro": "0.31.3",
+    "eslint-plugin-jsx-a11y": "6.8.0",
+    "husky": "^8.0.0",
+    "lint-staged": "15.2.0",
+    "prettier": "3.2.2",
+    "prettier-plugin-astro": "0.12.3",
+    "wrangler": "3.26.0"
+  }
+}

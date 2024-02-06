@@ -1,0 +1,12 @@
+---
+import type { Project } from '@types/project';
+import ProjectDetail from './ProjectDetail.astro';
+
+interface Props extends Project {}
+
+const props = Astro.props;
+---
+
+<>
+  <ProjectDetail {...props} />
+</>

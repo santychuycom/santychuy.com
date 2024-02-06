@@ -1,0 +1,121 @@
+---
+import { Image } from 'astro:assets';
+
+import { data } from '@content/projects/projects.json';
+---
+
+<section class="container">
+  <h2 class="subtitle-section">Projects worked</h2>
+  <p class="description-section">
+    Below, you'll find a comprehensive list of the projects and jobs I've had
+    the privilege to work on throughout my career. Feel free to explore and
+    learn more about my experiences.
+  </p>
+  <div class="projects-container">
+    {
+      data.map(({ params: { slug }, props: { name, tags, iconImg } }) => (
+        <a href={`/about/projects/${slug}`} class="project-container">
+          <Image
+            src={iconImg}
+            alt={`${name} Logo`}
+            width={20}
+            height={20}
+            class="company-logo"
+          />
+          <div class="job-info-container">
+            <h3>{name}</h3>
+            <p>{tags.join(', ')}</p>
+          </div>
+          <svg
+            width="25"
+            height="25"
+            viewBox="0 0 20 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="read-arrow"
+          >
+            <path
+              d="M19.2798 14.8688L10.8423 23.3063C10.7116 23.4374 10.5564 23.5414 10.3855 23.6124C10.2145 23.6833 10.0313 23.7199 9.84619 23.7199C9.66111 23.7199 9.47785 23.6833 9.30691 23.6124C9.13598 23.5414 8.98074 23.4374 8.8501 23.3063L0.412596 14.8688C0.148415 14.6046 -3.9366e-09 14.2463 0 13.8727C3.9366e-09 13.4991 0.148415 13.1408 0.412596 12.8766C0.676776 12.6124 1.03508 12.464 1.40869 12.464C1.7823 12.464 2.1406 12.6124 2.40478 12.8766L8.44111 18.9129V1.68636C8.44111 1.31339 8.58927 0.95571 8.85299 0.691987C9.11672 0.428264 9.4744 0.280106 9.84736 0.280106C10.2203 0.280106 10.578 0.428264 10.8417 0.691987C11.1055 0.95571 11.2536 1.31339 11.2536 1.68636V18.9129L17.2899 12.8754C17.5541 12.6112 17.9124 12.4628 18.286 12.4628C18.6596 12.4628 19.0179 12.6112 19.2821 12.8754C19.5463 13.1396 19.6947 13.4979 19.6947 13.8715C19.6947 14.2451 19.5463 14.6034 19.2821 14.8676L19.2798 14.8688Z"
+              fill="white"
+            />
+          </svg>
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    margin-inline: auto;
+    max-width: 840px;
+  }
+
+  .subtitle-section {
+    color: var(--primary---green--6);
+    margin-block-end: 2rem;
+  }
+
+  .description-section {
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    font-family: 'Satoshi Medium';
+  }
+
+  .projects-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    background-color: var(--primary---green--10--alpha);
+    padding-block: 60px;
+    padding-inline: 2rem;
+    margin-block-start: 70px;
+    border-radius: 12px;
+  }
+
+  .project-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 1rem;
+    background-color: var(--primary---green--10--alpha--2);
+    width: 100%;
+    max-width: 605px;
+    border-radius: 12px;
+    padding-block: 1rem;
+    padding-inline: 1rem;
+
+    &:hover .read-arrow {
+      transform: translateY(4px);
+    }
+
+    @media screen and (min-width: 34.375rem) {
+      gap: 28px;
+      padding-inline: 2rem;
+    }
+  }
+
+  .company-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    outline: 8px solid rgba(7, 15, 23, 0.7);
+  }
+
+  .job-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-inline-end: auto;
+  }
+
+  .read-arrow {
+    rotate: 225deg;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+</style>

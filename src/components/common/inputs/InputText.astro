@@ -1,0 +1,40 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'input'> {}
+
+const { ...attrs } = Astro.props;
+---
+
+<input {...attrs} />
+
+<style>
+  input {
+    background-color: transparent;
+    color: var(--neutrals---black--1);
+    max-height: 50px;
+    padding-inline: 0.6rem;
+    padding-block: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid var(--neutrals---black--8);
+  }
+
+  input::placeholder {
+    color: var(--neutrals---black--9);
+  }
+
+  input:focus {
+    outline: none;
+    border: 1px solid var(--neutrals---black--1);
+    transition: border 110ms ease-in;
+  }
+
+  input:not(:focus) {
+    border: 1px solid var(--neutrals---black--8);
+    transition: border 110ms ease-in;
+  }
+
+  input:disabled {
+    cursor: not-allowed;
+  }
+</style>
