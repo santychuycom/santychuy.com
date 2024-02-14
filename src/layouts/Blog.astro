@@ -1,0 +1,49 @@
+---
+import '@styles/reset.css';
+import '@styles/vars.css';
+import '@styles/globals.css';
+import '@styles/animations.css';
+
+import { ViewTransitions } from 'astro:transitions';
+
+import Header from '@components/layout/Header.astro';
+import Footer from '@components/layout/Footer.astro';
+
+interface Props {
+  title?: string;
+  description: string;
+  noIndex?: boolean;
+}
+
+const { title, description, noIndex } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#040715" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title ? `${title} - Santychuy` : 'Santychuy'}</title>
+    {noIndex && <meta name="robots" content="noindex" />}
+    <ViewTransitions />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <style>
+      main {
+        width: 100%;
+        padding-block: 80px;
+      }
+    </style>
+  </body>
+</html>

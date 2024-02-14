@@ -1,0 +1,178 @@
+---
+import dayjs from '@libs/dayjs';
+import Badge from '@components/Badge.astro';
+import type { Post } from '../../../schemas/post';
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+
+const formattedDate = dayjs(post.pubDate)
+  .tz(dayjs.tz.guess())
+  .format('MM/DD/YYYY HH:mm');
+---
+
+<>
+  <img src={post.image.url} alt={post.image.alt} class="blog-img" />
+
+  <div class="content">
+    <aside class="share-content">
+      <svg
+        width="30"
+        height="30"
+        viewBox="0 0 32 30"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M25.2019 0H30.1087L19.3887 12.7077L32 30H22.1239L14.3898 19.5123L5.54026 30H0.630418L12.0966 16.4077L0 0H10.1238L17.1147 9.58615L25.1989 0H25.2019ZM23.4797 26.9538H26.1987L8.64785 2.88615H5.73013L23.4797 26.9538Z"
+          fill="white"></path>
+      </svg>
+
+      <svg
+        width="30"
+        height="30"
+        viewBox="0 0 32 32"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M32 16.0401C32 7.18596 24.832 0 16 0C7.168 0 0 7.18596 0 16.0401C0 23.8035 5.504 30.2677 12.8 31.7594V20.8521H9.6V16.0401H12.8V12.0301C12.8 8.93434 15.312 6.41604 18.4 6.41604H22.4V11.2281H19.2C18.32 11.2281 17.6 11.9499 17.6 12.8321V16.0401H22.4V20.8521H17.6V32C25.68 31.198 32 24.3649 32 16.0401Z"
+          fill="white"></path>
+      </svg>
+
+      <svg
+        width="35"
+        height="35"
+        viewBox="0 0 30 30"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M22.9543 19.4187L21.1868 17.6512L22.9543 15.8837C24.102 14.7068 24.7397 13.1251 24.7294 11.4812C24.7191 9.83735 24.0616 8.26374 22.8993 7.10126C21.737 5.93877 20.1634 5.28102 18.5196 5.27049C16.8757 5.25996 15.2939 5.89749 14.1168 7.04499L12.3468 8.81249L10.5806 7.04499L12.3481 5.27749C13.9891 3.63646 16.2148 2.71454 18.5356 2.71454C20.8563 2.71454 23.082 3.63646 24.7231 5.27749C26.3641 6.91851 27.286 9.14422 27.286 11.465C27.286 13.7857 26.3641 16.0115 24.7231 17.6525L22.9543 19.4187ZM19.4193 22.955L17.6518 24.7225C16.8393 25.535 15.8746 26.1796 14.813 26.6193C13.7513 27.0591 12.6134 27.2854 11.4643 27.2854C10.3152 27.2854 9.17732 27.0591 8.11566 26.6193C7.05401 26.1796 6.08937 25.535 5.27681 24.7225C4.46426 23.9099 3.81971 22.9453 3.37996 21.8836C2.9402 20.822 2.71387 19.6841 2.71387 18.535C2.71387 17.3859 2.9402 16.248 3.37996 15.1863C3.81971 14.1247 4.46426 13.16 5.27681 12.3475L7.04431 10.58L8.81306 12.3475L7.04431 14.1162C5.89682 15.2934 5.25928 16.8752 5.26982 18.519C5.28035 20.1629 5.9381 21.7364 7.10058 22.8987C8.26307 24.061 9.83668 24.7186 11.4805 24.7289C13.1244 24.7392 14.7061 24.1014 15.8831 22.9537L17.6518 21.1875L19.4193 22.955ZM18.5356 9.69624L20.3031 11.4637L11.4643 20.3037L9.69681 18.535L18.5343 9.69748L18.5356 9.69624Z"
+          fill="white"></path>
+      </svg>
+    </aside>
+
+    <div class="blog-content">
+      <h1 class="title">{post.title}</h1>
+      <p class="date">{formattedDate}</p>
+
+      <div class="info-container">
+        <div class="author-container">
+          <img
+            src={post.author.imgUrl}
+            alt={`${post.author.name} profile`}
+            class="author-img"
+          />
+          <p class="author-name">{post.author.name}</p>
+        </div>
+        <div class="tags-container">
+          {post.tags.map((tag) => <Badge title={tag} />)}
+        </div>
+      </div>
+
+      <slot />
+    </div>
+
+    <span class="share-content"></span>
+  </div>
+</>
+
+<style>
+  .blog-img {
+    width: 100%;
+    object-fit: cover;
+    margin-block-end: 50px;
+
+    @media screen and (min-width: 68.75rem) {
+      aspect-ratio: 16 / 7;
+      margin-block-end: 100px;
+    }
+  }
+
+  .content {
+    position: relative;
+    display: flex;
+    gap: 2rem;
+
+    @media screen and (min-width: 68.75rem) {
+      gap: 110px;
+    }
+  }
+
+  .share-content {
+    display: none;
+    position: sticky;
+    top: 100px;
+    flex-direction: column;
+    min-width: 100px;
+    min-height: 240px;
+    height: fit-content;
+    gap: 36px;
+    border-radius: 12px;
+    padding-block: 38px;
+    padding-inline: 32px;
+    background-color: var(--primary---green--10--alpha);
+
+    @media screen and (min-width: 34.375rem) {
+      display: flex;
+    }
+  }
+
+  .blog-content {
+    flex: 1;
+
+    .title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-block-end: 0.5rem;
+    }
+
+    .date {
+      color: var(--neutrals---black--7);
+    }
+  }
+
+  .info-container {
+    display: flex;
+    flex-direction: column;
+    margin-block-start: 28px;
+    margin-block-end: 60px;
+    gap: 1rem;
+
+    @media screen and (min-width: 68.75rem) {
+      flex-direction: row;
+    }
+  }
+
+  .author-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .author-img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+    }
+
+    .author-name {
+      font-family: 'Satoshi Bold';
+      color: var(--neutrals---black--1);
+    }
+  }
+
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+    align-items: center;
+    gap: 0.5rem;
+
+    @media screen and (min-width: 68.75rem) {
+      justify-content: flex-end;
+    }
+  }
+</style>
