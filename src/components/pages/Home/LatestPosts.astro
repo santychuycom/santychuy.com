@@ -1,12 +1,27 @@
 ---
+import { getCollection } from 'astro:content';
+
 import Newsletter from '@components/Newsletter.astro';
+import PreviewPost from '@components/PreviewPost.astro';
+
+const allPosts = await getCollection('posts');
 ---
 
 <section class="content">
   <div class="posts-container">
     <h2 class="subtitle-section" id="latest-posts">Latest Posts</h2>
 
-    <h3 class="no-posts">No posts yet...</h3>
+    {
+      allPosts.map(({ data, slug }) => (
+        <PreviewPost
+          title={data.title}
+          description={data.description}
+          date={data.pubDate}
+          topics={data.tags}
+          slug={slug}
+        />
+      ))
+    }
   </div>
 
   <aside class="newsletter-aside">
