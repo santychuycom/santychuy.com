@@ -41,5 +41,18 @@ const { title, description, noIndex } = Astro.props;
     </main>
     <Footer />
     <Background />
+    <style>
+      main {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        padding-block: 120px;
+        gap: 10rem;
+
+        @media screen and (min-width: 68.75rem) {
+          padding-inline: 4rem;
+        }
+      }
+    </style>
   </body>
 </html>
