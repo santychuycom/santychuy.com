@@ -29,3 +29,26 @@ Welcome to my _new blog_ about learning Astro! Here, I will share my learning jo
 ## What's next
 
 I will finish the Astro tutorial, and then keep adding more posts. Watch this space for more to come.
+
+- Hola
+- Perro
+- tremendo
+
+This are a couple of links:
+
+- <a href="https://www.markdownguide.org" target="_blank">Learn Markdown!</a>
+
+> Eres un perro desgraciado cabron
+
+```json
+{
+  "Perro": "bueno"
+}
+```
+
+![Thumbnail of Astro arcs.](https://docs.astro.build/assets/arc.webp)
+_A single track trail outside of Albuquerque, New Mexico._
+
+## Final Thoughts
+
+Esto esta muy perron
