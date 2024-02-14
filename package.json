@@ -17,7 +17,8 @@
   "license": "LGPL-3.0-only",
   "dependencies": {
     "@astrojs/cloudflare": "9.0.0",
-    "astro": "4.3.2"
+    "astro": "4.3.2",
+    "dayjs": "1.11.10"
   },
   "devDependencies": {
     "@semantic-release/changelog": "6.0.3",
