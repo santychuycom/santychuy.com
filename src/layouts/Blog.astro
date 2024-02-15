@@ -32,6 +32,11 @@ const { title, description, noIndex } = Astro.props;
     <ViewTransitions />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
   </head>
   <body>
     <Header />
@@ -45,5 +50,8 @@ const { title, description, noIndex } = Astro.props;
         padding-block: 80px;
       }
     </style>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   </body>
 </html>
