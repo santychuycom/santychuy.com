@@ -5,6 +5,9 @@ import Newsletter from '@components/Newsletter.astro';
 import PreviewPost from '@components/PreviewPost.astro';
 
 const allPosts = await getCollection('posts');
+const sortedDatePosts = allPosts?.sort(
+  (a, b) => Number(new Date(b.data.pubDate)) - Number(new Date(a.data.pubDate))
+);
 ---
 
 <section class="content">
@@ -12,15 +15,23 @@ const allPosts = await getCollection('posts');
     <h2 class="subtitle-section" id="latest-posts">Latest Posts</h2>
 
     {
-      allPosts.map(({ data, slug }) => (
-        <PreviewPost
-          title={data.title}
-          description={data.description}
-          date={data.pubDate}
-          topics={data.tags}
-          slug={slug}
-        />
-      ))
+      sortedDatePosts ? (
+        sortedDatePosts.map(({ data, slug }, i) => {
+          if (i < 5) {
+            return (
+              <PreviewPost
+                title={data.title}
+                description={data.description}
+                date={data.pubDate}
+                topics={data.tags}
+                slug={slug}
+              />
+            );
+          }
+        })
+      ) : (
+        <h3 class="no-posts">No posts yet...</h3>
+      )
     }
   </div>
 
