@@ -22,17 +22,39 @@ const { title, description, noIndex } = Astro.props;
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#040715" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title ? `${title} - Santychuy` : 'Santychuy'}</title>
+    <title>
+      {
+        title
+          ? `${title} - Santiago Carrasco (Santychuy)`
+          : 'Santiago Carrasco (Santychuy)'
+      }
+    </title>
     {noIndex && <meta name="robots" content="noindex" />}
     <ViewTransitions />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://santychuy.com" />
+    <meta
+      property="og:image"
+      content="https://santychuy.com/og-santychuy.png"
+    />
+    <meta property="og:site_name" content="Santiago Carrasco (Santychuy)" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@santychuy" />
+    <meta name="twitter:creator" content="@santychuy" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta
+      name="twitter:image"
+      content="https://santychuy.com/og-santychuy.png"
+    />
   </head>
   <body>
     <Header />
