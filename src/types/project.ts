@@ -4,5 +4,5 @@ export interface Project {
   iconImg: string;
   img: string;
   link: string;
-  tags: string[];
+  categories: string[];
 }

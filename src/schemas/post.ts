@@ -7,13 +7,10 @@ export const postSchema = z.object({
   shortDesc: z.string(),
   author: z.object({
     name: z.string(),
-    imgUrl: z.string().optional(),
+    img: z.string().optional(),
   }),
-  image: z.object({
-    url: z.string(),
-    alt: z.string(),
-  }),
-  tags: z.array(z.string()),
+  image: z.string(),
+  categories: z.array(z.string()),
 });
 
 export type Post = z.infer<typeof postSchema>;

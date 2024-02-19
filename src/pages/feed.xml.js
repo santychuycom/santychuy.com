@@ -19,7 +19,7 @@ export async function GET(context) {
       pubDate: data.pubDate,
       link: `/blog/${slug}`,
       author: data.author.name,
-      categories: data.tags,
+      categories: data.categories,
       content: sanitizeHtml(md.render(body)),
     })),
     customData: `<language>en-us</language>`,

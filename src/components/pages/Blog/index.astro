@@ -16,7 +16,7 @@ const formattedDate = dayjs(post.pubDate)
 ---
 
 <>
-  <img src={post.image.url} alt={post.image.alt} class="blog-img" />
+  <img src={post.image} alt={post.image} class="blog-img" />
 
   <div class="content">
     <aside class="share-content">
@@ -64,14 +64,14 @@ const formattedDate = dayjs(post.pubDate)
       <div class="info-container">
         <div class="author-container">
           <img
-            src={post.author.imgUrl}
+            src={post.author.img}
             alt={`${post.author.name} profile`}
             class="author-img"
           />
           <p class="author-name">{post.author.name}</p>
         </div>
         <div class="tags-container">
-          {post.tags.map((tag) => <Badge title={tag} />)}
+          {post.categories.map((category) => <Badge title={category} />)}
         </div>
       </div>
 
@@ -163,6 +163,7 @@ const formattedDate = dayjs(post.pubDate)
       width: 70px;
       height: 70px;
       border-radius: 50%;
+      object-fit: cover;
     }
 
     .author-name {
