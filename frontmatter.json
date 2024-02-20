@@ -1,0 +1,83 @@
+{
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "posts",
+      "previewPath": "'posts'",
+      "pageBundle": false,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "single": true,
+          "required": true
+        },
+        {
+          "name": "pubDate",
+          "type": "datetime",
+          "default": "{{now}}",
+          "required": true,
+          "isPublishDate": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "single": true,
+          "required": true
+        },
+        {
+          "name": "shortDesc",
+          "type": "string",
+          "single": true,
+          "required": true
+        },
+        {
+          "name": "author",
+          "type": "fields",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "default": "Santiago Carrasco",
+              "single": true,
+              "required": true
+            },
+            {
+              "name": "img",
+              "type": "image",
+              "default": "/imgs/profile.jpg"
+            }
+          ],
+          "required": true
+        },
+        {
+          "name": "image",
+          "type": "image",
+          "required": true,
+          "isPreviewImage": true
+        },
+        {
+          "name": "categories",
+          "type": "categories",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "frontMatter.framework.id": "astro",
+  "frontMatter.preview.host": "http://localhost:4321",
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "Blog",
+      "path": "[[workspace]]/src/content/posts",
+      "contentTypes": ["posts"],
+      "filePrefix": null
+    }
+  ],
+  "frontMatter.content.publicFolder": {
+    "path": "public",
+    "relative": false
+  },
+  "frontMatter.content.supportedFileTypes": ["md", "mdx", "markdown"]
+}

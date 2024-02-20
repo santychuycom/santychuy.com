@@ -1,0 +1,110 @@
+---
+import { getCollection } from 'astro:content';
+
+import BlogLayout from '@layouts/Blog.astro';
+import BlogContent from '@components/pages/Blog/index.astro';
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('posts');
+
+  return blogEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<BlogLayout title={entry.data.title} description={entry.data.shortDesc}>
+  <BlogContent post={entry.data}>
+    <Content />
+  </BlogContent>
+</BlogLayout>
+
+<style is:global>
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+  }
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: var(--primary---green--6);
+    margin-block-start: 3.5rem;
+    margin-block-end: 2rem;
+  }
+
+  p {
+    margin-block-end: 1rem;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  strong {
+    font-family: 'Satoshi Bold';
+  }
+
+  blockquote {
+    border-left: 4px solid var(--primary---green--6);
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    font-style: italic;
+    padding-inline-start: 2rem;
+    padding-block: 1.2rem;
+    margin-block: 2.5rem;
+    font-size: clamp(1.2rem, 3vw, 1.4rem);
+
+    p {
+      margin-block: 0;
+    }
+  }
+
+  hr {
+    border-radius: 100%;
+    border-color: var(--primary---green--8);
+    margin-block-start: 5rem;
+    margin-block-end: 4rem;
+  }
+
+  code {
+    background-color: var(--neutrals---black--10);
+    padding-block: 0.2rem;
+    padding-inline: 0.4rem;
+    border-radius: 8px;
+  }
+
+  pre {
+    border-radius: 16px;
+    padding-block: 1.2rem;
+    padding-inline: 1rem;
+    margin-block: 3rem;
+
+    code {
+      background-color: transparent;
+    }
+  }
+
+  ol,
+  ul {
+    padding-inline-start: 2rem;
+    margin-block: 1rem;
+  }
+
+  ul > li {
+    margin-block: 0.5rem;
+
+    &::marker {
+      color: var(--primary---green--6);
+    }
+  }
+
+  img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-block-end: 0.5rem;
+  }
+</style>

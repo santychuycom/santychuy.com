@@ -13,6 +13,7 @@ const props = Astro.props;
 <BaseLayout
   title={props.name}
   description={`Efficient description the time I worked on ${props.name}`}
+  noIndex
 >
   <ProjectDetailContent {...props} />
 </BaseLayout>

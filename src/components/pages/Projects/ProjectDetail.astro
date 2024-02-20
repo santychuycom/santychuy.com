@@ -6,7 +6,7 @@ import Badge from '@components/Badge.astro';
 
 interface Props extends Project {}
 
-const { name, description, img, iconImg, link, tags } = Astro.props;
+const { name, description, img, iconImg, link, categories } = Astro.props;
 ---
 
 <section class="container">
@@ -38,7 +38,7 @@ const { name, description, img, iconImg, link, tags } = Astro.props;
     <h1>{name}</h1>
     <p class="description">{description}</p>
     <div class="tags-container">
-      {tags.map((tag) => <Badge title={tag} />)}
+      {categories.map((tag) => <Badge title={tag} />)}
     </div>
   </div>
 
