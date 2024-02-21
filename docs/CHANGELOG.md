@@ -1,3 +1,30 @@
+# [1.1.0](https://github.com/santychuycom/santychuy.com/compare/v1.0.0...v1.1.0) (2024-02-21)
+
+
+### Bug Fixes
+
+* apply utc to date ([325eb40](https://github.com/santychuycom/santychuy.com/commit/325eb409ca35012a1d3ac15141afd72e27390456))
+* undo to hybrid ([3b84b7c](https://github.com/santychuycom/santychuy.com/commit/3b84b7ccdafc968581f50eedc03743be77b120fe))
+
+
+### Features
+
+* able to share the link of the current post on social media and copy link on clipboard ([02077e6](https://github.com/santychuycom/santychuy.com/commit/02077e6a36c6c316090762161a1471d641b12862))
+* add blog post page and config schema to know the metadata to use on the pages ([75de825](https://github.com/santychuycom/santychuy.com/commit/75de8254ca0001b43b16737e3c8363d4c8c24aea))
+* add rss configuration ([72cc85e](https://github.com/santychuycom/santychuy.com/commit/72cc85e49c87448f1319cb9ba823e922984647a2))
+* apply format on client side ([5374d77](https://github.com/santychuycom/santychuy.com/commit/5374d7711afdd93f363838e325e7c3904ac715e7))
+* retrieve all blog posts and show it as a preview ([c591d81](https://github.com/santychuycom/santychuy.com/commit/c591d81fad1a009c3e0a6c9cead51535806e7d62))
+* setup front matter to use it as CMS locally ([f1a586c](https://github.com/santychuycom/santychuy.com/commit/f1a586c93507a42191cadb14cbc9e9f9de7731b2))
+* sort posts and limit to show only 5 recent posts ([6666ee7](https://github.com/santychuycom/santychuy.com/commit/6666ee71b5f542d55f048043659c92e64d97a231))
+* use native date management ([f444bbc](https://github.com/santychuycom/santychuy.com/commit/f444bbc044c43a87dad9f83ebe5e7f80bd22d9d9))
+
+
+### Performance Improvements
+
+* add prerender variable to prerender file on demand ([a475029](https://github.com/santychuycom/santychuy.com/commit/a475029446e1cc9efb2ee257e14b7b205ea13e8c))
+* add type of font on link meta tag ([3a845e8](https://github.com/santychuycom/santychuy.com/commit/3a845e81df7f047024a438d4016136bd85a4d91a))
+* optimize loading fonts ([fb2025f](https://github.com/santychuycom/santychuy.com/commit/fb2025f66484a6d2857c6af1b621ec2fb808b88c))
+
 # 1.0.0 (2024-02-06)
 
 
