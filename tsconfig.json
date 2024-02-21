@@ -7,7 +7,6 @@
       "@components/*": ["components/*"],
       "@content/*": ["content/*"],
       "@layouts/*": ["layouts/*"],
-      "@utils/*": ["utils/*"],
       "@schemas/*": ["schemas/*"],
       "@styles/*": ["styles/*"],
       "@types/*": ["types/*"]
