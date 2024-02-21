@@ -1,5 +1,4 @@
 ---
-import { formatDateTime } from '@utils/formatDate';
 import Badge from '@components/Badge.astro';
 import type { Post } from '@schemas/post';
 
@@ -9,8 +8,7 @@ interface Props {
 
 const { post } = Astro.props;
 const title = post.title;
-
-const date = formatDateTime(post.pubDate);
+const pubDate = post.pubDate;
 ---
 
 <>
@@ -57,7 +55,7 @@ const date = formatDateTime(post.pubDate);
 
     <div class="blog-content">
       <h1 class="title">{title}</h1>
-      <p class="date">{date}</p>
+      <p class="date"></p>
 
       <div class="info-container">
         <div class="author-container">
@@ -185,8 +183,24 @@ const date = formatDateTime(post.pubDate);
   }
 </style>
 
-<script define:vars={{ title }}>
+<script define:vars={{ title, pubDate }}>
+  const date = new Date(pubDate);
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  const formatted = date.toLocaleDateString(undefined, {
+    day: 'numeric',
+    month: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    timeZone: tz,
+  });
+
   const currentUrl = window.location.href;
+
+  const dateElement = document.querySelector('.date');
+
+  dateElement.textContent = `${formatted}`;
 
   document.getElementById('copy-link')?.addEventListener('click', () => {
     navigator.clipboard.writeText(currentUrl);
