@@ -16,9 +16,8 @@ interface Props {
 const { post } = Astro.props;
 const title = post.title;
 
-const formattedDate = dayjs(post.pubDate)
-  .tz(dayjs.tz.guess())
-  .format('MM/DD/YYYY HH:mm');
+const tz = dayjs.tz.guess();
+const formattedDate = dayjs.utc(post.pubDate).tz(tz).format('MM/DD/YYYY HH:mm');
 ---
 
 <>

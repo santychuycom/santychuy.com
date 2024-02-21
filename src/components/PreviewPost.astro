@@ -18,7 +18,8 @@ interface Props {
 
 const { title, date, description, topics, slug } = Astro.props;
 
-const formattedDate = dayjs(date).tz(dayjs.tz.guess()).format('MM/DD/YYYY');
+const tz = dayjs.tz.guess();
+const formattedDate = dayjs.utc(date).tz(tz).format('MM/DD/YYYY');
 ---
 
 <article class="post">
