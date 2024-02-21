@@ -17,11 +17,15 @@
   "license": "LGPL-3.0-only",
   "dependencies": {
     "@astrojs/cloudflare": "9.0.0",
-    "astro": "4.3.2"
+    "@astrojs/rss": "4.0.5",
+    "astro": "4.3.2",
+    "markdown-it": "14.0.0",
+    "sanitize-html": "2.11.0"
   },
   "devDependencies": {
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
+    "@types/toastify-js": "1.12.3",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "6.19.0",
     "eslint": "8.56.0",

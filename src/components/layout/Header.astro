@@ -233,9 +233,14 @@
     </svg>
   </a>
 
-  <a href="/about/">About</a>
+  <a href="/about/" title="About Page">About</a>
   <span></span>
-  <a href="https://discord.gg/B55We2GHF7" target="_blank" rel="noopener">
+  <a
+    href="https://discord.gg/B55We2GHF7"
+    target="_blank"
+    rel="noopener"
+    title="Discord Server"
+  >
     <!-- TODO: refactor svg icons to components passing props -->
     <svg
       width="30"
@@ -249,7 +254,12 @@
       ></path>
     </svg>
   </a>
-  <a href="https://github.com/santychuy" target="_blank" rel="noopener">
+  <a
+    href="https://github.com/santychuy"
+    target="_blank"
+    rel="noopener"
+    title="Github Profile"
+  >
     <svg
       width="30"
       height="30"
@@ -266,6 +276,7 @@
     href="https://linkedin.com/in/santiagocarrascocampa"
     target="_blank"
     rel="noopener"
+    title="Linkedin Profile"
   >
     <svg
       width="30"
@@ -301,6 +312,10 @@
     @media screen and (min-width: 68.75rem) {
       padding-block: 3rem;
     }
+  }
+
+  a {
+    text-decoration: none;
   }
 
   .logo-link {

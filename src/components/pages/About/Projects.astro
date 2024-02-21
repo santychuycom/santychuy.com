@@ -5,7 +5,7 @@ import { data } from '@content/projects/projects.json';
 ---
 
 <section class="container">
-  <h2 class="subtitle-section">Projects worked</h2>
+  <h2 class="subtitle-section">Latest projects worked</h2>
   <p class="description-section">
     Below, you'll find a comprehensive list of the projects and jobs I've had
     the privilege to work on throughout my career. Feel free to explore and
@@ -13,7 +13,7 @@ import { data } from '@content/projects/projects.json';
   </p>
   <div class="projects-container">
     {
-      data.map(({ params: { slug }, props: { name, tags, iconImg } }) => (
+      data.map(({ params: { slug }, props: { name, categories, iconImg } }) => (
         <a href={`/about/projects/${slug}`} class="project-container">
           <Image
             src={iconImg}
@@ -24,7 +24,7 @@ import { data } from '@content/projects/projects.json';
           />
           <div class="job-info-container">
             <h3>{name}</h3>
-            <p>{tags.join(', ')}</p>
+            <p>{categories.join(', ')}</p>
           </div>
           <svg
             width="25"

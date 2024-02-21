@@ -6,7 +6,6 @@ import '@styles/animations.css';
 
 import { ViewTransitions } from 'astro:transitions';
 
-import Background from '@components/Background.astro';
 import Header from '@components/layout/Header.astro';
 import Footer from '@components/layout/Footer.astro';
 
@@ -48,11 +47,7 @@ const { title, description, noIndex } = Astro.props;
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>
-      {
-        title
-          ? `${title} - Santiago Carrasco (Santychuy)`
-          : 'Santiago Carrasco (Santychuy)'
-      }
+      {`${title} - Santiago Carrasco (Santychuy)`}
     </title>
     {noIndex && <meta name="robots" content="noindex" />}
     <ViewTransitions />
@@ -76,6 +71,11 @@ const { title, description, noIndex } = Astro.props;
       name="twitter:image"
       content="https://santychuy.com/og-santychuy.png"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
   </head>
   <body>
     <Header />
@@ -83,19 +83,14 @@ const { title, description, noIndex } = Astro.props;
       <slot />
     </main>
     <Footer />
-    <Background />
     <style>
       main {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        padding-block: 120px;
-        gap: 10rem;
-
-        @media screen and (min-width: 68.75rem) {
-          padding-inline: 4rem;
-        }
+        width: 100%;
+        padding-block-end: 80px;
       }
     </style>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   </body>
 </html>
