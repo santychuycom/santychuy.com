@@ -1,7 +1,10 @@
 ---
-export const prerender = false;
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 
-import dayjs from '@libs/dayjs';
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 import Badge from './Badge.astro';
 
