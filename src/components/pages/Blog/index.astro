@@ -1,11 +1,5 @@
 ---
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
+import { formatDateTime } from '@utils/formatDate';
 import Badge from '@components/Badge.astro';
 import type { Post } from '@schemas/post';
 
@@ -16,8 +10,7 @@ interface Props {
 const { post } = Astro.props;
 const title = post.title;
 
-const tz = dayjs.tz.guess();
-const formattedDate = dayjs.utc(post.pubDate).tz(tz).format('MM/DD/YYYY HH:mm');
+const date = formatDateTime(post.pubDate);
 ---
 
 <>
@@ -64,7 +57,7 @@ const formattedDate = dayjs.utc(post.pubDate).tz(tz).format('MM/DD/YYYY HH:mm');
 
     <div class="blog-content">
       <h1 class="title">{title}</h1>
-      <p class="date">{formattedDate}</p>
+      <p class="date">{date}</p>
 
       <div class="info-container">
         <div class="author-container">
