@@ -8,11 +8,13 @@ export function getStaticPaths() {
 }
 
 const props = Astro.props;
+const cannonicalURL = Astro.request.url;
 ---
 
 <BaseLayout
   title={props.name}
   description={`Efficient description the time I worked on ${props.name}`}
+  url={cannonicalURL}
   noIndex
 >
   <ProjectDetailContent {...props} />

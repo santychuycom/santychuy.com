@@ -14,10 +14,16 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
+const cannonicalURL = Astro.request.url;
 const { Content } = await entry.render();
 ---
 
-<BlogLayout title={entry.data.title} description={entry.data.shortDesc}>
+<BlogLayout
+  title={entry.data.title}
+  description={entry.data.shortDesc}
+  image={entry.data.image}
+  url={cannonicalURL}
+>
   <BlogContent post={entry.data}>
     <Content />
   </BlogContent>

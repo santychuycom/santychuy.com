@@ -1,11 +1,14 @@
 ---
 import BaseLayout from '@layouts/Base.astro';
 import AboutContent from '@components/pages/About/index.astro';
+
+const cannonicalURL = Astro.request.url;
 ---
 
 <BaseLayout
   title="About"
   description="Dive into my journey as a software engineer based in Hermosillo, Mexico. Explore my diverse skill set, from developing scalable solutions to mastering cutting-edge technologies."
+  url={cannonicalURL}
 >
   <AboutContent />
 </BaseLayout>
