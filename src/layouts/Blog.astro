@@ -10,12 +10,14 @@ import Header from '@components/layout/Header.astro';
 import Footer from '@components/layout/Footer.astro';
 
 interface Props {
-  title?: string;
+  title: string;
   description: string;
+  image: string;
+  url: string;
   noIndex?: boolean;
 }
 
-const { title, description, noIndex } = Astro.props;
+const { title, description, image, url, noIndex } = Astro.props;
 ---
 
 <html lang="en">
@@ -55,22 +57,17 @@ const { title, description, noIndex } = Astro.props;
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://santychuy.com" />
-    <meta
-      property="og:image"
-      content="https://santychuy.com/og-santychuy.png"
-    />
-    <meta property="og:site_name" content="Santiago Carrasco (Santychuy)" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={image} />
+    <meta property="og:site_name" content="Santiago Carrasco Blog" />
+    <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@santychuy" />
     <meta name="twitter:creator" content="@santychuy" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta
-      name="twitter:image"
-      content="https://santychuy.com/og-santychuy.png"
-    />
+    <meta name="twitter:image" content={image} />
     <link
       rel="stylesheet"
       type="text/css"

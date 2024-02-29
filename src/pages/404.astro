@@ -1,8 +1,15 @@
 ---
 import BaseLayout from '@layouts/Base.astro';
+
+const cannonicalURL = Astro.request.url;
 ---
 
-<BaseLayout noIndex title="Page Not Found" description="Are you lost?">
+<BaseLayout
+  noIndex
+  title="Page Not Found"
+  description="Are you lost?"
+  url={cannonicalURL}
+>
   <section>
     <h1>404</h1>
     <p>Page not found</p>
