@@ -1,3 +1,16 @@
+# [1.2.0](https://github.com/santychuycom/santychuy.com/compare/v1.1.0...v1.2.0) (2024-02-29)
+
+
+### Bug Fixes
+
+* apply all url to get upload image of the blog ([c92cb60](https://github.com/santychuycom/santychuy.com/commit/c92cb60558d8cb3a2f23d6af85fc507f57292f59))
+* show complete title on og and twitter meta tags ([21734fd](https://github.com/santychuycom/santychuy.com/commit/21734fdb2a3b371c8a5c41f0d30b9fcefcdd8cce))
+
+
+### Features
+
+* passing data to og and twitter meta tags to improve seo on social media ([d86f126](https://github.com/santychuycom/santychuy.com/commit/d86f1266d9a67052be204feeca293a4be130f02b))
+
 # [1.1.0](https://github.com/santychuycom/santychuy.com/compare/v1.0.0...v1.1.0) (2024-02-21)
 
 
