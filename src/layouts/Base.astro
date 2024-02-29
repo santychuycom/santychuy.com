@@ -59,7 +59,12 @@ const { title, description, url, noIndex } = Astro.props;
     <ViewTransitions />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <meta property="og:title" content={title} />
+    <meta
+      property="og:title"
+      content={title
+        ? `${title} - Santiago Carrasco (Santychuy)`
+        : 'Santiago Carrasco (Santychuy)'}
+    />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={url} />
@@ -72,7 +77,12 @@ const { title, description, url, noIndex } = Astro.props;
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@santychuy" />
     <meta name="twitter:creator" content="@santychuy" />
-    <meta name="twitter:title" content={title} />
+    <meta
+      name="twitter:title"
+      content={title
+        ? `${title} - Santiago Carrasco (Santychuy)`
+        : 'Santiago Carrasco (Santychuy)'}
+    />
     <meta name="twitter:description" content={description} />
     <meta
       name="twitter:image"
