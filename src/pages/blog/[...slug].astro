@@ -25,7 +25,7 @@ const { Content } = await entry.render();
   image={imageURL}
   url={cannonicalURL}
 >
-  <BlogContent post={entry.data}>
+  <BlogContent post={entry.data} slug={entry.slug}>
     <Content />
   </BlogContent>
 </BlogLayout>
