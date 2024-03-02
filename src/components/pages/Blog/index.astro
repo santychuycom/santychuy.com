@@ -4,9 +4,25 @@ import type { Post } from '@schemas/post';
 
 interface Props {
   post: Post;
+  slug: string;
 }
 
-const { post } = Astro.props;
+const { post, slug } = Astro.props;
+
+const res = await fetch(
+  `https://plausible.io/api/v1/stats/aggregate?site_id=${import.meta.env.PLAUSIBLE_SITE_ID}&date=2024-01-01,9999-01-01&filters=event:page%3D%3D%2Fblog%2F${slug}%2F&period=custom`,
+  {
+    headers: {
+      Authorization: `Bearer ${import.meta.env.PLAUSIBLE_TOKEN}`,
+    },
+  }
+);
+
+const data = await res.json();
+const views = data.results?.visitors.value;
+
+console.log(views);
+
 const title = post.title;
 const pubDate = post.pubDate;
 ---
@@ -15,7 +31,7 @@ const pubDate = post.pubDate;
   <img src={post.image} alt={post.image} class="blog-img" />
 
   <div class="content">
-    <aside class="share-content">
+    <aside class="aside-blog share-content">
       <svg
         width="30"
         height="30"
@@ -74,7 +90,27 @@ const pubDate = post.pubDate;
       <slot />
     </div>
 
-    <span class="share-content"></span>
+    <span class="aside-blog views-content">
+      <svg
+        width="35"
+        height="35"
+        viewBox="0 0 35 35"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M17.5 21.875C19.9162 21.875 21.875 19.9162 21.875 17.5C21.875 15.0838 19.9162 13.125 17.5 13.125C15.0838 13.125 13.125 15.0838 13.125 17.5C13.125 19.9162 15.0838 21.875 17.5 21.875Z"
+          fill="white"
+        >
+        </path>
+        <path
+          d="M33.8406 17.1281C32.5542 13.8006 30.3209 10.9229 27.4168 8.85072C24.5127 6.77858 21.0651 5.60281 17.5 5.46875C13.935 5.60281 10.4873 6.77858 7.58321 8.85072C4.6791 10.9229 2.44582 13.8006 1.1594 17.1281C1.07252 17.3684 1.07252 17.6316 1.1594 17.8719C2.44582 21.1994 4.6791 24.0771 7.58321 26.1493C10.4873 28.2214 13.935 29.3972 17.5 29.5312C21.0651 29.3972 24.5127 28.2214 27.4168 26.1493C30.3209 24.0771 32.5542 21.1994 33.8406 17.8719C33.9275 17.6316 33.9275 17.3684 33.8406 17.1281ZM17.5 24.6094C16.0939 24.6094 14.7194 24.1924 13.5503 23.4112C12.3811 22.63 11.4699 21.5197 10.9318 20.2206C10.3937 18.9216 10.2529 17.4921 10.5273 16.113C10.8016 14.7339 11.4787 13.4672 12.4729 12.4729C13.4672 11.4786 14.734 10.8015 16.1131 10.5272C17.4921 10.2529 18.9216 10.3937 20.2207 10.9318C21.5197 11.4699 22.6301 12.3811 23.4113 13.5502C24.1924 14.7194 24.6094 16.0939 24.6094 17.5C24.6065 19.3846 23.8566 21.1913 22.5239 22.5239C21.1913 23.8565 19.3847 24.6065 17.5 24.6094Z"
+          fill="white"
+        >
+        </path>
+      </svg>
+      <span class="views">{views || 0}</span>
+    </span>
   </div>
 </>
 
@@ -100,23 +136,26 @@ const pubDate = post.pubDate;
     }
   }
 
-  .share-content {
+  .aside-blog {
     display: none;
+    background-color: var(--primary---green--10--alpha);
+    align-items: center;
     position: sticky;
     top: 100px;
     flex-direction: column;
-    min-width: 100px;
-    min-height: 240px;
+    width: 100px;
     height: fit-content;
-    gap: 36px;
     border-radius: 12px;
     padding-block: 38px;
-    padding-inline: 32px;
-    background-color: var(--primary---green--10--alpha);
 
     @media screen and (min-width: 68.75rem) {
       display: flex;
     }
+  }
+
+  .share-content {
+    gap: 36px;
+    padding-inline: 32px;
 
     svg {
       transition: fill 0.2s ease-in-out;
@@ -125,6 +164,15 @@ const pubDate = post.pubDate;
     svg:hover {
       cursor: pointer;
       fill: var(--primary---green--6);
+    }
+  }
+
+  .views-content {
+    gap: 14px;
+    padding-inline: 8px;
+
+    span {
+      font-family: 'Satoshi Medium';
     }
   }
 
