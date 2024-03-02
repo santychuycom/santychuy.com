@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/santychuycom/santychuy.com/compare/v1.3.0...v1.3.1) (2024-03-02)
+
+
+### Bug Fixes
+
+* remove slash code for plausible ([0db02a5](https://github.com/santychuycom/santychuy.com/commit/0db02a5cb7397527b002535468a486f314e08bc3))
+
 # [1.3.0](https://github.com/santychuycom/santychuy.com/compare/v1.2.0...v1.3.0) (2024-03-02)
 
 
