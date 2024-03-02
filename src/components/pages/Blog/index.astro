@@ -10,7 +10,7 @@ interface Props {
 const { post, slug } = Astro.props;
 
 const res = await fetch(
-  `https://plausible.io/api/v1/stats/aggregate?site_id=${import.meta.env.PLAUSIBLE_SITE_ID}&date=2024-01-01,9999-01-01&filters=event:page%3D%3D%2Fblog%2F${slug}%2F&period=custom`,
+  `https://plausible.io/api/v1/stats/aggregate?site_id=${import.meta.env.PLAUSIBLE_SITE_ID}&date=2024-01-01,9999-01-01&filters=event:page%3D%3D%2Fblog%2F${slug}&period=custom`,
   {
     headers: {
       Authorization: `Bearer ${import.meta.env.PLAUSIBLE_TOKEN}`,
