@@ -15,7 +15,10 @@
       "@semantic-release/git",
       {
         "assets": [
-          "dist/**/*.{js,css,html}",
+          [
+            "dist/**/*.{js,css,html}",
+            "!dist/blog/**/*.html"
+          ],
           "docs",
           "package.json"
         ],
