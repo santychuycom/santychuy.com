@@ -71,9 +71,7 @@
     {
       "title": "Blog",
       "path": "[[workspace]]/src/content/posts",
-      "contentTypes": [
-        "posts"
-      ],
+      "contentTypes": ["posts"],
       "filePrefix": null
     }
   ],
@@ -81,9 +79,5 @@
     "path": "public",
     "relative": false
   },
-  "frontMatter.content.supportedFileTypes": [
-    "md",
-    "mdx",
-    "markdown"
-  ]
+  "frontMatter.content.supportedFileTypes": ["md", "mdx", "markdown"]
 }
