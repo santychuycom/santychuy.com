@@ -24,7 +24,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: PLAUSIBLE_SITE_ID=${{ secrets.PLAUSIBLE_SITE_ID }} PLAUSIBLE_TOKEN=${{ secrets.PLAUSIBLE_TOKEN_DEV }} npm run build
+        run: npm run build
 
         # Replace this with using the CLI of Wrangler directly
       - name: Publish to Cloudlfare Pages
