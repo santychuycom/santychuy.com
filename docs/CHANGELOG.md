@@ -1,3 +1,19 @@
+# [1.3.0](https://github.com/santychuycom/santychuy.com/compare/v1.2.0...v1.3.0) (2024-03-02)
+
+
+### Bug Fixes
+
+* add slash code to fetch data of blog ([9a3a9b0](https://github.com/santychuycom/santychuy.com/commit/9a3a9b09316e379c7a5ffad27024c60db3f28446))
+* declare optional to property ([6e3b778](https://github.com/santychuycom/santychuy.com/commit/6e3b778f121bc22d73346c559cd002e1fdb4cb87))
+* make optional results object ([cd2a531](https://github.com/santychuycom/santychuy.com/commit/cd2a531065f245c0ad1812daec4408f7f8dd375c))
+* test load env variable ([bf1d11a](https://github.com/santychuycom/santychuy.com/commit/bf1d11a158ce9c435d782c4a90b362b4919e18ce))
+
+
+### Features
+
+* add basic analytics and show views for each blog post ([5b760c1](https://github.com/santychuycom/santychuy.com/commit/5b760c1cfb39f997e32d961b00b268bf2dddb4f8))
+* get content of each post via SSR ([4600641](https://github.com/santychuycom/santychuy.com/commit/46006414ad6173e8c9326965ce83481394433163))
+
 # [1.2.0](https://github.com/santychuycom/santychuy.com/compare/v1.1.0...v1.2.0) (2024-02-29)
 
 
