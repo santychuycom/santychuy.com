@@ -7,4 +7,7 @@ export default defineConfig({
   output: 'hybrid',
   adapter: cloudflare(),
   site: 'https://santychuy.com',
+  prefetch: {
+    defaultStrategy: 'tap',
+  },
 });
