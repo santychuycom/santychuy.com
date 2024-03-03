@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/santychuycom/santychuy.com/compare/v1.3.1...v1.3.2) (2024-03-03)
+
+
+### Performance Improvements
+
+* change prefetch strategy to all anchor tags ([cf0e726](https://github.com/santychuycom/santychuy.com/commit/cf0e726f715ace025c4b49fa0a967b60fc1b43f3))
+
 ## [1.3.1](https://github.com/santychuycom/santychuy.com/compare/v1.3.0...v1.3.1) (2024-03-02)
 
 
