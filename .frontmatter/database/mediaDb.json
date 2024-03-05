@@ -1,1 +1,9 @@
-{ "public": { "imgs": {}, "uploads": { "diagramcontentflow.png": {} } } }
+{
+  "public": {
+    "imgs": {},
+    "uploads": {
+      "diagramcontentflow.png": {},
+      "burnout.webp": { "title": "", "caption": "", "alt": "Burnout" }
+    }
+  }
+}
