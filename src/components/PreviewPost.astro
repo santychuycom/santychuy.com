@@ -14,7 +14,7 @@ const { title, date, description, topics, slug } = Astro.props;
 
 <article class="post">
   <h2>{title}</h2>
-  <p class="date"></p>
+  <p class="date" id={`#${title}`}></p>
 
   <p class="description">
     {description}
@@ -98,7 +98,7 @@ const { title, date, description, topics, slug } = Astro.props;
   }
 </style>
 
-<script define:vars={{ date }}>
+<script define:vars={{ date, title }}>
   const pubDate = new Date(date);
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -109,7 +109,7 @@ const { title, date, description, topics, slug } = Astro.props;
     timeZone: tz,
   });
 
-  const dateElement = document.querySelector('.date');
+  const dateElement = document.getElementById(`#${title}`);
 
   dateElement.textContent = `${formattedDate}`;
 </script>
