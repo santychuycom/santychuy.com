@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/santychuycom/santychuy.com/compare/v1.3.3...v1.4.0) (2024-03-08)
+
+
+### Features
+
+* add outbound link track and custom event track for analytics ([af61b7a](https://github.com/santychuycom/santychuy.com/commit/af61b7a6fe0c42530aa6c96b5926a6b9bafe1a4e))
+
 ## [1.3.3](https://github.com/santychuycom/santychuy.com/compare/v1.3.2...v1.3.3) (2024-03-05)
 
 
