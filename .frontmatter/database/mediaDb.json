@@ -1,1 +1,10 @@
-{"public":{"imgs":{},"uploads":{"diagramcontentflow.png":{},"burnout.webp":{"title":"","caption":"","alt":"Burnout"}}},"docs":{"images":{}}}
+{
+  "public": {
+    "imgs": {},
+    "uploads": {
+      "diagramcontentflow.png": {},
+      "burnout.webp": { "title": "", "caption": "", "alt": "Burnout" }
+    }
+  },
+  "docs": { "images": {} }
+}
