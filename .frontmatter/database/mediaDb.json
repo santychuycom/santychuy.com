@@ -6,5 +6,6 @@
       "burnout.webp": { "title": "", "caption": "", "alt": "Burnout" }
     }
   },
-  "docs": { "images": {} }
+  "docs": { "images": {} },
+  "src": { "assets": { "icons": {} }, "components": { "icons": {} } }
 }
