@@ -73,13 +73,12 @@ import Textarea from '@components/common/inputs/Textarea.astro';
     border-radius: 8px;
     padding-block: 10px;
     padding-inline: 20px;
-    /* TODO: Add this color shadows to the vars colors */
-    box-shadow: 0 4px 35px 0 #466148;
+    box-shadow: var(--main---box--shadow);
     transition: all 100ms ease-in;
 
     &:hover {
       background-color: var(--primary---green--8);
-      box-shadow: 0 4px 50px 0 #80a183;
+      box-shadow: var(--main---box--shadow--hover);
     }
 
     @media screen and (min-width: 34.375rem) {
