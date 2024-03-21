@@ -1,11 +1,9 @@
 ---
-import { Image } from 'astro:assets';
-
-import Camera from '@assets/icons/camera.svg';
-import Notebook from '@assets/icons/notebook.svg';
-import Monitor from '@assets/icons/monitor.svg';
-import Idea from '@assets/icons/idea.svg';
-import Mail from '@assets/icons/mail.svg';
+import Camera from '@components/icons/camera.astro';
+import Notebook from '@components/icons/notebook.astro';
+import Monitor from '@components/icons/monitor.astro';
+import Idea from '@components/icons/idea.astro';
+import Mail from '@components/icons/mail.astro';
 ---
 
 <section class="container">
@@ -23,19 +21,11 @@ import Mail from '@assets/icons/mail.svg';
     </a>
   </div>
   <div class="illustration-container">
-    <Image
-      src={Notebook}
-      alt="Notebook Illustration"
-      class="illustration notebook"
-    />
-    <Image src={Camera} alt="Camera Illustration" class="illustration camera" />
-    <Image
-      src={Monitor}
-      alt="Monitor Illustration"
-      class="illustration monitor"
-    />
-    <Image src={Idea} alt="Idea Illustration" class="illustration idea" />
-    <Image src={Mail} alt="Mail Illustration" class="illustration mail" />
+    <Notebook class="illustration notebook" />
+    <Camera class="illustration camera" />
+    <Monitor class="illustration monitor" />
+    <Idea class="illustration idea" />
+    <Mail class="illustration mail" />
   </div>
 </section>
 
@@ -92,13 +82,12 @@ import Mail from '@assets/icons/mail.svg';
       border-radius: 8px;
       padding-block: 10px;
       padding-inline: 20px;
-      /* TODO: Add this color shadows to the vars colors */
-      box-shadow: 0 4px 35px 0 #466148;
+      box-shadow: var(--main---box--shadow);
       transition: all 100ms ease-in;
 
       &:hover {
         background-color: var(--primary---green--8);
-        box-shadow: 0 4px 50px 0 #80a183;
+        box-shadow: var(--main---box--shadow--hover);
       }
     }
   }

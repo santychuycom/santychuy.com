@@ -1,10 +1,1 @@
-{
-  "public": {
-    "imgs": {},
-    "uploads": {
-      "diagramcontentflow.png": {},
-      "burnout.webp": { "title": "", "caption": "", "alt": "Burnout" }
-    }
-  },
-  "docs": { "images": {} }
-}
+{"public":{"imgs":{},"uploads":{"diagramcontentflow.png":{},"burnout.webp":{"title":"","caption":"","alt":"Burnout"},"astro-plausible.webp":{"title":"Start Web Analytics with Plausible & Astro","caption":"","alt":"Image showing title of the blog post and with the Plausible and Astro logo"},"astro-plausible-home-component.png":{"title":"","caption":"","alt":"Astro home page component code"}}},"docs":{"images":{}},"src":{"assets":{"icons":{}},"components":{"icons":{}}}}

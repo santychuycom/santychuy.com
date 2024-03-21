@@ -9,7 +9,7 @@
       "@layouts/*": ["layouts/*"],
       "@schemas/*": ["schemas/*"],
       "@styles/*": ["styles/*"],
-      "@types/*": ["types/*"]
+      "@ts/*": ["types/*"]
     }
   }
 }
