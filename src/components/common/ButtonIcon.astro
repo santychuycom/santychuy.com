@@ -1,0 +1,83 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'button'> {
+  variant: 'filled' | 'outlined';
+}
+
+const { variant, ...attrs } = Astro.props;
+---
+
+<astro-button-icon>
+  <button {...attrs} class:list={[attrs.class, variant]} data-button>
+    <slot />
+  </button>
+</astro-button-icon>
+
+<style>
+  astro-button-icon {
+    display: flex;
+  }
+
+  button {
+    cursor: pointer;
+    border: none;
+    transition: transform 100ms linear;
+    padding-block: 0.6rem;
+    padding-inline: 0.8rem;
+  }
+
+  button:active:is(:not(:disabled)) {
+    transform: scale(0.95);
+  }
+
+  /* TODO: Add better style for a11y */
+  button:focus {
+    outline: none;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  .filled {
+    border-radius: 8px;
+    background-color: var(--neutrals---black--1);
+
+    &:disabled {
+      background-color: var(--neutrals---black--8);
+    }
+  }
+
+  .outlined {
+    background-color: transparent;
+
+    svg {
+      fill: var(--neutrals---black--1);
+    }
+
+    &:disabled {
+      svg {
+        fill: var(--neutrals---black--8);
+      }
+    }
+  }
+</style>
+
+<script>
+  class AstroButtonIcon extends HTMLElement {
+    constructor() {
+      super();
+
+      const buttonIcon = this.querySelector('button');
+
+      buttonIcon.addEventListener('click', () => {
+        console.log(
+          'Button clicked but will need a UI Framework to pass functions'
+        );
+      });
+    }
+  }
+
+  customElements.define('astro-button-icon', AstroButtonIcon);
+</script>

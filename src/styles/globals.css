@@ -1,25 +1,12 @@
 @font-face {
-  font-family: 'Satoshi Regular';
-  src: url('/fonts/Satoshi-Regular.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
+  font-family: 'Satoshi';
+  src:
+    url('/fonts/Satoshi-Variable.woff2') format('woff2'),
+    url('/fonts/Satoshi-Variable.woff') format('woff'),
+    url('/fonts/Satoshi-Variable.ttf') format('truetype');
+  font-weight: 300 900;
   font-display: swap;
-}
-
-@font-face {
-  font-family: 'Satoshi Medium';
-  src: url('/fonts/Satoshi-Medium.woff2') format('woff2');
-  font-weight: 500;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Satoshi Bold';
-  src: url('/fonts/Satoshi-Bold.woff2') format('woff2');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
 }
 
 html {
@@ -30,7 +17,7 @@ body {
   display: flex;
   flex-direction: column;
   color: var(--neutrals---black--1);
-  font-family: 'Satoshi Regular', 'Helvetica', sans-serif;
+  font-family: 'Satoshi', 'Helvetica', sans-serif;
   font-size: clamp(1rem, 0.946rem + 0.2981vw, 1.3rem);
   background-color: #040715;
 }
@@ -41,19 +28,10 @@ main {
   padding-inline: 1rem;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Satoshi Bold';
-}
-
 a {
   color: var(--neutrals---black--1);
   text-decoration: none;
-  font-family: 'Satoshi Bold';
+  font-weight: 500;
   transition: 0.2s;
 
   &:hover {

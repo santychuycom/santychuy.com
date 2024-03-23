@@ -1,6 +1,6 @@
 ---
 import InputText from '@components/common/inputs/InputText.astro';
-import Button from '@components/common/Button.astro';
+import ButtonIcon from '@components/common/ButtonIcon.astro';
 import SendIcon from '@components/icons/send.astro';
 ---
 
@@ -17,9 +17,9 @@ import SendIcon from '@components/icons/send.astro';
       class="input"
       disabled
     />
-    <Button disabled>
+    <ButtonIcon disabled variant="outlined">
       <SendIcon />
-    </Button>
+    </ButtonIcon>
   </form>
 </div>
 
@@ -47,8 +47,6 @@ import SendIcon from '@components/icons/send.astro';
     }
 
     b {
-      /* TODO: Fix this to not declare a font family, instead declare the weight */
-      font-family: 'Satoshi Bold';
       text-decoration: underline;
     }
   }
