@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/santychuycom/santychuy.com/compare/v1.4.0...v1.4.1) (2024-03-23)
+
+
+### Performance Improvements
+
+* load preload only one font variable ([9da4e6f](https://github.com/santychuycom/santychuy.com/commit/9da4e6fe5bb73e90ca0b66ed132904d91f6f6a2e))
+
 # [1.4.0](https://github.com/santychuycom/santychuy.com/compare/v1.3.3...v1.4.0) (2024-03-08)
 
 
