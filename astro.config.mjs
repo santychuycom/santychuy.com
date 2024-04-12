@@ -10,4 +10,11 @@ export default defineConfig({
   prefetch: {
     defaultStrategy: 'tap',
   },
+  experimental: {
+    security: {
+      csrfProtection: {
+        origin: true,
+      },
+    },
+  },
 });
