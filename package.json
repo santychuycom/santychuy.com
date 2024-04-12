@@ -16,11 +16,11 @@
   "author": "Santiago Carrasco <hello@santychuy.com>",
   "license": "LGPL-3.0-only",
   "dependencies": {
-    "@astrojs/cloudflare": "9.0.0",
+    "@astrojs/cloudflare": "10.1.0",
     "@astrojs/rss": "4.0.5",
-    "astro": "4.3.2",
-    "markdown-it": "14.0.0",
-    "sanitize-html": "2.11.0"
+    "astro": "4.6.1",
+    "markdown-it": "14.1.0",
+    "sanitize-html": "2.13.0"
   },
   "devDependencies": {
     "@semantic-release/changelog": "6.0.3",
