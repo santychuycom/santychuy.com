@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 
 import { data } from '@content/projects/projects.json';
+import Badge from '@components/Badge.astro';
 import ArrowUpRight from '@components/icons/arrow-up-right.astro';
 ---
 
@@ -14,22 +15,27 @@ import ArrowUpRight from '@components/icons/arrow-up-right.astro';
   </p>
   <div class="projects-container">
     {
-      data.map(({ params: { slug }, props: { name, categories, iconImg } }) => (
-        <a href={`/about/projects/${slug}`} class="project-container">
-          <Image
-            src={iconImg}
-            alt={`${name} Logo`}
-            width={20}
-            height={20}
-            class="company-logo"
-          />
-          <div class="job-info-container">
-            <h3>{name}</h3>
-            <p>{categories.join(', ')}</p>
-          </div>
-          <ArrowUpRight class="read-arrow" />
-        </a>
-      ))
+      data.map(
+        ({ params: { slug }, props: { name, categories, iconImg, type } }) => (
+          <a href={`/about/projects/${slug}`} class="project-container">
+            <Image
+              src={iconImg}
+              alt={`${name} Logo`}
+              width={20}
+              height={20}
+              class="company-logo"
+            />
+            <div class="job-info-container">
+              <div class="job-info-top-container">
+                <h3 class="title">{name}</h3>
+                <Badge title={type} className="badge" />
+              </div>
+              <p>{categories.join(', ')}</p>
+            </div>
+            <ArrowUpRight class="read-arrow" />
+          </a>
+        )
+      )
     }
   </div>
 </section>
@@ -93,6 +99,21 @@ import ArrowUpRight from '@components/icons/arrow-up-right.astro';
     object-fit: cover;
     flex-shrink: 0;
     outline: 8px solid rgba(7, 15, 23, 0.7);
+  }
+
+  .job-info-top-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+
+    @media screen and (min-width: 34.375rem) {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .badge {
+      font-size: 0.8rem;
+    }
   }
 
   .job-info-container {
