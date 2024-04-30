@@ -6,6 +6,7 @@
       },
       "props": {
         "name": "GBM",
+        "type": "Full-Time",
         "description": "Worked on the area of prevention of money laundry with the creation of a new platform to visualize and review data for the users to see if it’s any suspicious information they received; planning and making proposals of design and technologies to use.",
         "link": "https://www.gbm.com.mx/",
         "img": "https://i.ytimg.com/vi/eDQ42Ci7vMs/maxresdefault.jpg",
@@ -19,6 +20,7 @@
       },
       "props": {
         "name": "FAW Truck Mexico",
+        "type": "Part-Time",
         "description": "Worked on an internal solution for the employees to manage the information of each truck that enters for maintenance or any service, using AWS to store images and data and Typescript and React for the frontend.",
         "link": "https://www.fawtrucksmexico.com/",
         "img": "https://grupostep.com.mx/wp-content/uploads/2023/08/qs-2b-ags-07.jpg",
@@ -30,6 +32,7 @@
       "params": { "slug": "magnumai" },
       "props": {
         "name": "Magnum.ai",
+        "type": "Part-Time",
         "description": "Magnum.AI was a NFT project based on the Solana Blockchain to bring technological value to the holders, working to build new functionalities as the art-upgrader and staking. My main responsibility is to build all the UI, connect and interact with the programs (smart contract) using React and libraries like solana web3.js to build the Magnum.AI ecosystem.",
         "link": "https://www.magnumai.io/",
         "img": "https://www.magnumai.io/poster.a6abb4f4.png",
@@ -41,6 +44,7 @@
       "params": { "slug": "zebrands" },
       "props": {
         "name": "Zebrands",
+        "type": "Full-Time",
         "description": "First worked on a cleaning mattress service, threw the web app builded with Typescript and React, and a mobile app to track the services built with also Typescript and React Native. Then I worked in the first phases to build a fintech, leading the frontend app with Typescript, React and Next.js",
         "link": "https://zebrands.mx/",
         "img": "https://s3.amazonaws.com/businessinsider.mx/wp-content/uploads/2021/08/20175749/luuna-01-1.jpg",
@@ -52,6 +56,7 @@
       "params": { "slug": "lapzo" },
       "props": {
         "name": "Lapzo",
+        "type": "Full-Time",
         "description": "I have the responsibility of building new features for the platform, such as designing an onboarding process for new customers. Additionally, I am skilled in migrating code from Javascript to Typescript, enhancing the codebase for improved performance and maintainability.",
         "link": "https://lapzo.com/",
         "img": "https://assets-global.website-files.com/62bbfb429eaf728cd08009f8/65aec88d2e536148dcc22e06_lapzo.png",
