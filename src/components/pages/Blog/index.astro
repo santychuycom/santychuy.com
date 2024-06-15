@@ -1,12 +1,12 @@
 ---
 export const prerender = false;
 
+import type { Post } from '@schemas/post';
 import Badge from '@components/Badge.astro';
 import ViewsIcon from '@components/icons/views.astro';
 import XIcon from '@components/icons/x.astro';
 import FacebookIcon from '@components/icons/facebook.astro';
 import CopyLinkIcon from '@components/icons/link.astro';
-import type { Post } from '@schemas/post';
 
 interface Props {
   post: Post;
