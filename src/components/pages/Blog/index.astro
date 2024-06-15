@@ -17,8 +17,7 @@ const { post, slug } = Astro.props;
 
 const runtime = Astro.locals.runtime;
 
-// FIXME: The env variables are not being replaced in the build and deploy process
-// Maybe a fix: https://docs.astro.build/en/guides/integrations-guide/cloudflare/#cloudflare-runtime
+// https://docs.astro.build/en/guides/integrations-guide/cloudflare/#cloudflare-runtime
 const res = await fetch(
   `https://plausible.io/api/v1/stats/aggregate?site_id=${import.meta.env.PROD ? runtime.env.PLAUSIBLE_SITE_ID : import.meta.env.PLAUSIBLE_SITE_ID}&date=2024-01-01,9999-01-01&filters=event:page%3D%3D%2Fblog%2F${slug}&period=custom&metrics=visitors,pageviews`,
   {
