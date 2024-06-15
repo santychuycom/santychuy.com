@@ -1,10 +1,12 @@
 ---
+export const prerender = false;
+
+import type { Post } from '@schemas/post';
 import Badge from '@components/Badge.astro';
 import ViewsIcon from '@components/icons/views.astro';
 import XIcon from '@components/icons/x.astro';
 import FacebookIcon from '@components/icons/facebook.astro';
 import CopyLinkIcon from '@components/icons/link.astro';
-import type { Post } from '@schemas/post';
 
 interface Props {
   post: Post;
@@ -13,11 +15,14 @@ interface Props {
 
 const { post, slug } = Astro.props;
 
+const runtime = Astro.locals.runtime;
+
+// https://docs.astro.build/en/guides/integrations-guide/cloudflare/#cloudflare-runtime
 const res = await fetch(
-  `https://plausible.io/api/v1/stats/aggregate?site_id=${import.meta.env.PLAUSIBLE_SITE_ID}&date=2024-01-01,9999-01-01&filters=event:page%3D%3D%2Fblog%2F${slug}&period=custom&metrics=visitors,pageviews`,
+  `https://plausible.io/api/v1/stats/aggregate?site_id=${import.meta.env.PROD ? runtime.env.PLAUSIBLE_SITE_ID : import.meta.env.PLAUSIBLE_SITE_ID}&date=2024-01-01,9999-01-01&filters=event:page%3D%3D%2Fblog%2F${slug}&period=custom&metrics=visitors,pageviews`,
   {
     headers: {
-      Authorization: `Bearer ${import.meta.env.PLAUSIBLE_TOKEN}`,
+      Authorization: `Bearer ${import.meta.env.PROD ? runtime.env.PLAUSIBLE_TOKEN : import.meta.env.PLAUSIBLE_TOKEN}`,
     },
   }
 );
