@@ -9,6 +9,7 @@ import { ViewTransitions } from 'astro:transitions';
 import Background from '@components/Background.astro';
 import Header from '@components/layout/Header.astro';
 import Footer from '@components/layout/Footer.astro';
+import Contact from '@components/layout/Contact.astro';
 
 interface Props {
   title?: string;
@@ -86,6 +87,7 @@ const { title, description, url, noIndex } = Astro.props;
     <main>
       <slot />
     </main>
+    <Contact />
     <Footer />
     <Background />
     <style>
