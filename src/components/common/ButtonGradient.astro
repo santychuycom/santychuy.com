@@ -1,0 +1,72 @@
+---
+import ArrowDown from '@components/icons/arrow-down.astro';
+
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<button>
+  <span class="gradient"></span>
+  <span class="content">
+    {label}
+    <ArrowDown class="icon-arrow" />
+  </span>
+</button>
+
+<style>
+  button {
+    position: relative;
+    display: inline-flex;
+    overflow: hidden;
+    margin-block-start: 40px;
+    border-radius: 2rem;
+    padding-inline: 2px;
+    padding-block: 2px;
+    border: none;
+    transition: box-shadow 0.3s ease-in-out;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      box-shadow: 0 0 4px 3px #9cd89f;
+    }
+
+    &:hover .icon-arrow {
+      animation: bounce 0.5s ease-in-out;
+    }
+  }
+
+  .gradient {
+    position: absolute;
+    inset: -1000%;
+    animation: spin 2s linear infinite;
+    background-image: conic-gradient(
+      from 90deg at 50% 50%,
+      #1a2e84 0%,
+      #9cd89f 50%,
+      #1a2e84 100%
+    );
+  }
+
+  .content {
+    display: inline-flex;
+    gap: 0.45rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 2rem;
+    padding-inline: 1rem;
+    padding-block: 0.5rem;
+    font-weight: bold;
+    color: white;
+    background-color: black;
+    backdrop-filter: blur(64px);
+  }
+</style>
