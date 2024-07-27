@@ -30,7 +30,8 @@
       },
       "rules": {
         "astro/no-conflict-set-directives": "error",
-        "astro/no-unused-define-vars-in-style": "error"
+        "astro/no-unused-define-vars-in-style": "error",
+        "jsx-a11y/label-has-associated-control": "off"
       }
     }
   ],
