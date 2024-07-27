@@ -1,0 +1,81 @@
+---
+import { data as experience } from '@content/work/experience.json';
+import { data as projects } from '@content/work/projects.json';
+import { data as exampleProjects } from '@content/work/example-projects.json';
+
+import ProjectDetail from './ProjectDetail.astro';
+---
+
+<Fragment>
+  <div class:list={['projects-container']} id="experience">
+    {
+      experience.map(
+        ({ params: { slug }, props: { name, categories, iconImg, type } }) => (
+          <ProjectDetail
+            slug={slug}
+            name={name}
+            categories={categories}
+            iconImg={iconImg}
+            type={type}
+          />
+        )
+      )
+    }
+  </div>
+  <div class:list={['projects-container']} id="projects">
+    {
+      projects.map(
+        ({ params: { slug }, props: { name, categories, iconImg, type } }) => (
+          <ProjectDetail
+            slug={slug}
+            name={name}
+            categories={categories}
+            iconImg={iconImg}
+            type={type}
+          />
+        )
+      )
+    }
+  </div>
+  <div class:list={['projects-container']} id="example-projects">
+    {
+      exampleProjects.map(
+        ({ params: { slug }, props: { name, categories, iconImg, type } }) => (
+          <ProjectDetail
+            slug={slug}
+            name={name}
+            categories={categories}
+            iconImg={iconImg}
+            type={type}
+          />
+        )
+      )
+    }
+  </div>
+</Fragment>
+
+<script>
+  import { activeTab } from '../../../../stores/tabs';
+
+  activeTab.subscribe((tab) => {
+    console.log(tab);
+  });
+</script>
+
+<style>
+  .projects-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    background-color: var(--primary---green--10--alpha);
+    padding-block: 60px;
+    padding-inline: 2rem;
+    margin-block-start: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .projects-container-inactive {
+    display: none;
+  }
+</style>

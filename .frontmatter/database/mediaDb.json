@@ -17,5 +17,8 @@
     }
   },
   "docs": { "images": {} },
-  "src": { "assets": { "icons": {} }, "components": { "icons": {} } }
+  "src": {
+    "assets": { "icons": {} },
+    "components": { "icons": {}, "common": { "tabs": {} } }
+  }
 }
