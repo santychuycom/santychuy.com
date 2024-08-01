@@ -1,0 +1,95 @@
+---
+import { Image } from 'astro:assets';
+
+import Badge from '@components/Badge.astro';
+import ArrowUpRight from '@components/icons/arrow-up-right.astro';
+
+interface Props {
+  slug: string;
+  name: string;
+  categories: string[];
+  iconImg: string;
+  type: string;
+}
+
+const { slug, categories, iconImg, name, type } = Astro.props;
+---
+
+<a href={`/about/projects/${slug}`} class="project-container">
+  <Image
+    src={iconImg}
+    alt={`${name} Logo`}
+    width={20}
+    height={20}
+    class="company-logo"
+  />
+  <div class="job-info-container">
+    <div class="job-info-top-container">
+      <h3 class="title">{name}</h3>
+      <Badge title={type} className="badge" />
+    </div>
+    <p>{categories.join(', ')}</p>
+  </div>
+  <ArrowUpRight class="read-arrow" />
+</a>
+
+<style>
+  .project-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 1rem;
+    background-color: var(--primary---green--10--alpha--2);
+    width: 100%;
+    max-width: 605px;
+    border-radius: 12px;
+    padding-block: 1rem;
+    padding-inline: 1rem;
+
+    &:hover .read-arrow {
+      transform: translateY(4px);
+    }
+
+    @media screen and (min-width: 34.375rem) {
+      gap: 28px;
+      padding-inline: 2rem;
+    }
+  }
+
+  .company-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    outline: 8px solid rgba(7, 15, 23, 0.7);
+  }
+
+  .job-info-top-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+
+    @media screen and (min-width: 34.375rem) {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .badge {
+      font-size: 0.8rem;
+    }
+  }
+
+  .job-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-inline-end: auto;
+  }
+
+  .read-arrow {
+    rotate: 225deg;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+</style>

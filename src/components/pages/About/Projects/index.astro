@@ -1,0 +1,34 @@
+---
+import Lists from './Lists.astro';
+---
+
+<section class="container">
+  <h2 class="subtitle-section">
+    Past Job Experiences, Freelance Work, and Example Projects
+  </h2>
+  <p class="description-section">
+    Explore a comprehensive list of my past job experiences, freelance work, and
+    example projects. Get insights into my career journey.
+  </p>
+  <Lists />
+</section>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    margin-inline: auto;
+    max-width: 840px;
+  }
+
+  .subtitle-section {
+    color: var(--primary---green--6);
+  }
+
+  .description-section {
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    margin-block-start: 2rem;
+    margin-block-end: 3rem;
+    font-weight: 500;
+  }
+</style>

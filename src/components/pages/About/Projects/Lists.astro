@@ -1,0 +1,41 @@
+---
+import { data } from '@content/work/all.json';
+
+import ProjectDetail from './ProjectDetail.astro';
+---
+
+<Fragment>
+  <div class:list={['projects-container']} id="experience">
+    {
+      data.map(
+        ({ params: { slug }, props: { name, categories, iconImg, type } }) => (
+          <ProjectDetail
+            slug={slug}
+            name={name}
+            categories={categories}
+            iconImg={iconImg}
+            type={type}
+          />
+        )
+      )
+    }
+  </div>
+</Fragment>
+
+<style>
+  .projects-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    background-color: var(--primary---green--10--alpha);
+    padding-block: 60px;
+    padding-inline: 2rem;
+    margin-block-start: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .projects-container-inactive {
+    display: none;
+  }
+</style>

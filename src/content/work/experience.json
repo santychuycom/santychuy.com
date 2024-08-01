@@ -1,0 +1,42 @@
+{
+  "data": [
+    {
+      "params": {
+        "slug": "gbm"
+      },
+      "props": {
+        "name": "GBM",
+        "type": "Full-Time",
+        "description": "Worked on the area of prevention of money laundry with the creation of a new platform to visualize and review data for the users to see if it’s any suspicious information they received; planning and making proposals of design and technologies to use.",
+        "link": "https://www.gbm.com.mx/",
+        "img": "https://i.ytimg.com/vi/eDQ42Ci7vMs/maxresdefault.jpg",
+        "iconImg": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Gbm%2B_logo.png",
+        "categories": ["Frontend", "UI/UX Design"]
+      }
+    },
+    {
+      "params": { "slug": "zebrands" },
+      "props": {
+        "name": "Zebrands",
+        "type": "Full-Time",
+        "description": "First worked on a cleaning mattress service, threw the web app builded with Typescript and React, and a mobile app to track the services built with also Typescript and React Native. Then I worked in the first phases to build a fintech, leading the frontend app with Typescript, React and Next.js",
+        "link": "https://zebrands.mx/",
+        "img": "https://s3.amazonaws.com/businessinsider.mx/wp-content/uploads/2021/08/20175749/luuna-01-1.jpg",
+        "iconImg": "https://zebrands.mx/wp-content/uploads/2021/07/zebrands.jpg",
+        "categories": ["Frontend", "Mobile Development"]
+      }
+    },
+    {
+      "params": { "slug": "lapzo" },
+      "props": {
+        "name": "Lapzo",
+        "type": "Full-Time",
+        "description": "I have the responsibility of building new features for the platform, such as designing an onboarding process for new customers. Additionally, I am skilled in migrating code from Javascript to Typescript, enhancing the codebase for improved performance and maintainability.",
+        "link": "https://lapzo.com/",
+        "img": "https://assets-global.website-files.com/62bbfb429eaf728cd08009f8/65aec88d2e536148dcc22e06_lapzo.png",
+        "iconImg": "data:image/png;base64,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",
+        "categories": ["Frontend", "Mobile Development"]
+      }
+    }
+  ]
+}
