@@ -1,3 +1,16 @@
+# [1.5.0](https://github.com/santychuycom/santychuy.com/compare/v1.4.1...v1.5.0) (2024-08-01)
+
+
+### Bug Fixes
+
+* change path correctly for slugs ([ef18f0a](https://github.com/santychuycom/santychuy.com/commit/ef18f0a05408b64e2d66728b62e0c173756337eb))
+
+
+### Features
+
+* add nanostores to handle reactivity ([7e084cd](https://github.com/santychuycom/santychuy.com/commit/7e084cd1220f2d8b779e9493ddcbfc03c6313866))
+* add tab component ([4b1d938](https://github.com/santychuycom/santychuy.com/commit/4b1d93857c172109725a3a23dce07b715ee9456f))
+
 ## [1.4.1](https://github.com/santychuycom/santychuy.com/compare/v1.4.0...v1.4.1) (2024-03-23)
 
 
