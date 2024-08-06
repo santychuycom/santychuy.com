@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/santychuycom/santychuy.com/compare/v1.5.0...v1.5.1) (2024-08-06)
+
+
+### Bug Fixes
+
+* **styles:** add space between section for mobile versions ([e6c6d1e](https://github.com/santychuycom/santychuy.com/commit/e6c6d1eb9bcf275cb0cdbb54a10ae1fc0da6cd34))
+
 # [1.5.0](https://github.com/santychuycom/santychuy.com/compare/v1.4.1...v1.5.0) (2024-08-01)
 
 
