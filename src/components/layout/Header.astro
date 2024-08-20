@@ -1,5 +1,5 @@
 ---
-// import X from '@components/icons/x.astro';
+import X from '@components/icons/x.astro';
 import Github from '@components/icons/github.astro';
 import Linkedin from '@components/icons/linkedin.astro';
 import SantychuyLogo from '@components/icons/santychuyISO.astro';
@@ -12,14 +12,14 @@ import SantychuyLogo from '@components/icons/santychuyISO.astro';
 
   <a href="/about" title="About Page">About</a>
   <span></span>
-  <!-- <a
+  <a
     href="https://x.com/santychuy_dev"
     target="_blank"
     rel="noopener"
     title="X (Twitter) Profile"
   >
-    <X class="x-logo" />
-  </a> -->
+    <X class="x-icon" />
+  </a>
   <a
     href="https://github.com/santychuy"
     target="_blank"
@@ -88,6 +88,11 @@ import SantychuyLogo from '@components/icons/santychuyISO.astro';
       width: 32px;
       height: 32px;
     }
+  }
+
+  .x-icon {
+    width: 28px;
+    height: 28px;
   }
 
   span {
