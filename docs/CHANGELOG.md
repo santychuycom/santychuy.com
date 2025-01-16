@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/santychuycom/santychuy.com/compare/v1.5.1...v1.5.2) (2025-01-16)
+
+
+### Bug Fixes
+
+* **style:** add more height to not show subtitle in mobile ([f6d0d3d](https://github.com/santychuycom/santychuy.com/commit/f6d0d3d16d70c4a12edec6d734401e510234c0c9))
+
 ## [1.5.1](https://github.com/santychuycom/santychuy.com/compare/v1.5.0...v1.5.1) (2024-08-06)
 
 
