@@ -18,17 +18,35 @@ const { post, slug } = Astro.props;
 const runtime = Astro.locals.runtime;
 
 // https://docs.astro.build/en/guides/integrations-guide/cloudflare/#cloudflare-runtime
-const res = await fetch(
-  `https://plausible.io/api/v1/stats/aggregate?site_id=${import.meta.env.PROD ? runtime.env.PLAUSIBLE_SITE_ID : import.meta.env.PLAUSIBLE_SITE_ID}&date=2024-01-01,9999-01-01&filters=event:page%3D%3D%2Fblog%2F${slug}&period=custom&metrics=visitors,pageviews`,
-  {
-    headers: {
-      Authorization: `Bearer ${import.meta.env.PROD ? runtime.env.PLAUSIBLE_TOKEN : import.meta.env.PLAUSIBLE_TOKEN}`,
-    },
-  }
-);
+let views = 0;
 
-const data = await res.json();
-const views = data.results?.pageviews.value;
+try {
+  const res = await fetch(
+    `https://umami.santychuy.com/api/websites/${import.meta.env.UMAMI_WEBSITE_ID}/pageviews?startAt=1750885650&endAt=${Date.now()}&unit=hour&timezone=America/Los_Angeles&url=/blog/${slug}`,
+    {
+      headers: {
+        Authorization: `Bearer ${import.meta.env.PROD ? runtime.env.UMAMI_AUTH_TOKEN : import.meta.env.UMAMI_AUTH_TOKEN}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    console.error('Umami API error:', res.status, res.statusText);
+  } else {
+    const data = await res.json();
+
+    // Check if data has the expected structure
+    if (
+      data?.pageviews &&
+      Array.isArray(data.pageviews) &&
+      data.pageviews.length > 0
+    ) {
+      views = data.pageviews[0].y ?? 0;
+    }
+  }
+} catch (error) {
+  console.error('Error fetching Umami pageviews:', error);
+}
 
 const title = post.title;
 const pubDate = post.pubDate;
@@ -67,7 +85,7 @@ const pubDate = post.pubDate;
 
     <span class="aside-blog views-content">
       <ViewsIcon />
-      <span class="views">{views || 0}</span>
+      <span class="views">{views}</span>
     </span>
   </div>
 </>

@@ -5,8 +5,8 @@
 type Runtime = import('@astrojs/cloudflare').Runtime<Env>;
 
 interface ImportMetaEnv {
-  readonly PLAUSIBLE_TOKEN: string;
-  readonly PLAUSIBLE_SITE_ID: string;
+  readonly UMAMI_AUTH_TOKEN: string;
+  readonly UMAMI_WEBSITE_ID: string;
 }
 
 interface ImportMeta {
