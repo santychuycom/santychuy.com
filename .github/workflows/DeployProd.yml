@@ -27,7 +27,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: PLAUSIBLE_SITE_ID=${{ secrets.PLAUSIBLE_SITE_ID }} PLAUSIBLE_TOKEN=${{ secrets.PLAUSIBLE_TOKEN }} npm run build
+        run: UMAMI_AUTH_TOKEN=${{ secrets.UMAMI_AUTH_TOKEN}} UMAMI_WEBSITE_ID=${{ secrets.UMAMI_WEBSITE_ID }} npm run build
 
       - name: Publish to Cloudlfare Pages
         uses: cloudflare/pages-action@v1
@@ -38,6 +38,7 @@ jobs:
           directory: dist
           branch: main
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          wranglerVersion: '3'
 
   version:
     runs-on: ubuntu-latest
