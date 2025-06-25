@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/santychuycom/santychuy.com/compare/v1.5.2...v1.6.0) (2025-06-25)
+
+
+### Features
+
+* migrate analytics from Plausible to Umami and add YouTube social link ([883e340](https://github.com/santychuycom/santychuy.com/commit/883e3406702c0c4b30a8d2b63c6e65077f6745e7))
+
 ## [1.5.2](https://github.com/santychuycom/santychuy.com/compare/v1.5.1...v1.5.2) (2025-01-16)
 
 
