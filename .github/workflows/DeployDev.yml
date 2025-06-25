@@ -24,7 +24,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: UMAMI_AUTH_TOKEN=${{ secrets.UMAMI_AUTH_TOKEN}} UMAMI_WEBSITE_ID=${{ secrets.UMAMI_WEBSITE_ID }} npm run build
+        run: UMAMI_AUTH_TOKEN=${{ secrets.UMAMI_AUTH_TOKEN }} UMAMI_WEBSITE_ID=${{ secrets.UMAMI_WEBSITE_ID }} npm run build
 
         # Replace this with using the CLI of Wrangler directly
       - name: Publish to Cloudlfare Pages
