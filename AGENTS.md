@@ -24,14 +24,14 @@ biome check --write .  # Auto-fix lint + format
 
 ## Project Context
 
-For detailed context on specific areas, see:
+CRITICAL: When you encounter a file reference below, use your Read tool to load it on a need-to-know basis. They are relevant to SPECIFIC tasks at hand. Do NOT preemptively load all references.
 
-- Project vision and v2 roadmap @.context/project-overview.md
-- Technology stack details @.context/tech-stack.md
-- Deployment pipeline @.context/deployment.md
-- Blog content workflow @.context/content-workflow.md
-- Brand and design system @.context/design-system.md
-- Internationalization strategy @.context/i18n-strategy.md
-- SEO requirements @.context/seo.md
-- CLI tools available @.context/cli-tools.md
-- Subagent patterns @.context/subagents.md
+- Project vision and v2 roadmap: @.context/project-overview.md
+- Technology stack details: @.context/tech-stack.md
+- Deployment pipeline: @.context/deployment.md
+- Blog content workflow: @.context/content-workflow.md
+- Brand and design system: @.context/design-system.md
+- Internationalization strategy: @.context/i18n-strategy.md
+- SEO requirements: @.context/seo.md
+- CLI tools available: @.context/cli-tools.md
+- Subagent patterns: @.context/subagents.md
