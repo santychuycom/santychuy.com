@@ -18,9 +18,11 @@
   "dependencies": {
     "@astrojs/cloudflare": "10.1.0",
     "@astrojs/rss": "4.0.5",
+    "@ramtinj95/opencode-tokenscope": "^1.5.1",
     "astro": "4.6.1",
     "markdown-it": "14.1.0",
     "nanostores": "0.10.3",
+    "opencode-lmstudio": "^0.3.0",
     "sanitize-html": "2.13.0"
   },
   "devDependencies": {
