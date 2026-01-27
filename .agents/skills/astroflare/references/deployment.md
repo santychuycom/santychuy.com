@@ -15,6 +15,7 @@
 ## Integrations
 
 ### Required Integrations
+
 - `@astrojs/cloudflare` - Cloudflare Workers adapter (required)
 - `@astrojs/sitemap` - Sitemap generation
 - `astro-robots` - Robots.txt generation
@@ -22,11 +23,13 @@
 - `astro-seo` - SEO meta tags helper
 
 ### Optional Integrations
+
 - `@astrojs/react` - Only if React is absolutely necessary (avoid if possible)
 - `astro-expressive-code` - Code block syntax highlighting
 - `astro-embed` - Embed components for external content
 
 ### Configuration
+
 - Implement proper configuration in `astro.config.mjs`
 - Pay attention to TypeScript strict mode configuration
 - Use compatibility flags like `nodejs_compat` in wrangler.jsonc
@@ -41,6 +44,7 @@
 ## Code Formatting and Linting
 
 ### Prettier and ESLint
+
 - Config: `printWidth: 120`, `singleQuote: true`, `jsxSingleQuote: true`
 - Run `pnpm format` to format code
 - Run `pnpm format:check` to check code formatting
@@ -48,6 +52,7 @@
 - Run `pnpm fix` to fix both linting and formatting issues
 
 ### TypeScript
+
 - Use `astro/tsconfigs/strict` as base
 - Enable strict mode with unused locals/parameters checks
 - Use proper type definitions for all functions
@@ -55,17 +60,20 @@
 ## Performance Optimization
 
 ### View Transitions
+
 - Use Astro's View Transitions API with `<ClientRouter fallback='none' />` in layouts unless rejected
 - Create custom loading spinners using `<dialog>` elements
 - Listen to `astro:before-preparation`, `astro:after-swap`, and `astro:page-load` events
 - Use `is:inline` scripts for view transition handlers to avoid hydration overhead
 
 ### Server Islands (Minimal Use)
+
 - Use `server:defer` directive only for non-critical server-side rendering
 - Minimize server-side work by deferring where possible
 - **Avoid client islands** - use web components instead for interactivity
 
 ### Asset Optimization
+
 - Use Astro's built-in asset optimization
 - Configure `inlineStylesheets: 'auto'` in build config
 - Use `compressHTML: true` for smaller HTML output
@@ -90,12 +98,14 @@
 ## Debugging and Development
 
 ### Local Development
+
 - Use `pnpm dev` for development server
 - View on `http://localhost:4321`
 - Use browser DevTools for debugging
 - Check Cloudflare Workers logs via `wrangler tail`
 
 ### When Site Output Changes
+
 - **NEVER assume the issue is in the output HTML**
 - Check: environment variables (`.dev.vars`, `wrangler.jsonc`)
 - Check: configuration files (`astro.config.mjs`, `wrangler.jsonc`)

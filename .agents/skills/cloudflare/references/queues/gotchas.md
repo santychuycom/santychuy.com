@@ -7,7 +7,10 @@ At-least-once delivery means duplicates possible. Design consumers to handle dup
 ```typescript
 // ✅ GOOD: Track processed messages
 const processed = await env.PROCESSED_KV.get(msg.id);
-if (processed) { msg.ack(); continue; }
+if (processed) {
+  msg.ack();
+  continue;
+}
 await processMessage(msg.body);
 await env.PROCESSED_KV.put(msg.id, '1', { expirationTtl: 86400 });
 msg.ack();
@@ -50,7 +53,8 @@ async queue(batch: MessageBatch): Promise<void> {
 Default: 30s per consumer invocation. Increase if needed:
 
 ```jsonc
-{ "limits": { "cpu_ms": 300000 } } // 5 minutes
+{ "limits": { "cpu_ms": 300000 } }
+ // 5 minutes
 ```
 
 ## Cost Optimization
@@ -88,17 +92,17 @@ wrangler tail my-worker
 
 ## Limits
 
-| Limit | Value |
-|-------|-------|
-| Max queues | 10,000 |
-| Message size | 128 KB |
-| Batch size (consumer) | 100 messages |
-| Batch size (sendBatch) | 100 msgs/256 KB |
-| Throughput | 5,000 msgs/sec/queue |
-| Retention | 4-14 days |
-| Max backlog | 25 GB |
-| Max delay | 12 hours (43,200s) |
-| Max retries | 100 |
+| Limit                  | Value                |
+| ---------------------- | -------------------- |
+| Max queues             | 10,000               |
+| Message size           | 128 KB               |
+| Batch size (consumer)  | 100 messages         |
+| Batch size (sendBatch) | 100 msgs/256 KB      |
+| Throughput             | 5,000 msgs/sec/queue |
+| Retention              | 4-14 days            |
+| Max backlog            | 25 GB                |
+| Max delay              | 12 hours (43,200s)   |
+| Max retries            | 100                  |
 
 ## Best Practices
 

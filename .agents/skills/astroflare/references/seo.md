@@ -5,17 +5,20 @@
 Implement a complete SEO structure in your base layout following this pattern.
 
 ### Basic Meta Tags
+
 - `<meta charset="UTF-8" />`
 - `<meta name="viewport" content="width=device-width, initial-scale=1.0" />`
 - `<meta name="generator" content={Astro.generator} />`
 - `<link rel="alternate" hreflang="en" href={canonicalURL} />`
 
 ### Site Configuration
+
 - Create `src/config.ts` with individual constants
 - Use `site_url()` function to get fully qualified domain URL
 - Do not include description, author, or email in config - these should be page-specific
 
 ### SEO Component (astro-seo)
+
 - Use `astro-seo` package for Open Graph and Twitter Card tags
 - Configure `title`, `description`, `canonical` URL
 - Set Open Graph `type` to `'article'` for blog posts, `'website'` for pages
@@ -25,12 +28,14 @@ Implement a complete SEO structure in your base layout following this pattern.
 ### Schema.org Structured Data
 
 **For Personal Sites:**
+
 - Use `@graph` array with `Person` and `WebSite` types
 - Include `@id` references for linking entities
 - Add `sameAs` array for social media links
 - Include `knowsAbout` array for topics/expertise
 
 **For Business/Local Business:**
+
 - Use multiple types: `["Organization", "LocalBusiness", "ProfessionalService"]`
 - Include complete `PostalAddress` with all fields
 - Add `areaServed` array for service areas (cities, regions)
@@ -41,6 +46,7 @@ Implement a complete SEO structure in your base layout following this pattern.
 ### Additional SEO Meta Tags
 
 **For Local Businesses:**
+
 - `<meta name="author" content="Author Name" />`
 - `<meta name="keywords" content="comma, separated, keywords" />`
 - `<meta name="geo.region" content="REGION" />`
@@ -49,29 +55,35 @@ Implement a complete SEO structure in your base layout following this pattern.
 - `<meta name="ICBM" content="lat, lng" />`
 
 **Robots Control:**
+
 - Use `noindex` prop in layout to control indexing: `{noindex && <meta name="robots" content="noindex, nofollow" />}`
 
 ### Favicons and Manifest
+
 - Multiple favicon sizes: `.ico`, `32x32.png`, `16x16.png`, `svg`
 - Apple touch icon: `180x180.png`
 - Web manifest: `site.webmanifest`
 - Apple mobile web app title: `<meta name="apple-mobile-web-app-title" />`
 
 ### Performance Hints
+
 - DNS prefetch for external resources: `<link rel="dns-prefetch" href="//domain.com" />`
 - Preload critical fonts: `<link rel="preload" as="font" type="font/woff2" href={fontUrl} crossorigin="anonymous" />`
 
 ### Theme and Color Scheme
+
 - Theme color: `<meta name="theme-color" content="#color" />`
 - Color scheme: `<meta name="color-scheme" content="dark light" />`
 
 ### Sitemap and Robots
+
 - Configure robots.txt via `astro-robots` integration
 - Generate sitemap via `@astrojs/sitemap` integration
 - Link sitemap in head: `<link rel="sitemap" href="/sitemap-index.xml" />`
 - Disallow `/_actions/` and admin routes in robots.txt
 
 ### SEO Checklist
+
 - [ ] Basic meta tags (charset, viewport, generator, hreflang)
 - [ ] Canonical URLs on all pages
 - [ ] Open Graph tags for social sharing

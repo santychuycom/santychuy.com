@@ -53,7 +53,9 @@ type User = { id: number; name: string };
 const user = this.sql.exec<User>('SELECT id FROM users WHERE id = ?', id).one(); // Only has { id }!
 
 // ✅ Query must match type
-const user = this.sql.exec<User>('SELECT id, name FROM users WHERE id = ?', id).one();
+const user = this.sql
+  .exec<User>('SELECT id, name FROM users WHERE id = ?', id)
+  .one();
 ```
 
 ## Alarm Persistence

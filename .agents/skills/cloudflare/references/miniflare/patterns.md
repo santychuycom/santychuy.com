@@ -3,33 +3,33 @@
 ## Basic Test Setup (node:test)
 
 ```js
-import assert from "node:assert";
-import test, { after, before } from "node:test";
-import { Miniflare } from "miniflare";
+import assert from 'node:assert';
+import test, { after, before } from 'node:test';
+import { Miniflare } from 'miniflare';
 
 let mf;
 
 before(async () => {
   mf = new Miniflare({
     modules: true,
-    scriptPath: "src/index.js",
-    kvNamespaces: ["TEST_KV"],
-    bindings: { API_KEY: "test-key" },
+    scriptPath: 'src/index.js',
+    kvNamespaces: ['TEST_KV'],
+    bindings: { API_KEY: 'test-key' },
   });
   await mf.ready;
 });
 
-test("fetch returns hello", async () => {
-  const res = await mf.dispatchFetch("http://localhost/");
-  assert.strictEqual(await res.text(), "Hello World");
+test('fetch returns hello', async () => {
+  const res = await mf.dispatchFetch('http://localhost/');
+  assert.strictEqual(await res.text(), 'Hello World');
 });
 
-test("kv operations", async () => {
-  const kv = await mf.getKVNamespace("TEST_KV");
-  await kv.put("key", "value");
-  
-  const res = await mf.dispatchFetch("http://localhost/kv");
-  assert.strictEqual(await res.text(), "value");
+test('kv operations', async () => {
+  const kv = await mf.getKVNamespace('TEST_KV');
+  await kv.put('key', 'value');
+
+  const res = await mf.dispatchFetch('http://localhost/kv');
+  assert.strictEqual(await res.text(), 'value');
 });
 
 after(async () => {
@@ -40,30 +40,30 @@ after(async () => {
 ## Build Before Tests
 
 ```js
-import { spawnSync } from "node:child_process";
+import { spawnSync } from 'node:child_process';
 
 before(() => {
-  spawnSync("npx wrangler build", { shell: true, stdio: "pipe" });
+  spawnSync('npx wrangler build', { shell: true, stdio: 'pipe' });
 });
 ```
 
 ## Testing Durable Objects
 
 ```js
-test("durable object state", async () => {
-  const ns = await mf.getDurableObjectNamespace("COUNTER");
-  const id = ns.idFromName("test-counter");
+test('durable object state', async () => {
+  const ns = await mf.getDurableObjectNamespace('COUNTER');
+  const id = ns.idFromName('test-counter');
   const stub = ns.get(id);
-  
-  const res1 = await stub.fetch("http://localhost/increment");
-  assert.strictEqual(await res1.text(), "1");
-  
-  const res2 = await stub.fetch("http://localhost/increment");
-  assert.strictEqual(await res2.text(), "2");
-  
+
+  const res1 = await stub.fetch('http://localhost/increment');
+  assert.strictEqual(await res1.text(), '1');
+
+  const res2 = await stub.fetch('http://localhost/increment');
+  assert.strictEqual(await res2.text(), '2');
+
   // Direct storage access
   const storage = await mf.getDurableObjectStorage(id);
-  const count = await storage.get("count");
+  const count = await storage.get('count');
   assert.strictEqual(count, 2);
 });
 ```
@@ -71,18 +71,18 @@ test("durable object state", async () => {
 ## Testing Queue Handlers
 
 ```js
-test("queue message processing", async () => {
+test('queue message processing', async () => {
   const worker = await mf.getWorker();
-  
-  const result = await worker.queue("my-queue", [
-    { id: "msg1", timestamp: new Date(), body: { userId: 123 }, attempts: 1 },
+
+  const result = await worker.queue('my-queue', [
+    { id: 'msg1', timestamp: new Date(), body: { userId: 123 }, attempts: 1 },
   ]);
-  
-  assert.strictEqual(result.outcome, "ok");
-  
+
+  assert.strictEqual(result.outcome, 'ok');
+
   // Verify side effects
-  const kv = await mf.getKVNamespace("QUEUE_LOG");
-  const log = await kv.get("msg1");
+  const kv = await mf.getKVNamespace('QUEUE_LOG');
+  const log = await kv.get('msg1');
   assert.ok(log);
 });
 ```
@@ -90,37 +90,37 @@ test("queue message processing", async () => {
 ## Testing Scheduled Events
 
 ```js
-test("scheduled cron handler", async () => {
+test('scheduled cron handler', async () => {
   const worker = await mf.getWorker();
-  
+
   const result = await worker.scheduled({
-    scheduledTime: new Date("2024-01-01T00:00:00Z"),
-    cron: "0 0 * * *",
+    scheduledTime: new Date('2024-01-01T00:00:00Z'),
+    cron: '0 0 * * *',
   });
-  
-  assert.strictEqual(result.outcome, "ok");
+
+  assert.strictEqual(result.outcome, 'ok');
 });
 ```
 
 ## Isolated Test Data
 
 ```js
-describe("user tests", () => {
+describe('user tests', () => {
   let mf;
-  
+
   beforeEach(async () => {
     mf = new Miniflare({
-      scriptPath: "worker.js",
-      kvNamespaces: ["USERS"],
+      scriptPath: 'worker.js',
+      kvNamespaces: ['USERS'],
       // In-memory: no persist
     });
   });
-  
+
   afterEach(async () => {
     await mf.dispose();
   });
-  
-  test("create user", async () => {
+
+  test('create user', async () => {
     // Fresh KV per test
   });
 });
@@ -132,12 +132,12 @@ describe("user tests", () => {
 new Miniflare({
   workers: [
     {
-      name: "main",
-      serviceBindings: { EXTERNAL_API: "mock-api" },
+      name: 'main',
+      serviceBindings: { EXTERNAL_API: 'mock-api' },
       script: `/* main worker */`,
     },
     {
-      name: "mock-api",
+      name: 'mock-api',
       script: `
         addEventListener("fetch", (event) => {
           event.respondWith(Response.json({ mocked: true }));
@@ -152,10 +152,10 @@ new Miniflare({
 
 ```js
 new Miniflare({
-  kvPersist: "./data",
+  kvPersist: './data',
   workers: [
-    { name: "writer", kvNamespaces: { DATA: "shared" }, script: `...` },
-    { name: "reader", kvNamespaces: { DATA: "shared" }, script: `...` },
+    { name: 'writer', kvNamespaces: { DATA: 'shared' }, script: `...` },
+    { name: 'reader', kvNamespaces: { DATA: 'shared' }, script: `...` },
   ],
 });
 ```
@@ -166,9 +166,9 @@ new Miniflare({
 // test-utils.js
 export async function createTestWorker(overrides = {}) {
   const mf = new Miniflare({
-    scriptPath: "dist/worker.js",
-    kvNamespaces: ["TEST_KV"],
-    bindings: { ENVIRONMENT: "test", ...overrides.bindings },
+    scriptPath: 'dist/worker.js',
+    kvNamespaces: ['TEST_KV'],
+    bindings: { ENVIRONMENT: 'test', ...overrides.bindings },
     ...overrides,
   });
   await mf.ready;
@@ -176,10 +176,10 @@ export async function createTestWorker(overrides = {}) {
 }
 
 // test.js
-test("my test", async () => {
-  const mf = await createTestWorker({ bindings: { CUSTOM: "value" } });
+test('my test', async () => {
+  const mf = await createTestWorker({ bindings: { CUSTOM: 'value' } });
   try {
-    const res = await mf.dispatchFetch("http://localhost/");
+    const res = await mf.dispatchFetch('http://localhost/');
     assert.ok(res.ok);
   } finally {
     await mf.dispose();
@@ -190,15 +190,15 @@ test("my test", async () => {
 ## Error Handling Tests
 
 ```js
-test("handles 404", async () => {
-  const res = await mf.dispatchFetch("http://localhost/not-found");
+test('handles 404', async () => {
+  const res = await mf.dispatchFetch('http://localhost/not-found');
   assert.strictEqual(res.status, 404);
 });
 
-test("handles invalid input", async () => {
-  const res = await mf.dispatchFetch("http://localhost/api", {
-    method: "POST",
-    body: "invalid json",
+test('handles invalid input', async () => {
+  const res = await mf.dispatchFetch('http://localhost/api', {
+    method: 'POST',
+    body: 'invalid json',
   });
   assert.strictEqual(res.status, 400);
 });

@@ -3,18 +3,20 @@
 ## Workers Binding
 
 **wrangler.jsonc:**
+
 ```jsonc
 {
   "r2_buckets": [
     {
       "binding": "MY_BUCKET",
-      "bucket_name": "my-bucket-name"
-    }
-  ]
+      "bucket_name": "my-bucket-name",
+    },
+  ],
 }
 ```
 
 **wrangler.toml:**
+
 ```toml
 [[r2_buckets]]
 binding = 'MY_BUCKET'
@@ -24,14 +26,16 @@ bucket_name = 'my-bucket-name'
 ## TypeScript Types
 
 ```typescript
-interface Env { MY_BUCKET: R2Bucket; }
+interface Env {
+  MY_BUCKET: R2Bucket;
+}
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const object = await env.MY_BUCKET.get('file.txt');
     return new Response(object?.body);
-  }
-}
+  },
+};
 ```
 
 ## S3 SDK Setup
@@ -44,16 +48,18 @@ const s3 = new S3Client({
   endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
   credentials: {
     accessKeyId: env.R2_ACCESS_KEY_ID,
-    secretAccessKey: env.R2_SECRET_ACCESS_KEY
-  }
+    secretAccessKey: env.R2_SECRET_ACCESS_KEY,
+  },
 });
 
-await s3.send(new PutObjectCommand({
-  Bucket: 'my-bucket',
-  Key: 'file.txt',
-  Body: data,
-  StorageClass: 'STANDARD' // or 'STANDARD_IA'
-}));
+await s3.send(
+  new PutObjectCommand({
+    Bucket: 'my-bucket',
+    Key: 'file.txt',
+    Body: data,
+    StorageClass: 'STANDARD', // or 'STANDARD_IA'
+  })
+);
 ```
 
 ## Location Hints

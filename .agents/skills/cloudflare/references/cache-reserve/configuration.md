@@ -12,6 +12,7 @@ https://dash.cloudflare.com/caching/cache-reserve
 ```
 
 **Prerequisites:**
+
 - Paid Cache Reserve plan required
 - Tiered Cache strongly recommended (Cache Reserve checks for this)
 
@@ -25,10 +26,10 @@ const enableCacheReserve = async (zoneId: string, apiToken: string) => {
     {
       method: 'PATCH',
       headers: {
-        'Authorization': `Bearer ${apiToken}`,
+        Authorization: `Bearer ${apiToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ value: 'on' })
+      body: JSON.stringify({ value: 'on' }),
     }
   );
   return await response.json();
@@ -40,7 +41,7 @@ const getCacheReserveStatus = async (zoneId: string, apiToken: string) => {
     `https://api.cloudflare.com/client/v4/zones/${zoneId}/cache/cache_reserve`,
     {
       method: 'GET',
-      headers: { 'Authorization': `Bearer ${apiToken}` }
+      headers: { Authorization: `Bearer ${apiToken}` },
     }
   );
   return await response.json();
@@ -65,24 +66,25 @@ const staticAssetRule = {
   action_parameters: {
     cache_reserve: {
       eligible: true,
-      minimum_file_ttl: 86400 // 24 hours
+      minimum_file_ttl: 86400, // 24 hours
     },
     edge_ttl: {
       mode: 'override_origin',
-      default: 86400
+      default: 86400,
     },
-    cache: true
+    cache: true,
   },
-  expression: '(http.request.uri.path matches "\\.(jpg|jpeg|png|gif|webp|pdf|zip)$")'
+  expression:
+    '(http.request.uri.path matches "\\.(jpg|jpeg|png|gif|webp|pdf|zip)$")',
 };
 
 // Disable Cache Reserve for frequently updated content
 const dynamicContentRule = {
   action: 'set_cache_settings',
   action_parameters: {
-    cache_reserve: { eligible: false }
+    cache_reserve: { eligible: false },
   },
-  expression: '(http.request.uri.path matches "^/api/")'
+  expression: '(http.request.uri.path matches "^/api/")',
 };
 
 // Cache Reserve for specific origin with minimum 12-hour TTL
@@ -91,12 +93,12 @@ const specificOriginRule = {
   action_parameters: {
     cache_reserve: {
       eligible: true,
-      minimum_file_ttl: 43200 // 12 hours
+      minimum_file_ttl: 43200, // 12 hours
     },
     edge_ttl: { mode: 'override_origin', default: 43200 },
-    cache: true
+    cache: true,
   },
-  expression: '(http.host eq "cdn.example.com")'
+  expression: '(http.host eq "cdn.example.com")',
 };
 ```
 
@@ -113,10 +115,10 @@ const createCacheRule = async (
     {
       method: 'PUT',
       headers: {
-        'Authorization': `Bearer ${apiToken}`,
+        Authorization: `Bearer ${apiToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ rules: [rule] })
+      body: JSON.stringify({ rules: [rule] }),
     }
   );
   return await response.json();
@@ -133,11 +135,9 @@ Cache Reserve works automatically with Workers deployed via Wrangler. No special
   "name": "cache-reserve-worker",
   "main": "src/index.ts",
   "compatibility_date": "2025-01-11", // Use current date for new projects
-  
+
   // Cache Reserve works automatically with standard routes
-  "routes": [
-    { "pattern": "example.com/*", "zone_name": "example.com" }
-  ]
+  "routes": [{ "pattern": "example.com/*", "zone_name": "example.com" }],
   // No special Cache Reserve configuration needed
   // Enable via Dashboard or API
 }

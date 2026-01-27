@@ -11,12 +11,12 @@ await env.MY_BUCKET.put(key, value, {
   httpMetadata: {
     contentType: 'image/jpeg',
     contentDisposition: 'attachment; filename="photo.jpg"',
-    cacheControl: 'max-age=3600'
+    cacheControl: 'max-age=3600',
   },
   customMetadata: { userId: '123', version: '2' },
   storageClass: 'Standard', // or 'InfrequentAccess'
   sha256: arrayBufferOrHex, // Integrity check
-  ssecKey: arrayBuffer32bytes // SSE-C encryption
+  ssecKey: arrayBuffer32bytes, // SSE-C encryption
 });
 
 // Value types: ReadableStream | ArrayBuffer | string | Blob
@@ -36,12 +36,12 @@ const stream = object.body; // ReadableStream
 
 // Ranged reads
 const object = await env.MY_BUCKET.get(key, {
-  range: { offset: 0, length: 1024 }
+  range: { offset: 0, length: 1024 },
 });
 
 // Conditional GET
 const object = await env.MY_BUCKET.get(key, {
-  onlyIf: { etagMatches: '"abc123"' }
+  onlyIf: { etagMatches: '"abc123"' },
 });
 ```
 
@@ -67,7 +67,7 @@ const listed = await env.MY_BUCKET.list({
   prefix: 'photos/',
   cursor: cursorFromPrevious,
   delimiter: '/',
-  include: ['httpMetadata', 'customMetadata']
+  include: ['httpMetadata', 'customMetadata'],
 });
 
 // Pagination (always use truncated flag)
@@ -83,7 +83,7 @@ while (listed.truncated) {
 
 ```typescript
 const multipart = await env.MY_BUCKET.createMultipartUpload(key, {
-  httpMetadata: { contentType: 'video/mp4' }
+  httpMetadata: { contentType: 'video/mp4' },
 });
 
 const uploadedParts: R2UploadedPart[] = [];

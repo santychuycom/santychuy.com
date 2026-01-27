@@ -18,7 +18,7 @@ export const myAction = defineAction({
     // Access env via context.locals.runtime.env
     // Handle form logic
     // Return { success: true } or throw error
-  }
+  },
 });
 ```
 

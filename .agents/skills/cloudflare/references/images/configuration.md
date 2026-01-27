@@ -13,21 +13,21 @@ import fetch from 'node-fetch';
 async function uploadImage(filePath: string) {
   const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
   const apiToken = process.env.CLOUDFLARE_API_TOKEN;
-  
+
   const formData = new FormData();
   formData.append('file', fs.createReadStream(filePath));
-  
+
   const response = await fetch(
     `https://api.cloudflare.com/client/v4/accounts/${accountId}/images/v1`,
     {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiToken}`,
+        Authorization: `Bearer ${apiToken}`,
       },
       body: formData,
     }
   );
-  
+
   const result = await response.json();
   console.log('Uploaded:', result);
 }
@@ -43,3 +43,4 @@ Store account hash as an environment variable:
 # wrangler.toml
 [vars]
 IMAGES_ACCOUNT
+```

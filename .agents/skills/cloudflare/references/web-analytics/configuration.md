@@ -5,6 +5,7 @@
 For sites already on Cloudflare's proxy:
 
 1. **Dashboard setup:**
+
    - Navigate to Web Analytics in Cloudflare dashboard
    - Click "Add a site"
    - Select hostname from dropdown → "Done"
@@ -29,3 +30,4 @@ For non-proxied sites (limit: 10 sites):
 
 ```html
 <!-- Cloudflar
+```

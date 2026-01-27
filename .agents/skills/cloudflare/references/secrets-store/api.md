@@ -14,11 +14,11 @@ interface Env {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const apiKey = await env.API_KEY.get();
-    return fetch("https://api.example.com", {
-      headers: { "Authorization": `Bearer ${apiKey}` }
+    return fetch('https://api.example.com', {
+      headers: { Authorization: `Bearer ${apiKey}` },
     });
-  }
-}
+  },
+};
 ```
 
 ### Multiple Secrets
@@ -26,7 +26,7 @@ export default {
 ```typescript
 const [stripeKey, sendgridKey] = await Promise.all([
   env.STRIPE_KEY.get(),
-  env.SENDGRID_KEY.get()
+  env.SENDGRID_KEY.get(),
 ]);
 ```
 
@@ -43,11 +43,11 @@ const CACHED_KEY = await env.API_KEY.get(); // Fails
 export default {
   async fetch(request: Request, env: Env) {
     const key = await env.API_KEY.get(); // OK - reuse in request
-    const r1 = await fetchWithAuth(key, "/ep1");
-    const r2 = await fetchWithAuth(key, "/ep2");
+    const r1 = await fetchWithAuth(key, '/ep1');
+    const r2 = await fetchWithAuth(key, '/ep2');
     return Response.json({ r1, r2 });
-  }
-}
+  },
+};
 ```
 
 ## REST API
@@ -122,6 +122,7 @@ GET /accounts/{account_id}/secrets_store/quota
 ### Responses
 
 Success:
+
 ```json
 {
   "success": true,
@@ -135,10 +136,11 @@ Success:
 ```
 
 Error:
+
 ```json
 {
   "success": false,
-  "errors": [{"code": 10000, "message": "Name exists"}]
+  "errors": [{ "code": 10000, "message": "Name exists" }]
 }
 ```
 

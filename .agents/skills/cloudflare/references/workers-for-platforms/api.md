@@ -11,17 +11,19 @@ curl -X PUT \
 ```
 
 ### TypeScript SDK
+
 ```typescript
-import Cloudflare from "cloudflare";
+import Cloudflare from 'cloudflare';
 
 const client = new Cloudflare({ apiToken: process.env.API_TOKEN });
 
 const scriptFile = new File([scriptContent], `${scriptName}.mjs`, {
-  type: "application/javascript+module",
+  type: 'application/javascript+module',
 });
 
 await client.workersForPlatforms.dispatch.namespaces.scripts.update(
-  namespace, scriptName,
+  namespace,
+  scriptName,
   {
     account_id: accountId,
     metadata: { main_module: `${scriptName}.mjs` },
@@ -31,6 +33,7 @@ await client.workersForPlatforms.dispatch.namespaces.scripts.update(
 ```
 
 ## Deploy with Bindings
+
 ```bash
 curl -X PUT ".../scripts/$SCRIPT_NAME" \
   -F 'metadata={
@@ -63,6 +66,7 @@ curl -X DELETE ".../scripts?tags=customer-123%3Ayes" -H "Authorization: Bearer $
 **3-step process:** Create session → Upload files → Deploy Worker
 
 ### 1. Create Upload Session
+
 ```bash
 curl -X POST ".../scripts/$SCRIPT_NAME/assets-upload-session" \
   -H "Authorization: Bearer $API_TOKEN" \
@@ -77,6 +81,7 @@ curl -X POST ".../scripts/$SCRIPT_NAME/assets-upload-session" \
 **Hash:** First 16 bytes (32 hex chars) of SHA-256
 
 ### 2. Upload Files
+
 ```bash
 curl -X POST ".../workers/assets/upload?base64=true" \
   -H "Authorization: Bearer $UPLOAD_JWT" \
@@ -85,6 +90,7 @@ curl -X POST ".../workers/assets/upload?base64=true" \
 ```
 
 ### 3. Deploy with Assets
+
 ```bash
 curl -X PUT ".../scripts/$SCRIPT_NAME" \
   -F 'metadata={
@@ -96,6 +102,7 @@ curl -X PUT ".../scripts/$SCRIPT_NAME" \
 ```
 
 **Asset Isolation:** Assets shared across namespace. For strict isolation, salt hash:
+
 ```typescript
 const hash = sha256(accountId + fileContents).slice(0, 32);
 ```
@@ -103,10 +110,11 @@ const hash = sha256(accountId + fileContents).slice(0, 32);
 ## Dispatch Workers
 
 ### Subdomain Routing
+
 ```typescript
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    const userWorkerName = new URL(request.url).hostname.split(".")[0];
+    const userWorkerName = new URL(request.url).hostname.split('.')[0];
     const userWorker = env.DISPATCHER.get(userWorkerName);
     return await userWorker.fetch(request);
   },
@@ -114,13 +122,15 @@ export default {
 ```
 
 ### Path Routing
+
 ```typescript
-const pathParts = new URL(request.url).pathname.split("/").filter(Boolean);
+const pathParts = new URL(request.url).pathname.split('/').filter(Boolean);
 const userWorker = env.DISPATCHER.get(pathParts[0]);
 return await userWorker.fetch(request);
 ```
 
 ### KV Routing
+
 ```typescript
 const hostname = new URL(request.url).hostname;
 const userWorkerName = await env.ROUTING_KV.get(hostname);
@@ -133,32 +143,39 @@ return await userWorker.fetch(request);
 Control external fetch from user Workers:
 
 ### Configure
+
 ```typescript
 const userWorker = env.DISPATCHER.get(
-  workerName, {},
-  { outbound: { customer_context: { customer_name: workerName, url: request.url } } }
+  workerName,
+  {},
+  {
+    outbound: {
+      customer_context: { customer_name: workerName, url: request.url },
+    },
+  }
 );
 ```
 
 ### Implement
+
 ```typescript
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const customerName = env.customer_name;
     const url = new URL(request.url);
-    
+
     // Block domains
-    if (["malicious.com"].some(d => url.hostname.includes(d))) {
-      return new Response("Blocked", { status: 403 });
+    if (['malicious.com'].some((d) => url.hostname.includes(d))) {
+      return new Response('Blocked', { status: 403 });
     }
-    
+
     // Inject auth
-    if (url.hostname === "api.example.com") {
+    if (url.hostname === 'api.example.com') {
       const headers = new Headers(request.headers);
-      headers.set("Authorization", `Bearer ${generateJWT(customerName)}`);
+      headers.set('Authorization', `Bearer ${generateJWT(customerName)}`);
       return fetch(new Request(request, { headers }));
     }
-    
+
     return fetch(request);
   },
 };

@@ -4,15 +4,19 @@
 
 ```typescript
 export default {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  async fetch(
+    request: Request,
+    env: Env,
+    ctx: ExecutionContext
+  ): Promise<Response> {
     const url = new URL(request.url);
     if (request.method === 'POST' && url.pathname === '/api') {
       const body = await request.json();
       return new Response(JSON.stringify({ id: 1 }), {
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
       });
     }
-    return fetch(request);  // Subrequest to origin
+    return fetch(request); // Subrequest to origin
   },
 };
 ```
@@ -20,8 +24,8 @@ export default {
 ## Execution Context
 
 ```typescript
-ctx.waitUntil(logAnalytics(request));  // Background work, don't block response
-ctx.passThroughOnException();  // Failover to origin on error
+ctx.waitUntil(logAnalytics(request)); // Background work, don't block response
+ctx.passThroughOnException(); // Failover to origin on error
 ```
 
 **Never** `await` background operations - use `ctx.waitUntil()`.
@@ -38,7 +42,9 @@ const obj = await env.MY_BUCKET.get('file.txt');
 await env.MY_BUCKET.put('file.txt', 'content');
 
 // D1
-const result = await env.DB.prepare('SELECT * FROM users WHERE id = ?').bind(1).first();
+const result = await env.DB.prepare('SELECT * FROM users WHERE id = ?')
+  .bind(1)
+  .first();
 
 // Queues
 await env.MY_QUEUE.send({ timestamp: Date.now() });
@@ -57,7 +63,7 @@ if (!response) {
   response = await fetch(request);
   response = new Response(response.body, response);
   response.headers.set('Cache-Control', 'max-age=3600');
-  ctx.waitUntil(cache.put(request, response.clone()));  // Clone before caching
+  ctx.waitUntil(cache.put(request, response.clone())); // Clone before caching
 }
 ```
 
@@ -71,7 +77,7 @@ return new HTMLRewriter()
       if (href?.startsWith('http://')) {
         el.setAttribute('href', href.replace('http://', 'https://'));
       }
-    }
+    },
   })
   .transform(response);
 ```
@@ -84,7 +90,7 @@ return new HTMLRewriter()
 const [client, server] = Object.values(new WebSocketPair());
 
 server.accept();
-server.addEventListener('message', event => {
+server.addEventListener('message', (event) => {
   server.send(`Echo: ${event.data}`);
 });
 
@@ -96,13 +102,13 @@ return new Response(null, { status: 101, webSocket: client });
 ```typescript
 export class Counter {
   private value = 0;
-  
+
   constructor(private state: DurableObjectState) {
     state.blockConcurrencyWhile(async () => {
       this.value = (await state.storage.get('value')) || 0;
     });
   }
-  
+
   async fetch(request: Request): Promise<Response> {
     if (new URL(request.url).pathname === '/increment') {
       await this.state.storage.put('value', ++this.value);
@@ -127,7 +133,7 @@ export class Counter {
 ## Service Bindings
 
 ```typescript
-return env.SERVICE_B.fetch(request);  // Worker-to-worker RPC, zero latency
+return env.SERVICE_B.fetch(request); // Worker-to-worker RPC, zero latency
 ```
 
 ## See Also

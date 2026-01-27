@@ -7,9 +7,13 @@
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const { userId, reportType } = await request.json();
-    await env.REPORT_QUEUE.send({ userId, reportType, requestedAt: Date.now() });
+    await env.REPORT_QUEUE.send({
+      userId,
+      reportType,
+      requestedAt: Date.now(),
+    });
     return Response.json({ message: 'Report queued', status: 'pending' });
-  }
+  },
 };
 
 // Consumer: Process reports
@@ -21,7 +25,7 @@ export default {
       await env.REPORTS_BUCKET.put(`${userId}/${reportType}.pdf`, report);
       msg.ack();
     }
-  }
+  },
 };
 ```
 
@@ -76,7 +80,7 @@ export default {
       }
       msg.ack();
     }
-  }
+  },
 };
 ```
 
@@ -94,7 +98,7 @@ export default {
         console.error(`Failed after ${msg.attempts} attempts:`, error);
       }
     }
-  }
+  },
 };
 
 // DLQ consumer: Log and store failed messages
@@ -104,7 +108,7 @@ export default {
       await env.FAILED_KV.put(msg.id, JSON.stringify(msg.body));
       msg.ack();
     }
-  }
+  },
 };
 ```
 
@@ -123,14 +127,14 @@ await env.EMAIL_QUEUE.send({ to, template, userId }, { delaySeconds: 3600 });
 ```typescript
 async fetch(request: Request, env: Env): Promise<Response> {
   const event = await request.json();
-  
+
   // Send to multiple queues for parallel processing
   await Promise.all([
     env.ANALYTICS_QUEUE.send(event),
     env.NOTIFICATIONS_QUEUE.send(event),
     env.AUDIT_LOG_QUEUE.send(event)
   ]);
-  
+
   return Response.json({ status: 'processed' });
 }
 ```
@@ -146,7 +150,7 @@ async queue(batch: MessageBatch, env: Env): Promise<void> {
       msg.ack();
       continue;
     }
-    
+
     await processMessage(msg.body);
     await env.PROCESSED_KV.put(msg.id, '1', { expirationTtl: 86400 });
     msg.ack();

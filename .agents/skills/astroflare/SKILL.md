@@ -57,6 +57,7 @@ src/
 ## References
 
 For detailed guidance, see:
+
 - `references/components.md` - Component patterns and Starwind UI
 - `references/routing.md` - Routing and pages
 - `references/forms.md` - Forms and server actions

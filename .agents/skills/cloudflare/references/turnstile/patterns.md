@@ -1,6 +1,7 @@
 ## Common Pitfalls
 
 ### ❌ Skipping Server-Side Validation
+
 ```javascript
 // WRONG - Client-only, easily bypassed
 <form onsubmit="return window.turnstileToken ? true : false">
@@ -18,11 +19,12 @@ app.post('/submit', async (req, res) => {
 ```
 
 ### ❌ Exposing Secret Key
+
 ```javascript
 // WRONG - Secret in client code
 const SECRET = 'your-secret-key';
 fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-  body: JSON.stringify({ secret: SECRET, response: token })
+  body: JSON.stringify({ secret: SECRET, response: token }),
 });
 ```
 
@@ -33,9 +35,11 @@ fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
 ```
 
 ### ❌ Not Handling Token Expiry
+
 ```javascript
 // WRONG - No expiry handling
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   submitForm(turnstileToken);
-})
+});
+```

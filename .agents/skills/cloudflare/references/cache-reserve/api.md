@@ -12,7 +12,7 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     // Standard fetch uses Cache Reserve automatically
     return await fetch(request);
-  }
+  },
 };
 ```
 
@@ -57,10 +57,10 @@ const purgeCacheReserveByURL = async (
     {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiToken}`,
+        Authorization: `Bearer ${apiToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ files: urls })
+      body: JSON.stringify({ files: urls }),
     }
   );
   return await response.json();
@@ -69,7 +69,7 @@ const purgeCacheReserveByURL = async (
 // Example usage
 await purgeCacheReserveByURL('zone123', 'token456', [
   'https://example.com/image.jpg',
-  'https://example.com/video.mp4'
+  'https://example.com/video.mp4',
 ]);
 ```
 
@@ -87,10 +87,10 @@ const purgeCacheReserveByTag = async (
     {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiToken}`,
+        Authorization: `Bearer ${apiToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ tags })
+      body: JSON.stringify({ tags }),
     }
   );
   return await response.json();
@@ -114,18 +114,18 @@ const clearAllCacheReserve = async (zoneId: string, apiToken: string) => {
   // Step 1: Verify Cache Reserve is off
   const statusResponse = await fetch(
     `https://api.cloudflare.com/client/v4/zones/${zoneId}/cache/cache_reserve`,
-    { method: 'GET', headers: { 'Authorization': `Bearer ${apiToken}` } }
+    { method: 'GET', headers: { Authorization: `Bearer ${apiToken}` } }
   );
   const status = await statusResponse.json();
-  
+
   if (status.result.value !== 'off') {
     throw new Error('Cache Reserve must be OFF before clearing data');
   }
-  
+
   // Step 2: Clear Cache Reserve data
   const clearResponse = await fetch(
     `https://api.cloudflare.com/client/v4/zones/${zoneId}/cache/cache_reserve_clear`,
-    { method: 'POST', headers: { 'Authorization': `Bearer ${apiToken}` } }
+    { method: 'POST', headers: { Authorization: `Bearer ${apiToken}` } }
   );
   return await clearResponse.json();
 };
@@ -134,7 +134,7 @@ const clearAllCacheReserve = async (zoneId: string, apiToken: string) => {
 const getClearStatus = async (zoneId: string, apiToken: string) => {
   const response = await fetch(
     `https://api.cloudflare.com/client/v4/zones/${zoneId}/cache/cache_reserve_clear`,
-    { method: 'GET', headers: { 'Authorization': `Bearer ${apiToken}` } }
+    { method: 'GET', headers: { Authorization: `Bearer ${apiToken}` } }
   );
   return await response.json();
   // Returns: { state: "In-progress" | "Completed", start_ts: "..." }
@@ -142,6 +142,7 @@ const getClearStatus = async (zoneId: string, apiToken: string) => {
 ```
 
 **Clear process:**
+
 1. Disable Cache Reserve (`value: 'off'`)
 2. Call cache_reserve_clear endpoint
 3. Deletion takes up to 24 hours

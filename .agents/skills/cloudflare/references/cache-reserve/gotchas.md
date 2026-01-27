@@ -13,15 +13,15 @@ const debugEligibility = {
     'Check TTL >= 10 hours',
     'Confirm Content-Length header present',
     'Review Cache Rules configuration',
-    'Check for Set-Cookie or Vary: * headers'
+    'Check for Set-Cookie or Vary: * headers',
   ],
-  
+
   tools: [
     'curl -I https://example.com/asset.jpg',
     'Check cf-cache-status header',
     'Review Cloudflare Trace output',
-    'Check Logpush CacheReserveUsed field'
-  ]
+    'Check Logpush CacheReserveUsed field',
+  ],
 };
 ```
 
@@ -34,8 +34,8 @@ response.headers.set('Cache-Control', 'public, max-age=36000');
 // Or via Cache Rule:
 const rule = {
   action_parameters: {
-    edge_ttl: { mode: 'override_origin', default: 36000 }
-  }
+    edge_ttl: { mode: 'override_origin', default: 36000 },
+  },
 };
 
 // 2. Add Content-Length
@@ -55,8 +55,8 @@ response.headers.set('Vary', 'Accept-Encoding'); // Not *
 ```typescript
 // 1. Increase TTL for stable content
 const optimizedTTL = {
-  before: 3600,  // 1 hour (not eligible)
-  after: 86400   // 24 hours (eligible + fewer rewrites)
+  before: 3600, // 1 hour (not eligible)
+  after: 86400, // 24 hours (eligible + fewer rewrites)
 };
 
 // 2. Enable Tiered Cache (reduces direct Cache Reserve misses)
@@ -77,15 +77,15 @@ const purgeBehavior = {
   byURL: {
     cacheReserve: 'Immediately removed',
     edgeCache: 'Immediately removed',
-    cost: 'Free'
+    cost: 'Free',
   },
-  
+
   byTag: {
     cacheReserve: 'Revalidation triggered, NOT removed',
     edgeCache: 'Immediately removed',
     storage: 'Continues until TTL expires',
-    cost: 'Storage costs continue'
-  }
+    cost: 'Storage costs continue',
+  },
 };
 
 // Solution: Use purge by URL for immediate removal
@@ -106,22 +106,22 @@ await clearAllCacheReserve(zoneId, token);
 const clearProcess = async (zoneId: string, token: string) => {
   // Step 1: Check current state
   const status = await getCacheReserveStatus(zoneId, token);
-  
+
   // Step 2: Disable if enabled
   if (status.result.value !== 'off') {
     await disableCacheReserve(zoneId, token);
   }
-  
+
   // Step 3: Wait briefly for propagation
-  await new Promise(resolve => setTimeout(resolve, 5000));
-  
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+
   // Step 4: Clear data
   const clearResult = await clearAllCacheReserve(zoneId, token);
-  
+
   // Step 5: Monitor clear progress (can take up to 24 hours)
   let clearStatus;
   do {
-    await new Promise(resolve => setTimeout(resolve, 60000));
+    await new Promise((resolve) => setTimeout(resolve, 60000));
     clearStatus = await getClearStatus(zoneId, token);
   } while (clearStatus.result.state === 'In-progress');
 };
@@ -157,17 +157,17 @@ curl -I https://example.com/asset.jpg | grep -i cache
 - [ ] TTL >= 10 hours (36000 seconds)
 - [ ] Content-Length header present
 - [ ] No Set-Cookie header (or using private directive)
-- [ ] No Vary: * header
+- [ ] No Vary: \* header
 - [ ] Not an image transformation variant
 
 ### Key Limits
 
 ```typescript
 const limits = {
-  minTTL: 36000,              // 10 hours in seconds
-  retentionDefault: 2592000,  // 30 days in seconds
-  maxFileSize: Infinity,      // Same as R2 limits
-  purgeClearTime: 86400000,   // Up to 24 hours in milliseconds
+  minTTL: 36000, // 10 hours in seconds
+  retentionDefault: 2592000, // 30 days in seconds
+  maxFileSize: Infinity, // Same as R2 limits
+  purgeClearTime: 86400000, // Up to 24 hours in milliseconds
 };
 ```
 
@@ -181,7 +181,8 @@ const endpoints = {
   clear: 'POST /zones/:zone_id/cache/cache_reserve_clear',
   clearStatus: 'GET /zones/:zone_id/cache/cache_reserve_clear',
   purge: 'POST /zones/:zone_id/purge_cache',
-  cacheRules: 'PUT /zones/:zone_id/rulesets/phases/http_request_cache_settings/entrypoint'
+  cacheRules:
+    'PUT /zones/:zone_id/rulesets/phases/http_request_cache_settings/entrypoint',
 };
 ```
 

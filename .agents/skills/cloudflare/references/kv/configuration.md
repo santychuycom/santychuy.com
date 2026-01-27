@@ -12,18 +12,20 @@ wrangler kv namespace create MY_NAMESPACE --preview  # For local dev
 ## Workers Binding
 
 **wrangler.jsonc:**
+
 ```jsonc
 {
   "kv_namespaces": [
     {
       "binding": "MY_KV",
-      "id": "abc123xyz789"
-    }
-  ]
+      "id": "abc123xyz789",
+    },
+  ],
 }
 ```
 
 **wrangler.toml:**
+
 ```toml
 [[kv_namespaces]]
 binding = "MY_KV"
@@ -33,13 +35,19 @@ id = "abc123xyz789"
 ## TypeScript Types
 
 ```typescript
-interface Env { MY_KV: KVNamespace; }
+interface Env {
+  MY_KV: KVNamespace;
+}
 
 export default {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    const value = await env.MY_KV.get("key");
-    return new Response(value || "Not found");
-  }
+  async fetch(
+    request: Request,
+    env: Env,
+    ctx: ExecutionContext
+  ): Promise<Response> {
+    const value = await env.MY_KV.get('key');
+    return new Response(value || 'Not found');
+  },
 } satisfies ExportedHandler<Env>;
 ```
 
@@ -82,11 +90,11 @@ import Cloudflare from 'cloudflare';
 
 const client = new Cloudflare({
   apiEmail: process.env.CLOUDFLARE_EMAIL,
-  apiKey: process.env.CLOUDFLARE_API_KEY
+  apiKey: process.env.CLOUDFLARE_API_KEY,
 });
 
 await client.kv.namespaces.values.update(namespaceId, 'key', {
   account_id: accountId,
-  value: 'value'
+  value: 'value',
 });
 ```

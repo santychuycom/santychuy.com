@@ -12,13 +12,13 @@ await sandbox.exec('npm install', {
   stream: true,
   onOutput: (stream, data) => console.log(`[${stream}]`, data),
   onComplete: (result) => console.log('Exit:', result.exitCode),
-  onError: (error) => console.error(error)
+  onError: (error) => console.error(error),
 });
 
 // With env & cwd
 await sandbox.exec('python3 test.py', {
   cwd: '/workspace/project',
-  env: { API_KEY: 'secret', DEBUG: 'true' }
+  env: { API_KEY: 'secret', DEBUG: 'true' },
 });
 ```
 
@@ -52,7 +52,7 @@ const exists = await sandbox.pathExists('/workspace/file.txt');
 const process = await sandbox.startProcess('python3 -m http.server 8080', {
   processId: 'web-server',
   cwd: '/workspace/public',
-  env: { PORT: '8080' }
+  env: { PORT: '8080' },
 });
 // Returns: { id, pid, command }
 
@@ -69,7 +69,7 @@ const logs = await sandbox.getProcessLogs('web-server');
 // Expose
 const exposed = await sandbox.exposePort(8080, {
   name: 'web-app',
-  hostname: request.hostname
+  hostname: request.hostname,
 });
 // Returns: { url, port, name, status }
 
@@ -92,7 +92,7 @@ const session = await sandbox.createSession({
   id: 'user-123',
   name: 'User Workspace',
   cwd: '/workspace/user123',
-  env: { USER_ID: '123', API_KEY: 'secret' }
+  env: { USER_ID: '123', API_KEY: 'secret' },
 });
 
 // Use (full sandbox API bound to session context)
@@ -119,8 +119,8 @@ plt.savefig('plot.png')
 print("Chart created")
   `,
   files: {
-    'data.csv': 'name,value\nalice,10\nbob,20'
-  }
+    'data.csv': 'name,value\nalice,10\nbob,20',
+  },
 });
 // Returns: { outputs: [{ type, content }], files, error }
 ```
@@ -139,9 +139,13 @@ if (!result.success) {
 try {
   await sandbox.readFile('/nonexistent');
 } catch (error) {
-  if (error.code === 'FILE_NOT_FOUND') { /* ... */ }
-  else if (error.code === 'CONTAINER_NOT_READY') { /* retry */ }
-  else if (error.code === 'TIMEOUT') { /* ... */ }
+  if (error.code === 'FILE_NOT_FOUND') {
+    /* ... */
+  } else if (error.code === 'CONTAINER_NOT_READY') {
+    /* retry */
+  } else if (error.code === 'TIMEOUT') {
+    /* ... */
+  }
 }
 
 // Retry pattern
@@ -151,7 +155,7 @@ async function execWithRetry(sandbox, cmd, maxRetries = 3) {
       return await sandbox.exec(cmd);
     } catch (error) {
       if (error.code === 'CONTAINER_NOT_READY' && i < maxRetries - 1) {
-        await new Promise(r => setTimeout(r, 2000));
+        await new Promise((r) => setTimeout(r, 2000));
         continue;
       }
       throw error;
@@ -174,5 +178,6 @@ SandboxClient (aggregator)
 ```
 
 **Execution Modes**:
+
 1. **Foreground** (exec): Blocking, captures output
 2. **Background** (execStream/startProcess): Non-blocking, uses FIFOs, concurrent

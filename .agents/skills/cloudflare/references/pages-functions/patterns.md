@@ -20,6 +20,7 @@ export const onRequest = [errorHandling, authentication, logging];
 ```
 
 **Best practices:**
+
 - First middleware = error handler (wraps others)
 - Use `context.next()` to pass control
 - Share state via `context.data`
@@ -28,12 +29,14 @@ export const onRequest = [errorHandling, authentication, logging];
 
 ```typescript
 async function authMiddleware(context: EventContext<Env>) {
-  const token = context.request.headers.get('authorization')?.replace('Bearer ', '');
+  const token = context.request.headers
+    .get('authorization')
+    ?.replace('Bearer ', '');
   if (!token) return new Response('Unauthorized', { status: 401 });
-  
+
   const session = await context.env.KV.get(`session:${token}`);
   if (!session) return new Response('Invalid token', { status: 401 });
-  
+
   context.data.user = JSON.parse(session);
   return context.next();
 }
@@ -65,16 +68,20 @@ export async function onRequest(context) {
 ## Rate Limiting
 
 ```typescript
-interface Env { RATE_LIMIT: KVNamespace; }
+interface Env {
+  RATE_LIMIT: KVNamespace;
+}
 
 async function rateLimitMiddleware(context: EventContext<Env>) {
   const clientIP = context.request.headers.get('CF-Connecting-IP') || 'unknown';
   const key = `ratelimit:${clientIP}`;
-  const count = parseInt(await context.env.RATE_LIMIT.get(key) || '0');
-  
+  const count = parseInt((await context.env.RATE_LIMIT.get(key)) || '0');
+
   if (count >= 100) return new Response('Rate limit exceeded', { status: 429 });
-  
-  await context.env.RATE_LIMIT.put(key, (count + 1).toString(), { expirationTtl: 3600 });
+
+  await context.env.RATE_LIMIT.put(key, (count + 1).toString(), {
+    expirationTtl: 3600,
+  });
   return context.next();
 }
 ```
@@ -84,17 +91,17 @@ async function rateLimitMiddleware(context: EventContext<Env>) {
 ```typescript
 export async function onRequestPost(context) {
   const contentType = context.request.headers.get('content-type') || '';
-  
+
   if (contentType.includes('application/json')) {
     const data = await context.request.json();
     return Response.json({ received: data });
   }
-  
+
   if (contentType.includes('application/x-www-form-urlencoded')) {
     const formData = await context.request.formData();
     return Response.json({ received: Object.fromEntries(formData) });
   }
-  
+
   if (contentType.includes('multipart/form-data')) {
     const formData = await context.request.formData();
     const file = formData.get('file') as File;
@@ -103,7 +110,7 @@ export async function onRequestPost(context) {
       return Response.json({ uploaded: file.name });
     }
   }
-  
+
   return new Response('Unsupported content type', { status: 400 });
 }
 ```
@@ -114,14 +121,14 @@ export async function onRequestPost(context) {
 export async function onRequest(context) {
   const cache = caches.default;
   const cacheKey = new Request(context.request.url, context.request);
-  
+
   let response = await cache.match(cacheKey);
   if (!response) {
     response = new Response('Hello World');
     response.headers.set('Cache-Control', 'public, max-age=3600');
     context.waitUntil(cache.put(cacheKey, response.clone()));
   }
-  
+
   return response;
 }
 ```
@@ -131,23 +138,23 @@ export async function onRequest(context) {
 ```typescript
 export async function onRequest(context) {
   const url = new URL(context.request.url);
-  
+
   // Old paths
   if (url.pathname === '/old-page') {
     return Response.redirect(`${url.origin}/new-page`, 301);
   }
-  
+
   // Force HTTPS
   if (url.protocol === 'http:') {
     url.protocol = 'https:';
     return Response.redirect(url.toString(), 301);
   }
-  
+
   return context.next();
 }
 ```
 
-## Advanced Mode (_worker.js)
+## Advanced Mode (\_worker.js)
 
 For complex routing, replace `/functions` with `_worker.js`:
 
@@ -160,24 +167,26 @@ interface Env {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
-    
+
     // Custom API
     if (url.pathname.startsWith('/api/')) {
       return new Response('API response');
     }
-    
+
     // Static assets
     return env.ASSETS.fetch(request);
-  }
+  },
 } satisfies ExportedHandler<Env>;
 ```
 
 **When to use:**
+
 - Existing Worker too complex for file-based routing
 - Need full routing control
 - Framework-generated Workers (Next.js, SvelteKit)
 
 **Important:**
+
 - Module Worker syntax required
 - `/functions` ignored
 - Manually call `env.ASSETS.fetch()` for static files

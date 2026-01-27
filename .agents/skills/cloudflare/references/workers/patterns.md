@@ -4,7 +4,12 @@
 
 ```typescript
 class HTTPError extends Error {
-  constructor(public status: number, message: string) { super(message); }
+  constructor(
+    public status: number,
+    message: string
+  ) {
+    super(message);
+  }
 }
 
 export default {
@@ -14,7 +19,8 @@ export default {
     } catch (error) {
       if (error instanceof HTTPError) {
         return new Response(JSON.stringify({ error: error.message }), {
-          status: error.status, headers: { 'Content-Type': 'application/json' }
+          status: error.status,
+          headers: { 'Content-Type': 'application/json' },
         });
       }
       return new Response('Internal Server Error', { status: 500 });
@@ -32,17 +38,23 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
+if (request.method === 'OPTIONS')
+  return new Response(null, { headers: corsHeaders });
 // Add corsHeaders to response
 ```
 
 ## Routing
 
 ```typescript
-const router = { 'GET /api/users': handleGetUsers, 'POST /api/users': handleCreateUser };
+const router = {
+  'GET /api/users': handleGetUsers,
+  'POST /api/users': handleCreateUser,
+};
 
 const handler = router[`${request.method} ${url.pathname}`];
-return handler ? handler(request, env) : new Response('Not Found', { status: 404 });
+return handler
+  ? handler(request, env)
+  : new Response('Not Found', { status: 404 });
 ```
 
 **Production**: Use Hono, itty-router, or Worktop
@@ -55,7 +67,10 @@ const user = await fetch('/api/user/1');
 const posts = await fetch('/api/posts?user=1');
 
 // ✅ Parallel
-const [user, posts] = await Promise.all([fetch('/api/user/1'), fetch('/api/posts?user=1')]);
+const [user, posts] = await Promise.all([
+  fetch('/api/user/1'),
+  fetch('/api/posts?user=1'),
+]);
 ```
 
 ## Streaming
@@ -65,19 +80,26 @@ const stream = new ReadableStream({
   async start(controller) {
     for (let i = 0; i < 1000; i++) {
       controller.enqueue(new TextEncoder().encode(`Item ${i}\n`));
-      if (i % 100 === 0) await new Promise(r => setTimeout(r, 0));
+      if (i % 100 === 0) await new Promise((r) => setTimeout(r, 0));
     }
     controller.close();
-  }
+  },
 });
 ```
 
 ## Transform Streams
 
 ```typescript
-response.body.pipeThrough(new TextDecoderStream()).pipeThrough(
-  new TransformStream({ transform(chunk, c) { c.enqueue(chunk.toUpperCase()); } })
-).pipeThrough(new TextEncoderStream());
+response.body
+  .pipeThrough(new TextDecoderStream())
+  .pipeThrough(
+    new TransformStream({
+      transform(chunk, c) {
+        c.enqueue(chunk.toUpperCase());
+      },
+    })
+  )
+  .pipeThrough(new TextEncoderStream());
 ```
 
 ## Testing
@@ -110,9 +132,12 @@ npx wrangler rollback
 ```typescript
 const start = Date.now();
 const response = await handleRequest(request, env);
-ctx.waitUntil(env.ANALYTICS.writeDataPoint({
-  doubles: [Date.now() - start], blobs: [request.url, String(response.status)]
-}));
+ctx.waitUntil(
+  env.ANALYTICS.writeDataPoint({
+    doubles: [Date.now() - start],
+    blobs: [request.url, String(response.status)],
+  })
+);
 ```
 
 ## Security
@@ -127,7 +152,8 @@ const security = {
 
 // Auth
 const auth = request.headers.get('Authorization');
-if (!auth?.startsWith('Bearer ')) return new Response('Unauthorized', { status: 401 });
+if (!auth?.startsWith('Bearer '))
+  return new Response('Unauthorized', { status: 401 });
 ```
 
 ## Rate Limiting
@@ -137,7 +163,10 @@ See [Durable Objects](../durable-objects/README.md) for stateful rate limiting p
 ## Gradual Rollouts
 
 ```typescript
-const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(userId));
+const hash = await crypto.subtle.digest(
+  'SHA-256',
+  new TextEncoder().encode(userId)
+);
 const bucket = new Uint8Array(hash)[0] % 100;
 if (bucket < rolloutPercent) return newFeature(request);
 ```

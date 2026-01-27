@@ -6,21 +6,21 @@
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     return env.ASSETS.fetch(request);
-  }
+  },
 };
 ```
 
 **2. Fetch specific asset by path:**
 
 ```typescript
-const response = await env.ASSETS.fetch("https://assets.local/logo.png");
+const response = await env.ASSETS.fetch('https://assets.local/logo.png');
 ```
 
 **3. Modify request before fetching asset:**
 
 ```typescript
 const url = new URL(request.url);
-url.pathname = "/index.html";
+url.pathname = '/index.html';
 return env.ASSETS.fetch(new Request(url, request));
 ```
 
@@ -29,8 +29,8 @@ return env.ASSETS.fetch(new Request(url, request));
 ```typescript
 const response = await env.ASSETS.fetch(request);
 const modifiedResponse = new Response(response.body, response);
-modifiedResponse.headers.set("X-Custom-Header", "value");
-modifiedResponse.headers.set("Cache-Control", "public, max-age=3600");
+modifiedResponse.headers.set('X-Custom-Header', 'value');
+modifiedResponse.headers.set('Cache-Control', 'public, max-age=3600');
 return modifiedResponse;
 ```
 
@@ -40,3 +40,4 @@ return modifiedResponse;
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+```
