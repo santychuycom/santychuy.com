@@ -54,7 +54,8 @@ Default: 30s per consumer invocation. Increase if needed:
 
 ```jsonc
 { "limits": { "cpu_ms": 300000 } }
- // 5 minutes
+
+// 5 minutes
 ```
 
 ## Cost Optimization

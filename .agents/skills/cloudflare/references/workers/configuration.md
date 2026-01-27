@@ -88,7 +88,8 @@ Bindings without IDs are auto-created:
 
 ```jsonc
 { "kv_namespaces": [{ "binding": "MY_KV" }] }
- // ID added on deploy
+
+// ID added on deploy
 ```
 
 ## Routes & Triggers
