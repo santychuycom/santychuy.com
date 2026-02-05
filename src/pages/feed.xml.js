@@ -1,27 +1,30 @@
-import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
-import sanitizeHtml from 'sanitize-html';
-import MarkdownIt from 'markdown-it';
+import { getCollection } from "astro:content";
+import rss from "@astrojs/rss";
+import MarkdownIt from "markdown-it";
+import sanitizeHtml from "sanitize-html";
 
 const md = new MarkdownIt();
 
 export async function GET(context) {
-  const posts = await getCollection('posts');
+	const posts = await getCollection("posts");
+	const sortedPosts = posts.sort(
+		(a, b) => new Date(b.data.pubDate) - new Date(a.data.pubDate),
+	);
 
-  return rss({
-    title: 'Santychuy’s Blog',
-    description:
-      'Sharing my thoughts and experiences on web development and other tech-related topics.',
-    site: context.site,
-    items: posts.map(({ data, slug, body }) => ({
-      title: data.title,
-      description: data.shortDesc,
-      pubDate: data.pubDate,
-      link: `/blog/${slug}`,
-      author: data.author.name,
-      categories: data.categories,
-      content: sanitizeHtml(md.render(body)),
-    })),
-    customData: `<language>en-us</language>`,
-  });
+	return rss({
+		title: "Santychuy's Blog",
+		description:
+			"Sharing my thoughts and experiences on web development and other tech-related topics.",
+		site: context.site,
+		items: sortedPosts.map(({ data, id, body }) => ({
+			title: data.title,
+			description: data.shortDesc,
+			pubDate: data.pubDate,
+			link: `/blog/${id}`,
+			author: data.author.name,
+			categories: data.categories,
+			content: sanitizeHtml(md.render(body)),
+		})),
+		customData: `<language>en-us</language>`,
+	});
 }

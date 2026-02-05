@@ -1,12 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
 
-import Newsletter from '@components/Newsletter.astro';
-import PreviewPost from '@components/PreviewPost.astro';
+import Newsletter from "@components/Newsletter.astro";
+import PreviewPost from "@components/PreviewPost.astro";
 
-const allPosts = await getCollection('posts');
+const allPosts = await getCollection("posts");
 const sortedDatePosts = allPosts?.sort(
-  (a, b) => Number(new Date(b.data.pubDate)) - Number(new Date(a.data.pubDate))
+	(a, b) => Number(new Date(b.data.pubDate)) - Number(new Date(a.data.pubDate)),
 );
 ---
 
@@ -16,7 +16,7 @@ const sortedDatePosts = allPosts?.sort(
 
     {
       sortedDatePosts ? (
-        sortedDatePosts.map(({ data, slug }, i) => {
+        sortedDatePosts.map(({ data, id }, i) => {
           if (i < 5) {
             return (
               <PreviewPost
@@ -24,7 +24,7 @@ const sortedDatePosts = allPosts?.sort(
                 description={data.description}
                 date={data.pubDate}
                 topics={data.categories}
-                slug={slug}
+                slug={id}
               />
             );
           }

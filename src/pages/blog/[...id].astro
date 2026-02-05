@@ -1,22 +1,21 @@
 ---
 export const prerender = false;
 
-import { getEntry } from 'astro:content';
+import { getEntry, render } from "astro:content";
+import BlogContent from "@components/pages/Blog/index.astro";
+import BlogLayout from "@layouts/Blog.astro";
 
-import BlogLayout from '@layouts/Blog.astro';
-import BlogContent from '@components/pages/Blog/index.astro';
+const { id } = Astro.params;
 
-const { slug } = Astro.params;
+if (id === undefined) return Astro.redirect("/404");
 
-if (slug === undefined) return Astro.redirect('/404');
+const entry = await getEntry("posts", id);
 
-const entry = await getEntry('posts', slug);
-
-if (entry === undefined) return Astro.redirect('/404');
+if (entry === undefined) return Astro.redirect("/404");
 
 const cannonicalURL = Astro.request.url;
 const imageURL = `${new URL(cannonicalURL).origin}${entry.data.image}`;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 ---
 
 <BlogLayout
@@ -25,7 +24,7 @@ const { Content } = await entry.render();
   image={imageURL}
   url={cannonicalURL}
 >
-  <BlogContent post={entry.data} slug={entry.slug}>
+  <BlogContent post={entry.data} id={entry.id}>
     <Content />
   </BlogContent>
 </BlogLayout>
