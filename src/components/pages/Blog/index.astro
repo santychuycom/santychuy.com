@@ -10,10 +10,10 @@ import type { Post } from "@schemas/post";
 
 interface Props {
 	post: Post;
-	slug: string;
+	id: string;
 }
 
-const { post, slug } = Astro.props;
+const { post, id } = Astro.props;
 
 const runtime = Astro.locals.runtime;
 
@@ -22,7 +22,7 @@ let views = 0;
 
 try {
 	const res = await fetch(
-		`https://umami.santychuy.com/api/websites/${import.meta.env.UMAMI_WEBSITE_ID}/pageviews?startAt=1750885650&endAt=${Date.now()}&unit=hour&timezone=America/Los_Angeles&url=/blog/${slug}`,
+		`https://umami.santychuy.com/api/websites/${import.meta.env.UMAMI_WEBSITE_ID}/pageviews?startAt=1750885650&endAt=${Date.now()}&unit=hour&timezone=America/Los_Angeles&url=/blog/${id}`,
 		{
 			headers: {
 				Authorization: `Bearer ${import.meta.env.PROD ? runtime.env.UMAMI_AUTH_TOKEN : import.meta.env.UMAMI_AUTH_TOKEN}`,
