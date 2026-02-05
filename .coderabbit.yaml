@@ -1,0 +1,190 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# CodeRabbit AI Configuration for santychuy.com
+# Personal website and blog of Santiago Carrasco (Santychuy)
+
+language: "en-US"
+early_access: false
+
+reviews:
+  # Review Style
+  profile: "chill"
+  
+  # Workflow Settings
+  request_changes_workflow: true
+  high_level_summary: true
+  high_level_summary_placeholder: "@coderabbitai summary"
+  high_level_summary_in_walkthrough: false
+  
+  # Content Generation
+  poem: true
+  review_status: true
+  collapse_walkthrough: true
+  commit_status: true
+  fail_commit_status: false
+  
+  # Analysis Features
+  changed_files_summary: true
+  sequence_diagrams: true
+  estimate_code_review_effort: true
+  assess_linked_issues: true
+  related_issues: true
+  related_prs: true
+  suggested_labels: true
+  auto_apply_labels: false
+  suggested_reviewers: true
+  
+  # Path Filters - Skip auto-generated or non-source files
+  path_filters:
+    - "!dist/**"
+    - "!.github/workflows/**"
+    - "!bun.lock"
+    - "!package-lock.json"
+    - "!.frontmatter/**"
+    - "!.opencode/**"
+    - "!**/*.lock"
+  
+  # Path Instructions - Project-specific guidelines
+  path_instructions:
+    # Blog posts
+    - path: "src/content/posts/*.md"
+      instructions: |
+        Blog post frontmatter MUST include:
+        - title: string
+        - pubDate: ISO 8601 date (e.g., 2024-02-21T18:43:56.946Z)
+        - description: string (for SEO, 150-160 chars)
+        - shortDesc: string (for cards/lists, shorter version)
+        - author.name: string (e.g., "Santiago Carrasco")
+        - author.img: string, optional (path to author image)
+        - image: string (path to cover image, prefer WebP)
+        - categories: array of strings (lowercase, e.g., ["astro", "blog"])
+        
+        Filename must be kebab-case as it becomes the URL slug.
+        
+    # Astro Components
+    - path: "**/*.astro"
+      instructions: |
+        Astro component patterns:
+        1. Define Props interface at top of frontmatter
+        2. Use path aliases (@components/*, @layouts/*) NOT relative imports
+        3. Destructure props: const { propName } = Astro.props;
+        4. Use scoped <style> blocks for component styles
+        5. Prefer CSS custom properties from vars.css over hardcoded values
+        6. Use fluid typography with clamp() for responsive sizing
+        
+    # TypeScript files
+    - path: "**/*.ts"
+      instructions: |
+        TypeScript strict mode requirements:
+        1. All exported functions must have explicit return types
+        2. Use path aliases (@lib/*, @schemas/*, @ts/*) over relative imports
+        3. Use Zod for runtime schema validation
+        4. Prefer interface over type for object shapes
+        5. Include JSDoc for public API functions
+        
+    # JSON content files
+    - path: "src/content/work/*.json"
+      instructions: |
+        Work experience and project data files.
+        Ensure valid JSON structure and consistent formatting.
+        
+    # Schema definitions
+    - path: "src/schemas/*.ts"
+      instructions: |
+        Zod schema definitions for content validation.
+        Export both the schema and the inferred TypeScript type.
+        Example: export type Post = z.infer<typeof postSchema>;
+  
+  # Labeling Rules
+  labeling_instructions:
+    - label: "blog"
+      instructions: "Apply when PR adds/modifies blog posts in src/content/posts/ or related blog components"
+    
+    - label: "ui"
+      instructions: "Apply when PR changes Astro components in src/components/, layouts, or styling (CSS)"
+    
+    - label: "content"
+      instructions: "Apply when PR modifies content files (JSON data, markdown, images)"
+    
+    - label: "ci/cd"
+      instructions: "Apply when PR changes GitHub workflows, deployment configs, or build scripts"
+    
+    - label: "dependencies"
+      instructions: "Apply when PR updates package.json, bun.lock, or dependency versions"
+    
+    - label: "config"
+      instructions: "Apply when PR changes configuration files (astro.config.mjs, biome.json, tsconfig.json, etc.)"
+    
+    - label: "schema"
+      instructions: "Apply when PR modifies TypeScript schemas or type definitions"
+  
+  # Auto-Review Settings
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    drafts: false
+    base_branches:
+      - main
+      - develop
+    ignore_title_keywords:
+      - "WIP"
+      - "wip"
+      - "[skip ci]"
+      - "Draft:"
+      - "DRAFT"
+    ignore_usernames:
+      - dependabot
+      - renovate
+      - dependabot[bot]
+      - renovate[bot]
+  
+  # Finishing Touches - Code Generation
+  finishing_touches:
+    docstrings:
+      enabled: true
+    unit_tests:
+      enabled: true
+
+code_generation:
+  docstrings:
+    path_instructions:
+      - path: "**/*.ts"
+        instructions: |
+          Use JSDoc format with the following pattern:
+          
+          /**
+           * Brief description of what the function does
+           * @param paramName - Parameter description
+           * @param paramName2 - Another parameter description
+           * @returns Description of return value
+           * @example
+           * // Usage example if helpful
+           * const result = myFunction(arg);
+           */
+          
+          For exported functions in @lib/utils.ts or public APIs, always include:
+          - Description
+          - All @param tags with types
+          - @returns tag
+  
+  unit_tests:
+    path_instructions:
+      - path: "**/*.test.ts"
+        instructions: |
+          Testing standards using Vitest:
+          
+          1. Use describe/it pattern:
+             describe('ComponentName', () => {
+               it('should do something specific', () => {
+                 // test here
+               });
+             });
+          
+          2. Use descriptive test names that explain behavior
+          3. Test edge cases and error conditions
+          4. Mock external dependencies (API calls, external libraries)
+          5. Use expect().toBe() for primitives, expect().toEqual() for objects
+          6. Group related tests with describe blocks
+
+# Chat Features
+chat:
+  auto_reply: true
