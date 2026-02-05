@@ -29,5 +29,8 @@
 			}
 		}
 	},
+	"keybinds": {
+		"variant_cycle": "<leader>t"
+	},
 	"autoupdate": true
 }
