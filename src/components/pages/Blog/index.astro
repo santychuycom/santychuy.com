@@ -1,16 +1,16 @@
 ---
 export const prerender = false;
 
-import type { Post } from '@schemas/post';
-import Badge from '@components/Badge.astro';
-import ViewsIcon from '@components/icons/views.astro';
-import XIcon from '@components/icons/x.astro';
-import FacebookIcon from '@components/icons/facebook.astro';
-import CopyLinkIcon from '@components/icons/link.astro';
+import Badge from "@components/Badge.astro";
+import FacebookIcon from "@components/icons/facebook.astro";
+import CopyLinkIcon from "@components/icons/link.astro";
+import ViewsIcon from "@components/icons/views.astro";
+import XIcon from "@components/icons/x.astro";
+import type { Post } from "@schemas/post";
 
 interface Props {
-  post: Post;
-  slug: string;
+	post: Post;
+	slug: string;
 }
 
 const { post, slug } = Astro.props;
@@ -21,31 +21,31 @@ const runtime = Astro.locals.runtime;
 let views = 0;
 
 try {
-  const res = await fetch(
-    `https://umami.santychuy.com/api/websites/${import.meta.env.UMAMI_WEBSITE_ID}/pageviews?startAt=1750885650&endAt=${Date.now()}&unit=hour&timezone=America/Los_Angeles&url=/blog/${slug}`,
-    {
-      headers: {
-        Authorization: `Bearer ${import.meta.env.PROD ? runtime.env.UMAMI_AUTH_TOKEN : import.meta.env.UMAMI_AUTH_TOKEN}`,
-      },
-    }
-  );
+	const res = await fetch(
+		`https://umami.santychuy.com/api/websites/${import.meta.env.UMAMI_WEBSITE_ID}/pageviews?startAt=1750885650&endAt=${Date.now()}&unit=hour&timezone=America/Los_Angeles&url=/blog/${slug}`,
+		{
+			headers: {
+				Authorization: `Bearer ${import.meta.env.PROD ? runtime.env.UMAMI_AUTH_TOKEN : import.meta.env.UMAMI_AUTH_TOKEN}`,
+			},
+		},
+	);
 
-  if (!res.ok) {
-    console.error('Umami API error:', res.status, res.statusText);
-  } else {
-    const data = await res.json();
+	if (!res.ok) {
+		console.error("Umami API error:", res.status, res.statusText);
+	} else {
+		const data = await res.json();
 
-    // Check if data has the expected structure
-    if (
-      data?.pageviews &&
-      Array.isArray(data.pageviews) &&
-      data.pageviews.length > 0
-    ) {
-      views = data.pageviews[0].y ?? 0;
-    }
-  }
+		// Check if data has the expected structure
+		if (
+			data?.pageviews &&
+			Array.isArray(data.pageviews) &&
+			data.pageviews.length > 0
+		) {
+			views = data.pageviews[0].y ?? 0;
+		}
+	}
 } catch (error) {
-  console.error('Error fetching Umami pageviews:', error);
+	console.error("Error fetching Umami pageviews:", error);
 }
 
 const title = post.title;
@@ -229,7 +229,6 @@ const pubDate = post.pubDate;
   document.getElementById('copy-link')?.addEventListener('click', () => {
     navigator.clipboard.writeText(currentUrl);
     // TODO: Create own toast component
-    // eslint-disable-next-line no-undef
     Toastify({
       text: 'Link copied to clipboard! \u{1F517}',
       gravity: 'bottom',

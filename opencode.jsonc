@@ -1,32 +1,33 @@
 {
-  "$schema": "https://opencode.ai/config.json",
-  // Theme configuration
-  "theme": "vercel",
-  "plugin": ["opencode-lmstudio@latest", "@ramtinj95/opencode-tokenscope"],
-  // Auto-load .context/ detail files as instructions
-  "instructions": [".context/*.md"],
-  "mcp": {
-    "context7": {
-      "type": "remote",
-      "url": "https://mcp.context7.com/mcp",
-      "headers": {
-        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}",
-      },
-    },
-    "gh_grep": {
-      "type": "remote",
-      "url": "https://mcp.grep.app",
-      "enabled": true,
-    },
-  },
-  "provider": {
-    "lmstudio": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "LM Studio (local)",
-      "options": {
-        "baseURL": "http://127.0.0.1:1234/v1",
-      },
-    },
-  },
-  "autoupdate": true,
+	"$schema": "https://opencode.ai/config.json",
+	// Theme configuration
+	"theme": "vercel",
+	"plugin": ["opencode-lmstudio@latest", "@ramtinj95/opencode-tokenscope"],
+	// Auto-load .context/ detail files as instructions
+	"instructions": [".context/*.md"],
+	"mcp": {
+		"context7": {
+			"type": "remote",
+			"url": "https://mcp.context7.com/mcp",
+			"headers": {
+				"CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+			},
+			"enabled": true
+		},
+		"gh_grep": {
+			"type": "remote",
+			"url": "https://mcp.grep.app",
+			"enabled": true
+		}
+	},
+	"provider": {
+		"lmstudio": {
+			"npm": "@ai-sdk/openai-compatible",
+			"name": "LM Studio (local)",
+			"options": {
+				"baseURL": "http://127.0.0.1:1234/v1"
+			}
+		}
+	},
+	"autoupdate": true
 }
