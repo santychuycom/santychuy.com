@@ -61,12 +61,17 @@ jobs:
           name: dist
           path: dist/
 
+      - name: Extract worker from dist
+        run: |
+          mkdir -p worker
+          cp -r dist/_worker.js/* worker/
+
       - name: Deploy preview
         id: deploy
         run: |
           set -euo pipefail
           bunx sst install
-          bunx sst deploy --stage pr-${{ github.event.pull_request.number }} | tee deploy.log
+          bunx sst deploy --stage pr-${{ github.event.pull_request.number }} --print-logs | tee deploy.log
           node -e "const fs = require('fs'); const text = fs.readFileSync('deploy.log', 'utf8'); const matches = text.match(/https:\/\/[a-z0-9.-]+\.workers\.dev/g); const url = matches ? matches[matches.length - 1] : ''; fs.appendFileSync(process.env.GITHUB_OUTPUT, `url=${url}\n`);"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -136,7 +141,7 @@ jobs:
         run: |
           set -euo pipefail
           bunx sst install
-          bunx sst remove --stage pr-${{ github.event.pull_request.number }}
+          bunx sst remove --stage pr-${{ github.event.pull_request.number }} --print-logs
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

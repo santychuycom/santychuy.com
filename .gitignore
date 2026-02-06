@@ -211,3 +211,6 @@ sketch
 
 # SST
 .sst/
+
+# Extracted worker for SST deployment
+worker/

@@ -11,7 +11,7 @@ export default $config({
 	async run() {
 		const isProduction = $app.stage === "production";
 		const site = new sst.cloudflare.Worker("Site", {
-			handler: "./dist/_worker.js/index.js",
+			handler: "./worker/index.js",
 			assets: {
 				directory: "./dist",
 			},
