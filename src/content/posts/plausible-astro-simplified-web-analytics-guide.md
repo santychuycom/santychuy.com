@@ -70,18 +70,18 @@ We will use [Astro](https://astro.build/) as our development framework to build 
 
 2. Remove all unnecessary elements, leaving only the `h1` element.
 
-3. Remove any unnecessary styles and add a link (`<a>`) to the `/about` page, ensuring the link is white.
+3. Remove any unnecessary styles and add a link (`<a>`) to the `/` page, ensuring the link is white.
 
 4. The code will look like this:
 
 ![Astro home page component code](/uploads/astro-plausible-home-component.png)
 
-### Step 3: Create the About Page
+### Step 3: Create a Secondary Page
 
-1. Create a new file in `src/pages/about.astro`.
+1. Create a new file in `src/pages/secondary.astro`.
 
 2. Copy the content from `src/pages/index.astro` and make the following modifications:
-   - Change the `h1` text to reference the about page.
+   - Change the `h1` text to reference the secondary page.
    - Modify the link to direct to the homepage.
 
 ### Step 4: Register on Plausible
@@ -130,7 +130,7 @@ To allow Plausible to track your site in local development, change the `src` of 
 
 1. Launch your page again and check the **Network** tab to ensure the script is executing without problems.
 
-2. Visit the `/about` page and then return to the homepage to generate visit data.
+2. Visit the `/` page and then return to the homepage to generate visit data.
 
 ### Step 10: Verify the Data in Plausible
 
