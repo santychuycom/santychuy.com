@@ -1,27 +1,27 @@
 ---
 title: 'Tech Unemployment: How Setbacks Became Opportunities'
-pubDate: 2024-09-11T16:22:01.882Z
-author:
-  name: Santiago Carrasco
-  img: /imgs/profile.jpg
-fmContentType: posts
-slug: tech-unemployment-setbacks-opportunities
+pubDate: 2024-09-11
 description: Learn how I overcame unexpected unemployment, using my savings, continuous learning, and perseverance to rebuild my career and seize new opportunities.
 shortDesc: 'From tech layoff to new career heights: See how I navigated unemployment and turned it into a golden opportunity.'
-categories:
-  - Career Development
-  - Personal Growth
-  - Professional Challenges
-  - Work-Life Balance
-  - Economic
-keywords:
-  - Career recovery
-  - Motivation
-  - Savings
-  - Tech layoffs
-  - Unemployment
-  - Tech industry
 image: /uploads/Tech Unemployment.jpg
+categories:
+- Career Development
+- Personal Growth
+- Professional Challenges
+- Work-Life Balance
+- Economic
+author:
+  img: /imgs/profile.jpg
+  name: Santiago Carrasco
+fmContentType: posts
+keywords:
+- Career recovery
+- Motivation
+- Savings
+- Tech layoffs
+- Unemployment
+- Tech industry
+slug: tech-unemployment-setbacks-opportunities
 ---
 
 The time has come to share my experience on how to "survive" without a recurring income from a full-time job. While each situation is unique, my purpose is to convey a message that will help you <mark style="background: #BBFABB; padding-inline: 4px;">be prepared and effectively face</mark> a circumstance that many of us might encounter at some point: being without active employment.
