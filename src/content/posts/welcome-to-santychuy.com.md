@@ -1,16 +1,17 @@
 ---
 title: Welcome to Santychuy.com
 pubDate: 2024-02-21T18:43:56.946Z
+lang: en
 author:
   name: Santiago Carrasco
   img: /imgs/profile.jpg
-type: posts
 categories:
   - astro
   - blog
 description: Welcome to my new platform, the main goal will be to share my thoughts, projects and solutions for any problem to face.
 shortDesc: Introduction of why I start Santychuy.com and what's going be the main goal in the future with this project
-image: /uploads/Logo Dark.png
+image: /uploads/logo-dark.png
+imageAlt: Santychuy logo cover image for the welcome post
 ---
 
 I have spent years consuming a lot of content on the internet in various formats related to programming, technology, and related topics to stand out and perform better in my work routine (methods to improve your productivity, tools, etc.)
@@ -33,7 +34,7 @@ Having my own platform, the next step is to start sharing content in the followi
 
 2. Through automations (WIP), distribute the content of each published blog automatically that will be listened to via RSS Feed to the platforms I want to target. This will be adjusted for each of them since not all platforms allow you to publish automatically today, and some manual adjustments have to be made, but the idea is to do as little work as possible.
 
-![Diagram Content](/uploads/DiagramContentFlow.png)
+![Diagram Content](/uploads/diagram-content-flow.png)
 _Diagram to distribute content_
 
 ## What's next?

@@ -1,13 +1,14 @@
 ---
 title: 'Plausible + Astro: Simplified Web Analytics Guide'
 pubDate: 2024-03-21T19:46:38.535Z
+lang: en
 author:
   name: Santiago Carrasco
   img: /imgs/profile.jpg
-type: posts
 shortDesc: 'How to Implement Plausible in Astro: A Guide to Getting Started with Web Analytics'
 description: "Integrate Plausible with Astro: Quick guide for actionable web analytics. Elevate your project's insights."
-image: /uploads/Astro-Plausible.webp
+image: /uploads/astro-plausible.webp
+imageAlt: Plausible analytics dashboard and Astro branding artwork
 categories:
   - astro
   - plausible

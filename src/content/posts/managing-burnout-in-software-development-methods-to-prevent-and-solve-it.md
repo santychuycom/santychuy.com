@@ -1,10 +1,10 @@
 ---
 title: 'Overcome Burnout in Software Development: Key Tips'
 pubDate: 2024-03-05T19:52:46.033Z
+lang: en
 author:
   name: Santiago Carrasco
   img: /imgs/profile.jpg
-type: posts
 description: Discover techniques to combat burnout in programming and effectively maintain a balance between work and personal life.
 shortDesc: How to avoid and overcome burnout in software development
 categories:
@@ -12,6 +12,7 @@ categories:
   - programming
   - burnout
 image: /uploads/burnout.webp
+imageAlt: Abstract burnout concept illustration for software developers
 ---
 
 I am someone who consumes a lot of content on the internet related to technology, programming, and everything that this area entails in various formats: videos, blogs, podcasts, etc. On different occasions, I came across content related to the issue of burnout in the world of programming; most were personal experiences they went through. I consumed it, but personally, I saw it as something distant, something I thought would never happen to me at the moment when I found myself enjoying every moment of what my tasks and my day-to-day involved. But no, in my more than 5 years of experience working professionally, I experienced the famous burnout, and it is not pleasant to go through this.

@@ -1,9 +1,11 @@
 ---
 title: 'Tech Unemployment: How Setbacks Became Opportunities'
 pubDate: 2024-09-11
+lang: en
 description: Learn how I overcame unexpected unemployment, using my savings, continuous learning, and perseverance to rebuild my career and seize new opportunities.
 shortDesc: 'From tech layoff to new career heights: See how I navigated unemployment and turned it into a golden opportunity.'
-image: /uploads/Tech Unemployment.jpg
+image: /uploads/tech-unemployment.jpg
+imageAlt: Person planning a new career path after a tech layoff
 categories:
 - Career Development
 - Personal Growth
@@ -13,7 +15,6 @@ categories:
 author:
   img: /imgs/profile.jpg
   name: Santiago Carrasco
-fmContentType: posts
 keywords:
 - Career recovery
 - Motivation

@@ -1,11 +1,12 @@
 ---
 title: 'ESLint Essentials: Clarifying Configuration'
 pubDate: 2024-07-31T23:31:22.487Z
+lang: en
 author:
   name: Santiago Carrasco
   img: /imgs/profile.jpg
-type: posts
-image: /uploads/ESLint-Essentials-Thumbnail.jpg
+image: /uploads/eslint-essentials-thumbnail.jpg
+imageAlt: ESLint essentials article thumbnail with linter branding
 keywords:
   - configuration
   - eslint

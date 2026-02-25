@@ -19,18 +19,65 @@ if (entry === undefined) return Astro.redirect("/404");
 
 if (id !== normalizedId) return Astro.redirect(`/blog/${normalizedId}`, 301);
 
-const cannonicalURL = Astro.request.url;
-const imageURL = `${new URL(cannonicalURL).origin}${entry.data.image}`;
+const siteURL = Astro.site ?? Astro.url;
+const canonicalURL = entry.data.canonical
+	? entry.data.canonical
+	: new URL(Astro.url.pathname, siteURL).toString();
+const imageURL = new URL(entry.data.image, siteURL).toString();
+const authorImageURL = entry.data.author.img
+	? new URL(entry.data.author.img, siteURL).toString()
+	: undefined;
+
+const articleSchema = {
+	"@context": "https://schema.org",
+	"@type": "Article",
+	headline: entry.data.title,
+	description: entry.data.description,
+	image: [imageURL],
+	datePublished: entry.data.pubDate.toISOString(),
+	dateModified: (entry.data.updatedDate ?? entry.data.pubDate).toISOString(),
+	inLanguage: entry.data.lang === "es" ? "es-MX" : "en-US",
+	articleSection: entry.data.categories,
+	mainEntityOfPage: {
+		"@type": "WebPage",
+		"@id": canonicalURL,
+	},
+	author: {
+		"@type": "Person",
+		name: entry.data.author.name,
+		image: authorImageURL,
+		url: new URL("/", siteURL).toString(),
+	},
+	publisher: {
+		"@type": "Person",
+		name: "Santiago Carrasco",
+		url: new URL("/", siteURL).toString(),
+	},
+	...(entry.data.keywords
+		? {
+				keywords: entry.data.keywords.join(", "),
+			}
+		: {}),
+};
+
+const alternates =
+	entry.data.lang === "es"
+		? { es: canonicalURL, "x-default": canonicalURL }
+		: { en: canonicalURL, "x-default": canonicalURL };
+
 const { Content } = await render(entry);
 ---
 
 <BlogLayout
   title={entry.data.title}
-  description={entry.data.shortDesc}
+  description={entry.data.description}
   image={imageURL}
-  url={cannonicalURL}
+  url={canonicalURL}
+  lang={entry.data.lang}
+  alternates={alternates}
+  schema={articleSchema}
 >
-  <BlogContent post={entry.data} id={entry.id}>
+  <BlogContent post={entry.data} id={normalizedId}>
     <Content />
   </BlogContent>
 </BlogLayout>

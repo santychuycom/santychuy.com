@@ -1,13 +1,41 @@
 ---
-import BaseLayout from '@layouts/Base.astro';
-import HomeContent from '@components/pages/Home/index.astro';
+import HomeContent from "@components/pages/Home/index.astro";
+import BaseLayout from "@layouts/Base.astro";
 
-const cannonicalURL = Astro.request.url;
+const siteURL = Astro.site ?? Astro.url;
+const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
+const pageDescription =
+	"Software engineer in Hermosillo, Mexico, with over 5 years of hands-on expertise. Sharing valuable content on my blog and fostering community growth.";
+
+const personSchema = {
+	"@context": "https://schema.org",
+	"@type": "Person",
+	name: "Santiago Carrasco",
+	alternateName: "Santychuy",
+	url: canonicalURL,
+	image: new URL("/imgs/profile.jpg", siteURL).toString(),
+	sameAs: ["https://github.com/santychuycom", "https://x.com/santychuy"],
+};
+
+const websiteSchema = {
+	"@context": "https://schema.org",
+	"@type": "WebSite",
+	name: "Santiago Carrasco (Santychuy)",
+	url: new URL("/", siteURL).toString(),
+	description: pageDescription,
+	publisher: {
+		"@type": "Person",
+		name: "Santiago Carrasco",
+	},
+	inLanguage: "en-US",
+};
 ---
 
 <BaseLayout
-  description="Software engineer in Hermosillo, Mexico, with over 5 years of hands-on expertise. Sharing valuable content on my blog and fostering community growth."
-  url={cannonicalURL}
+  description={pageDescription}
+  url={canonicalURL}
+  alternates={{ en: canonicalURL, 'x-default': canonicalURL }}
+  schema={[websiteSchema, personSchema]}
 >
   <HomeContent />
 </BaseLayout>
