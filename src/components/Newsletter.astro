@@ -1,53 +1,26 @@
 ---
-import InputText from '@components/common/inputs/InputText.astro';
-import ButtonIcon from '@components/common/ButtonIcon.astro';
-import SendIcon from '@components/icons/send.astro';
+import { MailSend02Icon } from "@hugeicons/core-free-icons";
+
+import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
+import { Input } from "@/components/ui/input";
 ---
 
-<div class="newsletter">
+<div class="mx-auto flex max-w-80 flex-col items-center gap-8 rounded-xl bg-primary/5 px-5 py-10 text-center">
   <h3>Suscribe to my newsletter</h3>
   <p>
     You’ll received my latest blog posts and articles related to frontend
-    development and many more. <b>No Spam!</b>
+    development and many more. <b class="underline">No Spam!</b>
   </p>
-  <form>
-    <InputText
+  <form class="flex w-full gap-2">
+    <Input
       type="email"
       placeholder="Coming soon..."
-      class="input"
+      className="h-10 flex-1 rounded-xl"
       disabled
     />
-    <ButtonIcon disabled variant="outlined">
-      <SendIcon />
-    </ButtonIcon>
+    <Button type="button" variant="outline" size="icon" className="size-10 rounded-xl" disabled>
+      <Icon icon={MailSend02Icon} size={18} />
+    </Button>
   </form>
 </div>
-
-<style>
-  .newsletter {
-    background-color: var(--primary---green--6--alpha--2);
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    border-radius: 0.8rem;
-    max-width: 320px;
-    text-align: center;
-    align-items: center;
-    padding-block: 40px;
-    padding-inline: 20px;
-
-    form {
-      display: flex;
-      gap: 8px;
-      width: 100%;
-    }
-
-    .input {
-      flex: 1;
-    }
-
-    b {
-      text-decoration: underline;
-    }
-  }
-</style>
