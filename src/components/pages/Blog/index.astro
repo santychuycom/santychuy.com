@@ -2,10 +2,8 @@
 export const prerender = false;
 
 import Badge from "@components/Badge.astro";
-import FacebookIcon from "@components/icons/facebook.astro";
-import CopyLinkIcon from "@components/icons/link.astro";
 import ViewsIcon from "@components/icons/views.astro";
-import XIcon from "@components/icons/x.astro";
+import ShareActions from "@components/pages/Blog/ShareActions";
 import type { Post } from "@schemas/post";
 
 interface Props {
@@ -56,15 +54,14 @@ const pubDate = post.pubDate;
   <img src={post.image} alt={post.image} class="blog-img" />
 
   <div class="content">
-    <aside class="aside-blog share-content">
-      <XIcon id="x-share" class="share-icon" />
-      <FacebookIcon id="facebook-share" class="share-icon" />
-      <CopyLinkIcon id="copy-link" class="share-icon" />
-    </aside>
+    <ShareActions title={title} layout="desktop" client:load />
 
     <div class="blog-content">
       <h1 class="title">{title}</h1>
       <p class="date"></p>
+      <div class="share-mobile">
+        <ShareActions title={title} layout="mobile" client:load />
+      </div>
 
       <div class="info-container">
         <div class="author-container">
@@ -129,17 +126,11 @@ const pubDate = post.pubDate;
     }
   }
 
-  .share-content {
-    gap: 36px;
-    padding-inline: 32px;
-  }
+  .share-mobile {
+    margin-block-start: 1rem;
 
-  .share-icon {
-    transition: fill 0.2s ease-in-out;
-
-    &:hover {
-      cursor: pointer;
-      fill: var(--primary---green--6);
+    @media screen and (min-width: 68.75rem) {
+      display: none;
     }
   }
 
@@ -207,7 +198,7 @@ const pubDate = post.pubDate;
   }
 </style>
 
-<script define:vars={{ title, pubDate }}>
+<script define:vars={{ pubDate }}>
   const date = new Date(pubDate);
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -220,34 +211,6 @@ const pubDate = post.pubDate;
     timeZone: tz,
   });
 
-  const currentUrl = window.location.href;
-
   const dateElement = document.querySelector('.date');
-
-  dateElement.textContent = `${formatted}`;
-
-  document.getElementById('copy-link')?.addEventListener('click', () => {
-    navigator.clipboard.writeText(currentUrl);
-    // TODO: Create own toast component
-    Toastify({
-      text: 'Link copied to clipboard! \u{1F517}',
-      gravity: 'bottom',
-      position: 'right',
-      duration: 2000,
-      style: {
-        background: 'var(--primary---blue--5)',
-        borderRadius: '8px',
-      },
-    }).showToast();
-  });
-
-  document.getElementById('facebook-share')?.addEventListener('click', () => {
-    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?display=popup&u=${currentUrl}`;
-    window.open(facebookUrl, '_blank');
-  });
-
-  document.getElementById('x-share')?.addEventListener('click', () => {
-    const twitterUrl = `https://twitter.com/intent/tweet?text=Check out this post: ${title}\n ${currentUrl}`;
-    window.open(twitterUrl, '_blank');
-  });
+  if (dateElement) dateElement.textContent = `${formatted}`;
 </script>
