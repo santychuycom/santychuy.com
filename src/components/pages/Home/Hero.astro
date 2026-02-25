@@ -1,55 +1,125 @@
----
-import { Image } from 'astro:assets';
-
-import ButtonGradient from '@components/common/ButtonGradient.astro';
----
-
-<section>
-  <Image
-    src="https://avatars.githubusercontent.com/u/28853786?v=4"
-    alt="Santychuy Image"
-    width="150"
-    height="150"
+<section class="hero" aria-labelledby="home-title">
+  <img
+    src="/imgs/profile.jpg"
+    alt="Portrait of Santiago Carrasco"
+    width="130"
+    height="130"
     class="img-avatar"
   />
-  <h1>Santiago Carrasco</h1>
-  <h2>Software Engineer from Hermosillo, MX</h2>
-  <a href="#latest-posts" title="Latest Post">
-    <ButtonGradient label="Read articles" />
-  </a>
+
+  <p class="eyebrow">Santiago Carrasco (Santychuy)</p>
+  <h1 id="home-title">Software engineer building practical AI experiences</h1>
+  <p class="lead">
+    I write about AI agents, modern web development, and what I learn while
+    building useful products.
+  </p>
+
+  <div class="actions">
+    <a class="primary-link" href="#latest-posts">Read latest posts</a>
+    <a class="secondary-link" href="#contact-me">Get in touch</a>
+  </div>
 </section>
 
 <style>
-  section {
+  .hero {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    height: calc(100dvh - 440px);
-    margin-block-end: 4rem;
+    gap: 1rem;
+    max-width: 52rem;
+    margin-inline: auto;
+    margin-block-end: 2rem;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset-inline: 15%;
+    inset-block-start: -1.8rem;
+    height: 13rem;
+    background: radial-gradient(
+      ellipse,
+      var(--primary---green--6--alpha--2) 0%,
+      transparent 70%
+    );
+    z-index: -1;
   }
 
   .img-avatar {
     border-radius: 50%;
-    border: 8px solid hsla(210, 53%, 6%, 40);
-    opacity: 0.6;
-    transition: opacity 0.1s ease-in-out;
+    border: 1px solid var(--primary---green--6--alpha);
+    box-shadow: var(--box-shadow-green);
+    object-fit: cover;
+  }
 
-    &:hover {
-      opacity: 1;
-    }
+  .eyebrow {
+    margin: 0;
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
+    color: var(--neutrals---black--6);
   }
 
   h1 {
-    font-size: clamp(3rem, 5vw + 1rem, 4.5rem);
-    line-height: 1.3;
-    margin-block-start: 28px;
-    margin-block-end: 8px;
-    background: linear-gradient(70deg, #1a2e84 0%, #9cd89f 80%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 300%;
-    background-clip: text;
-    animation: waving 4s ease-in-out infinite;
+    margin: 0;
+    max-width: 20ch;
+    line-height: 1.08;
+    font-size: clamp(2.1rem, 5vw, 3.8rem);
+    text-wrap: balance;
+  }
+
+  .lead {
+    margin: 0;
+    max-width: 60ch;
+    color: var(--neutrals---black--4);
+    font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+    line-height: 1.7;
+    text-wrap: pretty;
+  }
+
+  .actions {
+    margin-block-start: 0.8rem;
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .primary-link,
+  .secondary-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 0.62rem 1.05rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .primary-link {
+    background-color: var(--primary---green--6);
+    color: var(--neutrals---black--13);
+    border: 1px solid transparent;
+  }
+
+  .primary-link:hover {
+    transform: translateY(-1px);
+    background-color: var(--primary---green--5);
+  }
+
+  .secondary-link {
+    border: 1px solid var(--primary---green--6--alpha);
+    background-color: var(--main---background--alpha);
+    color: var(--neutrals---black--1);
+  }
+
+  .secondary-link:hover {
+    transform: translateY(-1px);
+    border-color: var(--primary---green--6);
   }
 </style>

@@ -1,90 +1,92 @@
 ---
 import { getCollection } from "astro:content";
 
-import Newsletter from "@components/Newsletter.astro";
 import PreviewPost from "@components/PreviewPost.astro";
 
 const allPosts = await getCollection("posts");
 const sortedDatePosts = allPosts?.sort(
 	(a, b) => Number(new Date(b.data.pubDate)) - Number(new Date(a.data.pubDate)),
 );
+const featuredPosts = sortedDatePosts.slice(0, 5);
 
 const normalizePostId = (id: string) =>
 	id.replace(/\.(md|mdx|markdown)$/i, "").replaceAll(".", "");
 ---
 
-<section class="content">
-  <div class="posts-container">
-    <h2 class="subtitle-section" id="latest-posts">Latest posts</h2>
-
-    {
-      sortedDatePosts ? (
-			sortedDatePosts.map(({ data, id }, i) => {
-				if (i < 5) {
-					const slug = normalizePostId(id);
-
-					return (
-						<PreviewPost
-							title={data.title}
-							description={data.description}
-							date={data.pubDate}
-							topics={data.categories}
-							slug={slug}
-						/>
-					);
-				}
-        })
-      ) : (
-        <h3 class="no-posts">No posts yet...</h3>
-      )
-    }
+<section class="latest-posts" aria-labelledby="latest-posts">
+  <div class="posts-heading">
+    <h2 class="subtitle-section" id="latest-posts">Latest writing</h2>
+    <p>
+      Recent posts on AI agents, software engineering, and personal growth
+      through building.
+    </p>
   </div>
 
-  <aside class="newsletter-aside">
-    <Newsletter />
-  </aside>
+  {
+    featuredPosts.length > 0 ? (
+      <div class="posts-list">
+        {featuredPosts.map(({ data, id }) => {
+          const slug = normalizePostId(id);
+
+          return (
+            <PreviewPost
+              title={data.title}
+              description={data.shortDesc}
+              date={data.pubDate}
+              topics={data.categories}
+              slug={slug}
+              lang={data.lang}
+            />
+          );
+        })}
+      </div>
+    ) : (
+      <h3 class="no-posts">New posts are on the way.</h3>
+    )
+  }
 </section>
 
 <style>
-  .content {
+  .latest-posts {
     display: flex;
     flex-direction: column;
-    gap: 7rem;
-    position: relative;
-
-    @media screen and (min-width: 68.75rem) {
-      flex-direction: row;
-      gap: 3rem;
-    }
+    gap: 2.2rem;
+    max-width: 66rem;
+    margin-inline: auto;
   }
 
-  .posts-container {
+  .posts-heading {
     display: flex;
     flex-direction: column;
-    gap: 5rem;
-
-    .subtitle-section {
-      color: var(--primary---green--6);
-    }
-
-    .no-posts {
-      font-size: clamp(1.5rem, 2vw, 2rem);
-    }
-
-    @media screen and (min-width: 68.75rem) {
-      flex-shrink: 999;
-      width: 50vw;
-      max-width: 720px;
-    }
+    gap: 0.7rem;
   }
 
-  .newsletter-aside {
-    height: fit-content;
-    margin-block-start: 7.5rem;
+  .subtitle-section {
+    color: var(--primary---green--6);
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    margin: 0;
+  }
 
-    @media screen and (min-width: 68.75rem) {
-      position: sticky;
-      top: 15%;
+  .posts-heading p {
+    margin: 0;
+    max-width: 62ch;
+    color: var(--neutrals---black--4);
+    font-size: 1rem;
+  }
+
+  .posts-list {
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  .no-posts {
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    margin: 0;
+  }
+
+  @media screen and (min-width: 68.75rem) {
+    .posts-list {
+      gap: 1.2rem;
     }
   }
 </style>

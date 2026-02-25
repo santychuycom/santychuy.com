@@ -55,19 +55,47 @@ const publishedDateLabel = new Intl.DateTimeFormat(
 		dateStyle: "long",
 	},
 ).format(post.pubDate);
+const updatedDateISO = post.updatedDate?.toISOString();
+const updatedDateLabel = post.updatedDate
+	? new Intl.DateTimeFormat(post.lang === "es" ? "es-MX" : "en-US", {
+			dateStyle: "long",
+		}).format(post.updatedDate)
+	: null;
+const publishedLabel = post.lang === "es" ? "Publicado" : "Published";
+const updatedLabel = post.lang === "es" ? "Actualizado" : "Updated";
+const shareLabel = post.lang === "es" ? "Compartir" : "Share";
+const readsLabel = post.lang === "es" ? "lecturas" : "reads";
 ---
 
-<article>
+<article class="post-article">
   <img src={post.image} alt={post.imageAlt} class="blog-img" />
 
   <div class="content">
-    <ShareActions title={title} layout="desktop" client:load />
-
     <div class="blog-content">
       <h1 class="title">{title}</h1>
-      <time class="date" datetime={publishedDateISO}>{publishedDateLabel}</time>
+
+      {post.shortDesc && <p class="short-desc">{post.shortDesc}</p>}
+
+      <div class="date-block">
+        <p class="date-item">
+          <span>{publishedLabel}</span>
+          <time class="date" datetime={publishedDateISO}>{publishedDateLabel}</time>
+        </p>
+
+        {
+          updatedDateLabel && updatedDateISO && (
+            <p class="date-item">
+              <span>{updatedLabel}</span>
+              <time class="date" datetime={updatedDateISO}>{updatedDateLabel}</time>
+            </p>
+          )
+        }
+      </div>
+
       <div class="share-mobile">
+        <p>{shareLabel}</p>
         <ShareActions title={title} layout="mobile" client:load />
+        <p class="reads-mobile">{views} {readsLabel}</p>
       </div>
 
       <div class="info-container">
@@ -87,84 +115,156 @@ const publishedDateLabel = new Intl.DateTimeFormat(
       <slot />
     </div>
 
-    <span class="aside-blog views-content">
-      <ViewsIcon />
-      <span class="views">{views}</span>
-    </span>
+    <aside class="utility-column" aria-label="Article actions">
+      <ShareActions title={title} layout="desktop" client:load />
+      <span class="views-content">
+        <ViewsIcon />
+        <span class="views">{views}</span>
+      </span>
+    </aside>
   </div>
 </article>
 
 <style>
+  .post-article {
+    max-width: 75rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+
+    @media screen and (min-width: 34.375rem) {
+      padding-inline: 1.5rem;
+    }
+  }
+
   .blog-img {
     width: 100%;
     object-fit: cover;
-    margin-block-end: 50px;
+    margin-block-end: 2.8rem;
+    border-radius: 1rem;
+    border: 1px solid var(--primary---green--10--alpha--2);
 
     @media screen and (min-width: 68.75rem) {
       aspect-ratio: 16 / 8;
-      margin-block-end: 80px;
+      margin-block-end: 4rem;
     }
   }
 
   .content {
     position: relative;
     display: flex;
-    gap: 2rem;
+    gap: 1.2rem;
 
     @media screen and (min-width: 68.75rem) {
-      gap: 110px;
+      align-items: flex-start;
+      gap: 2.5rem;
     }
   }
 
-  .aside-blog {
-    display: none;
-    background-color: var(--primary---green--10--alpha);
-    align-items: center;
-    position: sticky;
-    top: 100px;
-    flex-direction: column;
-    width: 100px;
-    height: fit-content;
-    border-radius: 12px;
-    padding-block: 38px;
+  .blog-content {
+    flex: 1;
+    min-width: 0;
+    max-width: 44rem;
+    margin-inline: auto;
+  }
 
-    @media screen and (min-width: 68.75rem) {
-      display: flex;
+  .title {
+    margin-block-end: 0.8rem;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  .short-desc {
+    margin: 0;
+    font-size: clamp(1.05rem, 2.3vw, 1.25rem);
+    color: var(--neutrals---black--4);
+    line-height: 1.7;
+  }
+
+  .date-block {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    margin-block-start: 1rem;
+
+    .date-item {
+      margin: 0;
+      display: inline-flex;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      color: var(--neutrals---black--6);
+    }
+
+    .date {
+      color: var(--neutrals---black--4);
     }
   }
 
   .share-mobile {
-    margin-block-start: 1rem;
+    margin-block-start: 1.15rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+
+    p {
+      margin: 0;
+      color: var(--neutrals---black--6);
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .reads-mobile {
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 0.92rem;
+      color: var(--neutrals---black--5);
+    }
 
     @media screen and (min-width: 68.75rem) {
       display: none;
     }
   }
 
-  .views-content {
-    gap: 14px;
-    padding-inline: 8px;
+  .utility-column {
+    display: none;
 
-    span {
-      font-weight: 500;
+    @media screen and (min-width: 68.75rem) {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      align-items: center;
+      position: sticky;
+      top: 6rem;
     }
   }
 
-  .blog-content {
-    flex: 1;
+  .views-content {
+    display: none;
 
-    .date {
-      color: var(--neutrals---black--7);
-      margin-block-start: 0.5rem;
-      margin-block-end: 0;
+    @media screen and (min-width: 68.75rem) {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background-color: var(--primary---green--10--alpha--2);
+      border: 1px solid var(--primary---green--10--alpha--2);
+      border-radius: 999px;
+      padding: 0.4rem 0.65rem;
+      color: var(--neutrals---black--4);
+      font-size: 0.85rem;
+      font-weight: 600;
     }
+  }
+
+  .views {
+    line-height: 1;
   }
 
   .info-container {
     display: flex;
     flex-direction: column;
-    margin-block-start: 28px;
-    margin-block-end: 60px;
+    margin-block-start: 1.6rem;
+    margin-block-end: 2.4rem;
     gap: 1rem;
 
     @media screen and (min-width: 68.75rem) {
@@ -172,17 +272,18 @@ const publishedDateLabel = new Intl.DateTimeFormat(
     }
   }
 
-  .author-container {
+    .author-container {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
 
     .author-img {
-      width: 70px;
-      height: 70px;
+      width: 3rem;
+      height: 3rem;
       border-radius: 50%;
       object-fit: cover;
       margin-block-start: 0;
+      border: 1px solid var(--primary---green--10--alpha--2);
     }
 
     .author-name {

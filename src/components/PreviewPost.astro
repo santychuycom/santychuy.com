@@ -1,22 +1,31 @@
 ---
-import ArrowUpRight from './icons/arrow-up-right.astro';
-
-import Badge from './Badge.astro';
+import Badge from "./Badge.astro";
+import ArrowUpRight from "./icons/arrow-up-right.astro";
 
 interface Props {
-  title: string;
-  date: Date;
-  description: string;
-  topics: string[];
-  slug: string;
+	title: string;
+	date: Date;
+	description: string;
+	topics: string[];
+	slug: string;
+	lang?: "en" | "es";
 }
 
-const { title, date, description, topics, slug } = Astro.props;
+const { title, date, description, topics, slug, lang = "en" } = Astro.props;
+const dateLabel = new Intl.DateTimeFormat(lang === "es" ? "es-MX" : "en-US", {
+	dateStyle: "medium",
+}).format(date);
+const readLabel = lang === "es" ? "Leer articulo" : "Read article";
 ---
 
 <article class="post">
-  <h2>{title}</h2>
-  <p class="date" id={`#${title}`}></p>
+  <p class="date">
+    <time datetime={date.toISOString()}>{dateLabel}</time>
+  </p>
+
+  <h3>
+    <a class="post-link" href={`/blog/${slug}`}>{title}</a>
+  </h3>
 
   <p class="description">
     {description}
@@ -26,12 +35,9 @@ const { title, date, description, topics, slug } = Astro.props;
     {topics.map((topic) => <Badge title={topic} />)}
   </div>
 
-  <!-- TODO: Refactor this button variant -->
-  <a href={`/blog/${slug}`}>
-    <button class="read-button"
-      >Read more
-      <ArrowUpRight class="read-arrow" />
-    </button>
+  <a class="read-link" href={`/blog/${slug}`}>
+    {readLabel}
+    <ArrowUpRight class="read-arrow" />
   </a>
 </article>
 
@@ -39,61 +45,72 @@ const { title, date, description, topics, slug } = Astro.props;
   .post {
     display: flex;
     flex-direction: column;
+    gap: 0.8rem;
+    padding: 1.25rem;
+    border-radius: 1rem;
+    border: 1px solid var(--primary---green--10--alpha--2);
+    background-color: var(--main---background--alpha);
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary---green--6--alpha);
+    }
+
+    h3 {
+      margin: 0;
+      font-size: clamp(1.3rem, 2vw, 1.6rem);
+      line-height: 1.2;
+    }
 
     .date {
       color: var(--neutrals---black--7);
-      margin-block-start: 4px;
+      margin: 0;
+      font-size: 0.9rem;
     }
 
     .description {
       font-weight: 500;
-      margin-block: 12px;
+      color: var(--neutrals---black--3);
+      margin: 0;
+      line-height: 1.65;
     }
 
     .badges-container {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 0.8rem;
+      gap: 0.55rem;
+      margin-block-start: 0.3rem;
     }
 
-    .read-button {
+    .post-link {
       color: var(--neutrals---black--1);
-      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .read-link {
+      color: var(--neutrals---black--1);
       font-weight: 700;
-      background-color: transparent;
-      border: none;
       display: flex;
       flex-direction: row;
       gap: 4px;
       align-items: center;
-      max-width: 160px;
-      margin-block-start: 24px;
+      width: fit-content;
+      margin-block-start: 0.8rem;
+      text-decoration: none;
 
       .read-arrow {
         rotate: 225deg;
         transition: transform 0.2s ease;
       }
 
-      &:hover .read-arrow {
-        transform: translateY(4px);
+      &:hover .read-arrow,
+      &:focus-visible .read-arrow {
+        transform: translate(2px, 2px);
       }
     }
   }
 </style>
-
-<script define:vars={{ date, title }}>
-  const pubDate = new Date(date);
-  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-  const formattedDate = pubDate.toLocaleDateString(undefined, {
-    day: 'numeric',
-    month: 'numeric',
-    year: 'numeric',
-    timeZone: tz,
-  });
-
-  const dateElement = document.getElementById(`#${title}`);
-
-  dateElement.textContent = `${formattedDate}`;
-</script>
