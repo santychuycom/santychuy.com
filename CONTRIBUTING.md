@@ -34,11 +34,12 @@ There are several ways you can contribute to Santychuy.com:
 
    a. Install dependencies
 
-   - Execute `pnpm install` to install the necessary dependencies
+   - Execute `bun install` to install the necessary dependencies
 
-   b. Install extensions **(optional)**
+   b. Blog post editing tool **(recommended)**
 
-   - If you're going to visualize or collaborate to write a new blog post, install on **VSCode** the extension [Front Matter](https://marketplace.visualstudio.com/items?itemName=eliostruyf.vscode-front-matter)
+   - You can always edit markdown files manually, but we recommend using **Astro Editor** for blog posts.
+   - Astro Editor gives you a visual metadata form (title, date, description, categories, image, etc.) based on the schema.
 
 2. Start working
 
@@ -49,7 +50,7 @@ There are several ways you can contribute to Santychuy.com:
 
    - Work on your implementation/changes
 
-   - Test your changes on your local machine: `pnpm dev`
+   - Test your changes on your local machine: `bun dev`
 
    - Commit your changes and push your fork to Github `git push origin type/name-branch`
 
@@ -58,3 +59,19 @@ There are several ways you can contribute to Santychuy.com:
 ## Thank you
 
 Thank you for contributing to Santychuy.com! Your support helps make this project even better.
+
+## Writing blog posts with Astro Editor (recommended)
+
+If you want to create or edit blog content, this is the recommended workflow:
+
+1. Open the repository folder in Astro Editor.
+2. Start the local website in parallel with `bun dev`.
+3. In Astro Editor, open files from `src/content/posts/`.
+4. Edit both markdown content and metadata from the right sidebar.
+5. Save your changes and refresh the browser preview to verify the result.
+6. Commit and open your PR once everything looks correct.
+
+Notes:
+
+- Metadata fields are generated from `src/schemas/post.ts` through `src/content/config.ts`.
+- If a new/updated field does not appear in Astro Editor, run `bunx astro sync` once and reopen the project.

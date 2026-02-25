@@ -2,6 +2,7 @@
 paths:
   - 'src/content/posts/**'
   - 'src/schemas/post.ts'
+  - 'content.config.ts'
   - 'src/content/config.ts'
 ---
 
@@ -44,3 +45,4 @@ categories:
 - The Zod schema in `src/schemas/post.ts` validates all frontmatter at build time.
 - If modifying the schema, ensure all existing posts still pass validation.
 - Content collection config in `src/content/config.ts` maps collections to their schemas.
+- `content.config.ts` re-exports collections for Astro compatibility.

@@ -39,6 +39,13 @@ Astro Content Collections are configured in `src/content/config.ts`. This provid
 - Automatic TypeScript types for blog post data.
 - Collection querying APIs (`getCollection`, `getEntry`).
 
+### Visual Editing (Astro Editor)
+
+- Astro Editor is the default visual editor for blog posts.
+- Open the repository folder in Astro Editor and work directly with files in `src/content/posts/`.
+- Frontmatter fields are generated from `src/schemas/post.ts` through `src/content/config.ts`.
+- Keep `bun dev` running while writing to preview changes locally in the browser.
+
 ### RSS Feed
 
 - Generated at `/feed.xml` via `src/pages/feed.xml.js`.
@@ -62,5 +69,5 @@ Astro Content Collections are configured in `src/content/config.ts`. This provid
 ### v2 Content Goals
 
 - Support both English and Spanish versions of posts (see i18n-strategy.md).
-- Evaluate Front Matter CMS integration for visual editing (config exists in `frontmatter.json`).
+- Keep Astro Editor workflow smooth and aligned with schema changes.
 - Explore interactive components within blog posts (future scope).
