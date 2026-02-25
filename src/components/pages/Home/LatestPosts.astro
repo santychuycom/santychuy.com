@@ -8,6 +8,9 @@ const allPosts = await getCollection("posts");
 const sortedDatePosts = allPosts?.sort(
 	(a, b) => Number(new Date(b.data.pubDate)) - Number(new Date(a.data.pubDate)),
 );
+
+const normalizePostId = (id: string) =>
+	id.replace(/\.(md|mdx|markdown)$/i, "").replaceAll(".", "");
 ---
 
 <section class="content">
@@ -16,18 +19,20 @@ const sortedDatePosts = allPosts?.sort(
 
     {
       sortedDatePosts ? (
-        sortedDatePosts.map(({ data, id }, i) => {
-          if (i < 5) {
-            return (
-              <PreviewPost
-                title={data.title}
-                description={data.description}
-                date={data.pubDate}
-                topics={data.categories}
-                slug={id}
-              />
-            );
-          }
+			sortedDatePosts.map(({ data, id }, i) => {
+				if (i < 5) {
+					const slug = normalizePostId(id);
+
+					return (
+						<PreviewPost
+							title={data.title}
+							description={data.description}
+							date={data.pubDate}
+							topics={data.categories}
+							slug={slug}
+						/>
+					);
+				}
         })
       ) : (
         <h3 class="no-posts">No posts yet...</h3>

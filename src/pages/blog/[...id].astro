@@ -9,9 +9,15 @@ const { id } = Astro.params;
 
 if (id === undefined) return Astro.redirect("/404");
 
-const entry = await getEntry("posts", id);
+const normalizedId = id
+	.replace(/\.(md|mdx|markdown)$/i, "")
+	.replaceAll(".", "");
+
+const entry = await getEntry("posts", normalizedId);
 
 if (entry === undefined) return Astro.redirect("/404");
+
+if (id !== normalizedId) return Astro.redirect(`/blog/${normalizedId}`, 301);
 
 const cannonicalURL = Astro.request.url;
 const imageURL = `${new URL(cannonicalURL).origin}${entry.data.image}`;
