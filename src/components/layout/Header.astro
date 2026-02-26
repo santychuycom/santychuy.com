@@ -1,111 +1,63 @@
 ---
-import Github from "@components/icons/github.astro";
-import Linkedin from "@components/icons/linkedin.astro";
 import SantychuyLogo from "@components/icons/santychuyISO.astro";
-import X from "@components/icons/x.astro";
-import Youtube from "@components/icons/youtube.astro";
 ---
 
-<header>
-  <a href="/" class="logo-link">
+<header class="site-header">
+  <a href="/" class="logo-link" aria-label="Go to homepage">
     <SantychuyLogo class="logo" />
-  </a>
-
-  <span></span>
-  <a
-    href="https://youtube.com/@santychuy_dev"
-    target="_blank"
-    rel="noopener"
-    title="YouTube Channel"
-  >
-    <Youtube class="social-icon" />
-  </a>
-  <a
-    href="https://github.com/santychuy"
-    target="_blank"
-    rel="noopener"
-    title="Github Profile"
-  >
-    <Github class="social-icon" />
-  </a>
-  <a
-    href="https://x.com/santychuy_dev"
-    target="_blank"
-    rel="noopener"
-    title="X (Twitter) Profile"
-  >
-    <X class="x-icon" />
-  </a>
-  <a
-    href="https://linkedin.com/in/santiagocarrascocampa"
-    target="_blank"
-    rel="noopener"
-    title="Linkedin Profile"
-  >
-    <Linkedin class="social-icon" />
   </a>
 </header>
 
 <style>
-  header {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
+  .site-header {
+    width: min(
+      var(--layout-shell-max-width),
+      calc(100% - var(--layout-shell-edge-mobile))
+    );
     margin-inline: auto;
-    gap: 1.4rem;
-    padding-block: 1.5rem;
-    padding-inline: 1.5rem;
+    padding-block: var(--space-5);
+    border-bottom: var(--border-width-default) solid var(--border-subtle);
 
     @media screen and (min-width: 34.375rem) {
-      gap: 2rem;
-      padding-inline: 2rem;
+      width: min(
+        var(--layout-shell-max-width),
+        calc(100% - var(--layout-shell-edge-tablet))
+      );
     }
 
     @media screen and (min-width: 68.75rem) {
-      padding-block: 3rem;
+      padding-block: var(--space-6);
     }
-  }
-
-  a {
-    text-decoration: none;
   }
 
   .logo-link {
-    margin-right: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--shape-radius-pill);
+    color: var(--text-primary);
+    transition:
+      transform var(--motion-duration-base) var(--motion-ease-standard),
+      color var(--motion-duration-base) var(--motion-ease-standard);
+
+    &:hover,
+    &:focus-visible {
+      transform: translateY(calc(var(--motion-translate-xs) * -1));
+      color: var(--paper-accent);
+    }
+
+    &:focus-visible {
+      outline: var(--focus-outline-width) solid var(--focus-ring);
+      outline-offset: var(--focus-outline-offset-sm);
+    }
   }
 
   .logo {
-    width: 60px;
+    width: var(--brand-logo-size);
+    height: auto;
 
     @media screen and (min-width: 68.75rem) {
-      width: 80px;
+      width: var(--brand-logo-size-desktop);
     }
-  }
-
-  .social-icon {
-    width: 30px;
-    height: 30px;
-    transition: fill 0.2s ease-in-out;
-
-    &:hover {
-      fill: var(--primary---green--6);
-    }
-
-    @media screen and (min-width: 68.75rem) {
-      width: 32px;
-      height: 32px;
-    }
-  }
-
-  .x-icon {
-    width: 28px;
-    height: 28px;
-  }
-
-  span {
-    width: 1px;
-    height: 30px;
-    background-color: var(--primary---green--10);
   }
 </style>

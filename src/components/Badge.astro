@@ -1,7 +1,7 @@
 ---
 interface Props {
-  title: string;
-  className?: string;
+	title: string;
+	className?: string;
 }
 
 const { title, className } = Astro.props;
@@ -13,11 +13,15 @@ const { title, className } = Astro.props;
 
 <style>
   .badge {
-    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
-    background-color: var(--primary---green--6--alpha);
-    border-radius: 20px;
-    padding-block: 8px;
-    padding-inline: 12px;
+    font-size: var(--font-size-xs);
+    line-height: var(--leading-tight);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary);
+    background-color: var(--paper-accent-soft);
+    border: var(--border-width-default) solid var(--border-strong);
+    border-radius: var(--shape-radius-pill);
+    padding-block: var(--space-1);
+    padding-inline: var(--space-2);
     width: fit-content;
   }
 </style>

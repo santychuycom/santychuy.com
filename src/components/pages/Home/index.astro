@@ -1,80 +1,288 @@
 ---
-import HeroSection from "./Hero.astro";
-import LatestPostsSection from "./LatestPosts.astro";
+import { getCollection } from "astro:content";
 
-const quickFacts = [
-	{ label: "Role", value: "Software Engineer" },
-	{ label: "Based in", value: "Hermosillo, Mexico" },
-	{ label: "Focus", value: "AI agents, web platforms, and DX" },
-	{ label: "Currently", value: "Building and documenting santychuy.com v2" },
+import PreviewPost from "@components/PreviewPost.astro";
+
+const allPosts = await getCollection("posts");
+const sortedPosts = allPosts.sort(
+	(a, b) => Number(new Date(b.data.pubDate)) - Number(new Date(a.data.pubDate)),
+);
+const latestPosts = sortedPosts.slice(0, 3);
+
+const normalizePostId = (id: string) =>
+	id.replace(/\.(md|mdx|markdown)$/i, "").replaceAll(".", "");
+
+const currentFocus = [
+	"Redesigning santychuy.com with a layer-by-layer workflow",
+	"Documenting practical AI agent patterns through real projects",
+	"Publishing bilingual long-form writing (English and Spanish)",
 ];
 ---
 
-<>
-  <HeroSection />
+<div class="home-layer">
+  <section class="intro" aria-label="Intro">
+    <p class="intro-line">Hello, I am Santiago Carrasco from Hermosillo, Mexico.</p>
+  </section>
 
-  <section class="quick-context" aria-labelledby="quick-context-title">
-    <h2 class="quick-context-title" id="quick-context-title">Quick context</h2>
-    <ul class="facts-list">
+  <section class="hero" aria-labelledby="home-title">
+    <h1 id="home-title">Software engineer building practical AI experiences.</h1>
+    <p class="hero-lead">
+      This space is being redesigned in public. Each layer adds clarity, better
+      writing flow, and a cleaner reading experience.
+    </p>
+  </section>
+
+  <section class="currently-building" aria-labelledby="currently-building-title">
+    <h2 id="currently-building-title">Currently building</h2>
+    <ul>
       {
-        quickFacts.map((fact) => (
-          <li class="fact-item">
-            <span class="fact-label">{fact.label}</span>
-            <span class="fact-value">{fact.value}</span>
-          </li>
+        currentFocus.map((item) => (
+          <li>{item}</li>
         ))
       }
     </ul>
   </section>
 
-  <LatestPostsSection />
-</>
+  <section class="latest-posts" aria-labelledby="latest-posts-title" id="latest-posts">
+    <div class="latest-heading">
+      <h2 id="latest-posts-title">Latest posts</h2>
+      <a href="/feed.xml">RSS</a>
+    </div>
+
+    {
+      latestPosts.length > 0 ? (
+        <div class="posts-list">
+          {latestPosts.map(({ data, id }) => {
+            const slug = normalizePostId(id);
+
+            return (
+              <PreviewPost
+                title={data.title}
+                description={data.shortDesc}
+                date={data.pubDate}
+                topics={data.categories}
+                slug={slug}
+                lang={data.lang}
+              />
+            );
+          })}
+        </div>
+      ) : (
+        <p class="empty-posts">New posts are on the way.</p>
+      )
+    }
+  </section>
+</div>
 
 <style>
-  .quick-context {
+  .home-layer {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    max-width: 66rem;
-    margin-inline: auto;
-  }
+    gap: var(--layout-section-gap);
 
-  .quick-context-title {
-    font-size: clamp(1.3rem, 1.6vw, 1.7rem);
-    color: var(--primary---green--6);
-  }
+    section {
+      opacity: 0;
+      animation: reveal-up var(--motion-duration-reveal)
+        var(--motion-ease-standard) forwards;
+    }
 
-  .facts-list {
-    list-style: none;
-    display: grid;
-    gap: 0.9rem;
-    padding: 0;
-    margin: 0;
+    section:nth-child(2) {
+      animation-delay: calc(var(--motion-delay-step) + var(--motion-delay-offset));
+    }
 
-    @media screen and (min-width: 48rem) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    section:nth-child(3) {
+      animation-delay: calc(var(--motion-delay-step) * 2);
+    }
+
+    section:nth-child(4) {
+      animation-delay: calc(var(--motion-delay-step) * 3 - var(--motion-delay-offset));
     }
   }
 
-  .fact-item {
+  .intro {
+    border-bottom: var(--border-width-default) solid var(--border-subtle);
+    padding-block-end: var(--space-5);
+  }
+
+  .intro-line {
+    margin: 0;
+    max-width: var(--reading-max-width);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    letter-spacing: 0.01em;
+    line-height: var(--leading-copy-compact);
+  }
+
+  .hero {
+    max-width: var(--measure-hero-max);
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    padding: 1rem 1.1rem;
-    border: 1px solid var(--primary---green--10--alpha--2);
-    border-radius: 0.9rem;
-    background-color: var(--main---background--alpha);
+    gap: var(--space-5);
+
+    h1 {
+      margin: 0;
+      font-size: var(--font-size-hero);
+      line-height: var(--leading-tight);
+      text-wrap: pretty;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
   }
 
-  .fact-label {
-    font-size: 0.88rem;
-    color: var(--neutrals---black--7);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+  .hero-lead {
+    margin: 0;
+    max-width: var(--reading-max-width);
+    color: var(--text-secondary);
+    font-size: var(--font-size-lg);
+    line-height: var(--leading-copy);
+    text-wrap: pretty;
   }
 
-  .fact-value {
-    font-size: 1rem;
-    color: var(--neutrals---black--2);
+  .currently-building {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: var(--measure-section-max);
+
+    h2 {
+      margin: 0;
+      font-size: var(--font-size-xl);
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      line-height: var(--leading-heading);
+    }
+
+    ul {
+      margin: 0;
+      padding-inline-start: var(--space-5);
+      list-style: disc;
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    li {
+      color: var(--text-secondary);
+      line-height: var(--leading-copy);
+
+      &::marker {
+        color: var(--paper-accent);
+      }
+    }
+  }
+
+  .latest-posts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7);
+  }
+
+  .latest-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    border-bottom: var(--border-width-default) solid var(--border-subtle);
+    padding-block-end: var(--space-4);
+
+    h2 {
+      margin: 0;
+      font-size: var(--font-size-xl);
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      line-height: var(--leading-heading);
+    }
+
+    a {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+      text-decoration: underline;
+      text-underline-offset: var(--space-1);
+      min-height: var(--touch-target-min);
+      display: inline-flex;
+      align-items: center;
+      padding-inline: var(--space-2);
+
+      &:focus-visible {
+        outline-offset: var(--focus-outline-offset-md);
+      }
+    }
+  }
+
+  .posts-list {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .empty-posts {
+    margin: 0;
+    color: var(--text-secondary);
+  }
+
+  @keyframes reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(var(--motion-translate-sm));
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-layer section {
+      animation: none;
+      opacity: 1;
+    }
+  }
+
+  @media screen and (min-width: 68.75rem) {
+    .home-layer {
+      gap: var(--layout-section-gap);
+    }
+
+    .posts-list {
+      gap: var(--space-6);
+    }
+  }
+
+  @media screen and (max-width: 34.374rem) {
+    .home-layer {
+      gap: var(--layout-section-gap-mobile);
+    }
+
+    .intro {
+      padding-block-end: var(--space-4);
+    }
+
+    .intro-line {
+      line-height: var(--leading-copy-compact);
+    }
+
+    .hero h1 {
+      font-size: var(--font-size-hero-mobile);
+      line-height: var(--leading-hero-mobile);
+    }
+
+    .hero-lead {
+      line-height: var(--leading-copy-compact);
+    }
+
+    .currently-building {
+      gap: var(--space-3);
+    }
+
+    .currently-building ul {
+      gap: var(--space-3);
+    }
+
+    .latest-posts {
+      gap: var(--space-6);
+    }
+
+    .latest-heading {
+      align-items: flex-end;
+    }
   }
 </style>

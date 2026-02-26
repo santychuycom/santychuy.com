@@ -5,9 +5,6 @@ import "@styles/globals.css";
 import "@styles/animations.css";
 
 import { ViewTransitions } from "astro:transitions";
-
-import Background from "@components/Background.astro";
-import Contact from "@components/layout/Contact.astro";
 import Footer from "@components/layout/Footer.astro";
 import Header from "@components/layout/Header.astro";
 
@@ -126,19 +123,29 @@ const hreflangAlternates = {
     <main>
       <slot />
     </main>
-    <Contact />
     <Footer />
-    <Background />
+
     <style>
+      body {
+        min-height: 100svh;
+      }
+
       main {
-        display: flex;
-        flex-direction: column;
+        width: min(var(--layout-max-width), 100%);
+        margin-inline: auto;
+        padding: var(--layout-main-padding-top) var(--layout-gutter-mobile)
+          var(--layout-main-padding-bottom);
         flex: 1;
-        padding-block: 120px;
-        gap: 10rem;
+        position: relative;
+
+        @media screen and (min-width: 34.375rem) {
+          padding-inline: var(--layout-gutter-tablet);
+        }
 
         @media screen and (min-width: 68.75rem) {
-          padding-inline: 4rem;
+          padding-block: var(--layout-main-padding-top-desktop)
+            var(--layout-main-padding-bottom-desktop);
+          padding-inline: var(--layout-gutter-desktop);
         }
       }
     </style>
