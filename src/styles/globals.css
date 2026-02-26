@@ -166,37 +166,75 @@ svg {
 }
 
 .dark {
-	--background: hsl(229deg, 72%, 4%);
-	--foreground: var(--neutrals---black--1);
-	--card: hsl(229deg, 62%, 7%);
-	--card-foreground: var(--neutrals---black--1);
-	--popover: hsl(229deg, 64%, 8%);
-	--popover-foreground: var(--neutrals---black--1);
-	--primary: var(--primary---green--9);
-	--primary-foreground: var(--neutrals---black--1);
-	--secondary: var(--primary---blue--9);
-	--secondary-foreground: var(--neutrals---black--1);
-	--muted: var(--secondary---dark--green--8);
-	--muted-foreground: var(--neutrals---black--5);
-	--accent: var(--primary---green--10--alpha--2);
-	--accent-foreground: var(--neutrals---black--2);
+	--paper-background: hsl(228deg, 32%, 9%);
+	--paper-surface: hsl(228deg, 24%, 13%);
+	--paper-ink: hsl(43deg, 33%, 92%);
+	--paper-muted: hsl(42deg, 18%, 76%);
+	--paper-line: hsl(226deg, 20%, 31%);
+	--paper-accent: hsl(123deg, 36%, 58%);
+	--paper-accent-soft: hsla(123deg, 36%, 58%, 0.16);
+
+	--text-primary: var(--paper-ink);
+	--text-secondary: var(--paper-muted);
+	--text-tertiary: hsla(42deg, 18%, 76%, 0.78);
+	--surface-base: var(--paper-background);
+	--surface-elevated: var(--paper-surface);
+	--surface-muted: hsla(123deg, 36%, 58%, 0.12);
+	--border-subtle: var(--paper-line);
+	--border-strong: hsla(42deg, 18%, 76%, 0.36);
+	--focus-ring: hsla(123deg, 36%, 58%, 0.58);
+	--focus-ring-soft: hsla(123deg, 36%, 58%, 0.24);
+
+	--background: var(--surface-base);
+	--foreground: var(--text-primary);
+	--card: var(--surface-elevated);
+	--card-foreground: var(--text-primary);
+	--popover: var(--surface-elevated);
+	--popover-foreground: var(--text-primary);
+	--primary: var(--paper-accent);
+	--primary-foreground: var(--surface-elevated);
+	--secondary: hsl(226deg, 28%, 20%);
+	--secondary-foreground: var(--text-primary);
+	--muted: var(--surface-muted);
+	--muted-foreground: var(--text-secondary);
+	--accent: var(--paper-accent-soft);
+	--accent-foreground: var(--text-primary);
 	--destructive: var(--supporting---error--7);
-	--border: hsl(0deg, 0%, 100%, 0.16);
-	--input: hsl(0deg, 0%, 100%, 0.09);
-	--ring: var(--primary---green--6);
-	--chart-1: var(--primary---green--6);
+	--border: var(--border-subtle);
+	--input: var(--surface-elevated);
+	--ring: var(--paper-accent);
+	--chart-1: var(--paper-accent);
 	--chart-2: var(--primary---blue--5);
 	--chart-3: var(--secondary---dark--purple--3);
 	--chart-4: var(--secondary---dark--fiusha--4);
 	--chart-5: var(--supporting---warning--6);
-	--sidebar: hsl(229deg, 64%, 7%);
-	--sidebar-foreground: var(--neutrals---black--1);
-	--sidebar-primary: var(--primary---green--9);
-	--sidebar-primary-foreground: var(--neutrals---black--1);
-	--sidebar-accent: var(--primary---green--10--alpha--2);
-	--sidebar-accent-foreground: var(--neutrals---black--2);
-	--sidebar-border: hsl(0deg, 0%, 100%, 0.14);
-	--sidebar-ring: var(--primary---green--6);
+	--sidebar: var(--surface-elevated);
+	--sidebar-foreground: var(--text-primary);
+	--sidebar-primary: var(--paper-accent);
+	--sidebar-primary-foreground: var(--surface-elevated);
+	--sidebar-accent: var(--paper-accent-soft);
+	--sidebar-accent-foreground: var(--text-primary);
+	--sidebar-border: var(--border-subtle);
+	--sidebar-ring: var(--paper-accent);
+}
+
+.dark body {
+	background-image:
+		radial-gradient(
+			1200px 600px at 8% -15%,
+			hsla(var(--paper-accent-hsl), 0.18) 0%,
+			transparent 65%
+		),
+		radial-gradient(
+			900px 460px at 96% -10%,
+			hsla(220deg, 35%, 35%, 0.25) 0%,
+			transparent 62%
+		),
+		linear-gradient(
+			180deg,
+			hsla(var(--paper-surface-hsl), 0.36) 0%,
+			transparent 36%
+		);
 }
 
 @layer base {

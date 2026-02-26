@@ -6,10 +6,26 @@ import SantychuyLogo from "@components/icons/santychuyISO.astro";
   <a href="/" class="logo-link" aria-label="Go to homepage">
     <SantychuyLogo class="logo" />
   </a>
+
+  <button
+    class="theme-toggle"
+    type="button"
+    data-theme-toggle
+    data-theme="light"
+    aria-label="Switch to dark mode"
+    aria-pressed="false"
+  >
+    <span class="theme-indicator" aria-hidden="true"></span>
+    <span data-theme-label>Light</span>
+  </button>
 </header>
 
 <style>
   .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
     width: min(
       var(--layout-shell-max-width),
       calc(100% - var(--layout-shell-edge-mobile))
@@ -28,6 +44,57 @@ import SantychuyLogo from "@components/icons/santychuyISO.astro";
     @media screen and (min-width: 68.75rem) {
       padding-block: var(--space-6);
     }
+  }
+
+  .theme-toggle {
+    min-height: var(--touch-target-min);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    border: var(--border-width-default) solid var(--border-subtle);
+    border-radius: var(--shape-radius-pill);
+    background-color: var(--surface-elevated);
+    color: var(--text-secondary);
+    padding-inline: var(--space-4);
+    padding-block: var(--space-2);
+    font-size: var(--font-size-sm);
+    line-height: var(--leading-tight);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition:
+      color var(--motion-duration-base) var(--motion-ease-standard),
+      border-color var(--motion-duration-base) var(--motion-ease-standard),
+      transform var(--motion-duration-base) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-base) var(--motion-ease-standard);
+
+    &:hover {
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+      transform: translateY(calc(var(--motion-translate-xs) * -1));
+      box-shadow: var(--elevation-1);
+    }
+
+    &:focus-visible {
+      outline: var(--focus-outline-width) solid var(--focus-ring);
+      outline-offset: var(--focus-outline-offset-sm);
+    }
+  }
+
+  .theme-indicator {
+    width: var(--space-2);
+    height: var(--space-2);
+    border-radius: var(--shape-radius-pill);
+    background-color: var(--paper-accent);
+    box-shadow: 0 0 0 var(--space-1) var(--focus-ring-soft);
+    transition:
+      transform var(--motion-duration-base) var(--motion-ease-standard),
+      background-color var(--motion-duration-base) var(--motion-ease-standard);
+  }
+
+  .theme-toggle[data-theme="dark"] .theme-indicator {
+    transform: scale(1.08);
+    background-color: var(--text-primary);
   }
 
   .logo-link {
