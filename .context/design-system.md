@@ -1,78 +1,108 @@
 # Design System
 
-## Brand Identity
+## Goal
 
-Maintain the current Santychuy brand. The design should feel minimalistic but not boring -- simple to digest, with personality.
+Build a readability-first, token-driven system for santychuy.com. Long-form reading comfort has priority over visual effects.
 
-## Typography
+## Foundations
 
-- **Primary font:** Satoshi Variable (self-hosted in `public/fonts/Satoshi-Variable.woff2`).
-- Preloaded in the `<head>` for performance.
-- Fluid typography using `clamp()` for responsive sizing.
-- Font face defined in `src/styles/globals.css`.
+- **Font family:** Satoshi Variable (self-hosted in `public/fonts/Satoshi-Variable.woff2`, preloaded in layout head).
+- **Readability defaults:** warm paper background, dark ink text, generous line-height, constrained line length.
+- **Breakpoints:**
+  - `34.375rem` (550px) mobile threshold
+  - `68.75rem` (1100px) desktop threshold
 
-## Color System
+## Breakpoint Constants
 
-All colors are defined as CSS custom properties in `src/styles/vars.css`.
+Use these names in planning/docs/reviews so breakpoint intent is explicit.
 
-### Primary Colors
+- `BP_MOBILE_MAX = 34.374rem`
+- `BP_TABLET_MIN = 34.375rem`
+- `BP_DESKTOP_MIN = 68.75rem`
 
-| Token       | Value                  | Usage          |
-| ----------- | ---------------------- | -------------- |
-| `--green-*` | Green palette (50-500) | Primary accent |
-| `--blue-*`  | Blue palette (50-300)  | Primary accent |
+Notes:
+- In code, media queries remain explicit `rem` values for compatibility.
+- If a reusable CSS breakpoint token strategy is introduced later, map to these constants.
 
-### Secondary Colors
+## Token Architecture
 
-| Token            | Value               | Usage            |
-| ---------------- | ------------------- | ---------------- |
-| `--dark-green-*` | Dark green palette  | Secondary accent |
-| `--purple-*`     | Purple palette      | Secondary accent |
-| `--fiusha-*`     | Fiusha/pink palette | Secondary accent |
+All source-of-truth tokens live in `src/styles/vars.css`.
 
-### Neutrals
+### 1) Primitive / Legacy
 
-| Token       | Value                  | Usage             |
-| ----------- | ---------------------- | ----------------- |
-| `--black-*` | Dark neutrals (50-500) | Text, backgrounds |
+Legacy palettes remain for compatibility (`--primary---*`, `--secondary---*`, `--neutrals---*`, `--supporting---*`).
 
-### Supporting Colors
+### 2) Semantic Tokens (Canonical)
 
-- Error, info, success, warning tokens for UI feedback.
+Use these in component styles by default.
 
-### Background
+- **Color:** `--text-*`, `--surface-*`, `--border-*`, `--focus-ring`, `--paper-*`
+- **Typography:** `--font-size-*`, `--leading-*`, `--font-weight-*`, `--reading-max-width`
+- **Spacing:** `--space-1` to `--space-17`
+- **Radii:** `--shape-radius-*`
+- **Layout:** `--layout-*`, `--measure-*`, logo size tokens
+- **Motion:** `--motion-duration-*`, `--motion-ease-*`, `--motion-translate-*`, `--motion-delay-step`
+- **Elevation:** `--elevation-*`
+- **Focus:** `--focus-outline-*`, `--focus-ring-soft`
 
-- Current: Deep dark blue (`hsl(229deg, 68%, 5%)`).
-- Background effect: Animated floating dark circles (`Background.astro`).
+### 3) Utility Bridge
 
-## Dark / Light Mode
-
-- **v1:** Dark mode only.
-- **v2:** Add light mode support. Implementation approach TBD.
-- Use CSS custom properties to toggle themes. Define light-mode overrides for all color tokens.
+`src/styles/globals.css` maps semantic tokens into `@theme inline` variables (`--color-*`, `--radius-*`) for utility/component interoperability.
 
 ## Styling Approach
 
-- **Vanilla CSS** with scoped `<style>` blocks in Astro components.
-- **No CSS framework** (no Tailwind, no CSS-in-JS).
-- Global styles in `src/styles/`:
-  - `reset.css` - CSS reset (box-sizing, margin, fluid body).
-  - `vars.css` - Design tokens (colors, shadows, spacing).
-  - `globals.css` - Base styles, font-face, body defaults.
-  - `animations.css` - Keyframe animations (bounce, appear, waving, spin).
-- Responsive design via `@media` queries with `rem`-based breakpoints:
-  - Primary breakpoint: `68.75rem` (1100px).
-  - Secondary breakpoint: `34.375rem` (550px).
+- Primary style authoring is scoped CSS in Astro components + global token files.
+- Tailwind imports are present in `globals.css` for utility compatibility and shadcn/ui integration.
+- Global files:
+  - `reset.css` -> reset primitives
+  - `vars.css` -> token source of truth
+  - `globals.css` -> semantic defaults and token mapping
+  - `animations.css` -> shared keyframes
 
-## Box Shadows
+## Theming
 
-- Green-tinted shadows defined in `vars.css`.
-- Used for cards, buttons, and interactive elements.
+- Current canonical UI direction: light paper theme (readability-first).
+- `.dark` mappings exist in `globals.css` for compatibility but are secondary to paper semantics.
+- Theme changes should be implemented by remapping semantic tokens, not rewriting component styles.
 
-## Design Principles for v2
+## Usage Rules (Required)
 
-1. **Minimalistic:** Clean layouts, generous whitespace, clear hierarchy.
-2. **Readable:** Content-first typography, comfortable line lengths.
-3. **Consistent:** Use design tokens everywhere, no magic numbers.
-4. **Accessible:** Sufficient contrast ratios, keyboard navigation, semantic HTML.
-5. **Performant:** No heavy CSS frameworks, minimal animations on mobile.
+1. **Use semantic tokens first.**
+   - Prefer `--text-primary`, `--surface-elevated`, `--border-subtle` over raw values.
+2. **No magic numbers in active UI.**
+   - Repeated spacing/sizing/motion values must become tokens.
+3. **Accessibility built in.**
+   - Keep readable contrast, visible focus states, and minimum touch target (`--touch-target-min`).
+4. **Motion is subtle by default.**
+   - Use motion tokens and always support `prefers-reduced-motion`.
+5. **Content-first rhythm.**
+   - Keep line lengths, heading rhythm, and section spacing optimized for long reading.
+
+## Migration Policy
+
+- Active surfaces must be fully tokenized.
+- Legacy/hidden components should be migrated before reuse.
+- New components must not introduce new raw values unless truly one-off; if reused twice, promote to token.
+
+## Intentional Exceptions
+
+- `src/components/Background.astro` is a decorative/generated animation surface.
+- Allowed non-token literals in this file:
+  - generated per-node animation timings (`animation-duration`, `animation-delay`)
+  - generated transform/geometry randomness (`transform-origin`, `box-shadow` vmin values)
+  - `translate3d(..., 1px)` in keyframes for GPU composition behavior
+- This exception applies only to decorative background effects. Active content/shell UI must remain fully tokenized.
+
+## Validation Checklist
+
+- Desktop + mobile snapshot review (`agent-browser`).
+- Readability check: line length, line-height, heading rhythm, paragraph spacing.
+- Interaction check: focus ring visibility, hover/focus parity, touch targets.
+- Build/type status recorded separately from known repo-level issues.
+
+## PR Review Checklist
+
+- Breakpoint usage is consistent with documented constants intent (`BP_MOBILE_MAX`, `BP_TABLET_MIN`, `BP_DESKTOP_MIN`).
+- New media queries use the canonical `34.375rem` and `68.75rem` thresholds unless explicitly justified.
+- Mobile-first behavior is preserved (base styles first, breakpoint enhancements second).
+- No active UI changes introduce ad hoc breakpoint values without documentation.

@@ -50,43 +50,47 @@ const normalizePostId = (id: string) =>
   .latest-posts {
     display: flex;
     flex-direction: column;
-    gap: 2.2rem;
-    max-width: 66rem;
+    gap: var(--space-9);
+    max-width: var(--layout-max-width);
     margin-inline: auto;
   }
 
   .posts-heading {
     display: flex;
     flex-direction: column;
-    gap: 0.7rem;
+    gap: var(--space-3);
   }
 
   .subtitle-section {
-    color: var(--primary---green--6);
-    font-size: clamp(1.5rem, 2vw, 2rem);
+    color: var(--text-primary);
+    font-size: var(--font-size-xl);
+    line-height: var(--leading-heading);
     margin: 0;
   }
 
   .posts-heading p {
     margin: 0;
-    max-width: 62ch;
-    color: var(--neutrals---black--4);
-    font-size: 1rem;
+    max-width: var(--measure-section-max);
+    color: var(--text-secondary);
+    font-size: var(--font-size-base);
+    line-height: var(--leading-copy-compact);
   }
 
   .posts-list {
     display: grid;
-    gap: 1.1rem;
+    gap: var(--space-5);
   }
 
   .no-posts {
-    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    font-size: var(--font-size-xl);
+    line-height: var(--leading-heading);
+    color: var(--text-secondary);
     margin: 0;
   }
 
   @media screen and (min-width: 68.75rem) {
     .posts-list {
-      gap: 1.2rem;
+      gap: var(--space-6);
     }
   }
 </style>

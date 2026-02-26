@@ -126,11 +126,128 @@
 	--supporting---warning--9: hsl(var(--warning), 40.1%, 36.7%);
 	--supporting---warning--10: hsl(var(--warning), 40.1%, 28.8%);
 
-	--background-hsl: 229deg, 68%, 5%;
+	--background-hsl: 40deg, 37%, 93%;
 	--main---background: hsl(var(--background-hsl));
 	--main---background--alpha: hsla(var(--background-hsl), 0.4);
+	--paper-surface-hsl: 40deg, 36%, 96%;
+	--paper-ink-hsl: 35deg, 20%, 12%;
+	--paper-muted-hsl: 33deg, 14%, 24%;
+	--paper-line-hsl: 35deg, 23%, 74%;
+	--paper-accent-hsl: 123deg, 22%, 42%;
+
+	--paper-background: var(--main---background);
+	--paper-surface: hsl(var(--paper-surface-hsl));
+	--paper-ink: hsl(var(--paper-ink-hsl));
+	--paper-muted: hsl(var(--paper-muted-hsl));
+	--paper-line: hsl(var(--paper-line-hsl));
+	--paper-accent: hsl(var(--paper-accent-hsl));
+	--paper-accent-soft: hsla(var(--paper-accent-hsl), 0.1);
+
+	--text-primary: var(--paper-ink);
+	--text-secondary: var(--paper-muted);
+	--text-tertiary: hsla(var(--paper-muted-hsl), 0.76);
+	--surface-base: var(--paper-background);
+	--surface-elevated: var(--paper-surface);
+	--surface-muted: hsla(var(--paper-accent-hsl), 0.08);
+	--border-subtle: var(--paper-line);
+	--border-strong: hsla(var(--paper-muted-hsl), 0.5);
+	--focus-ring: hsla(var(--paper-accent-hsl), 0.34);
+
+	--space-1: 0.25rem;
+	--space-2: 0.5rem;
+	--space-3: 0.75rem;
+	--space-4: 1rem;
+	--space-5: 1.25rem;
+	--space-6: 1.5rem;
+	--space-7: 1.75rem;
+	--space-8: 2rem;
+	--space-9: 2.25rem;
+	--space-10: 2.5rem;
+	--space-11: 3rem;
+	--space-12: 3.25rem;
+	--space-13: 3.75rem;
+	--space-14: 4.25rem;
+	--space-15: 4.75rem;
+	--space-16: 5.25rem;
+	--space-17: 6.5rem;
+
+	--shape-radius-xs: 0.25rem;
+	--shape-radius-sm: 0.5rem;
+	--shape-radius-md: 0.75rem;
+	--shape-radius-lg: 1rem;
+	--shape-radius-xl: 1.5rem;
+	--shape-radius-pill: 999px;
+
+	--font-size-xs: clamp(0.78rem, 0.75rem + 0.12vw, 0.86rem);
+	--font-size-sm: clamp(0.92rem, 0.9rem + 0.12vw, 1rem);
+	--font-size-base: clamp(1.02rem, 0.98rem + 0.2vw, 1.14rem);
+	--font-size-lg: clamp(1.08rem, 1.03rem + 0.3vw, 1.24rem);
+	--font-size-xl: clamp(1.35rem, 1.18rem + 0.8vw, 1.9rem);
+	--font-size-hero: clamp(2.12rem, 1.58rem + 2.25vw, 3.95rem);
+	--font-size-hero-mobile: clamp(1.85rem, 8vw, 2.45rem);
+	--font-size-display: clamp(2.1rem, 6vw - 0.5rem, 3.2rem);
+	--font-size-prose-quote: clamp(1.2rem, 3vw, 1.4rem);
+	--font-size-prose-code: clamp(0.9rem, 3vw, 1.1rem);
+
+	--leading-tight: 1.3;
+	--leading-heading: 1.42;
+	--leading-copy: 1.82;
+	--leading-copy-compact: 1.75;
+	--leading-hero-mobile: 1.24;
+
+	--font-weight-regular: 450;
+	--font-weight-medium: 550;
+	--font-weight-semibold: 620;
+
+	--reading-max-width: 64ch;
+	--touch-target-min: 2.75rem;
+
+	--layout-max-width: 68rem;
+	--layout-shell-max-width: 68rem;
+	--layout-shell-edge-mobile: 2rem;
+	--layout-shell-edge-tablet: 3.5rem;
+	--layout-gutter-mobile: var(--space-4);
+	--layout-gutter-tablet: var(--space-7);
+	--layout-gutter-desktop: var(--space-9);
+	--layout-main-padding-top: var(--space-12);
+	--layout-main-padding-bottom: var(--space-16);
+	--layout-main-padding-top-desktop: var(--space-14);
+	--layout-main-padding-bottom-desktop: var(--space-17);
+	--layout-section-gap: var(--space-15);
+	--layout-section-gap-mobile: var(--space-13);
+	--measure-hero-max: 44rem;
+	--measure-section-max: 62ch;
+	--measure-content-max: 52rem;
+	--measure-card-copy-max: 60ch;
+	--brand-logo-size: 2.8rem;
+	--brand-logo-size-desktop: 3.1rem;
+
+	--motion-duration-fast: 150ms;
+	--motion-duration-base: 220ms;
+	--motion-duration-slow: 360ms;
+	--motion-duration-reveal: 520ms;
+	--motion-duration-spin: 2000ms;
+	--motion-delay-step: 60ms;
+	--motion-delay-offset: 10ms;
+	--motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+	--motion-ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+	--motion-translate-xs: 0.25rem;
+	--motion-translate-sm: 0.5rem;
+
+	--focus-outline-width: 2px;
+	--focus-outline-offset-sm: 3px;
+	--focus-outline-offset-md: 4px;
+	--focus-ring-soft: hsla(var(--paper-accent-hsl), 0.18);
+
+	--elevation-1: 0 1px 2px hsla(var(--paper-ink-hsl), 0.08);
+	--elevation-2: 0 2px 8px hsla(var(--paper-ink-hsl), 0.1);
+	--elevation-3: 0 8px 30px hsla(var(--paper-ink-hsl), 0.14);
+	--border-width-default: 1px;
+	--text-decoration-thickness-thin: 1px;
+	--measure-hero-glow-height: 13rem;
+	--effect-blur-overlay: 64px;
 
 	--shadow-green: 139deg, 23%;
-	--main---box--shadow: 0 4px 35px 0 hsl(var(--shadow-green), 28%);
-	--main---box--shadow--hover: 0 4px 50px 0 hsl(var(--shadow-green), 50%);
+	--main---box--shadow: var(--elevation-2);
+	--main---box--shadow--hover: var(--elevation-3);
 }

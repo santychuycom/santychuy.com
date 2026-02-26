@@ -5,9 +5,8 @@
     have any questions or just want to say hi!
   </p>
 
-  <!-- TODO: Add form component with functionality -->
-  <a href="https://cal.com/santychuy" target="_blank" rel="noopener">
-    <button>Schedule meeting</button>
+  <a class="meeting-link" href="https://cal.com/santychuy" target="_blank" rel="noopener">
+    Schedule meeting
   </a>
 </section>
 
@@ -15,46 +14,64 @@
   .container {
     display: flex;
     flex-direction: column;
+    gap: var(--space-5);
     margin-inline: auto;
-    max-width: 840px;
-    padding-block: 3rem;
-    padding-inline: 3rem;
-  }
+    max-width: var(--measure-content-max);
+    padding-block: var(--space-11);
+    padding-inline: var(--space-8);
 
-  .subtitle-section {
-    color: var(--primary---green--6);
-    margin-block-end: 2rem;
-  }
-
-  .description-section {
-    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-    font-weight: 500;
-  }
-
-  a {
-    width: fit-content;
-    align-self: center;
-    margin-block-start: 3rem;
-
-    &:hover {
-      color: var(--neutrals---black--1);
+    @media screen and (max-width: 34.374rem) {
+      padding-block: var(--space-9);
+      padding-inline: var(--space-4);
     }
   }
 
-  button {
-    cursor: pointer;
-    border: none;
-    color: var(--neutral---black--1);
-    background-color: var(--primary---green--10);
-    border-radius: 8px;
-    padding-block: 10px;
-    padding-inline: 20px;
-    box-shadow: var(--main---box--shadow);
-    transition: all 100ms ease-in;
+  .subtitle-section {
+    color: var(--text-primary);
+    margin: 0;
+    font-size: var(--font-size-xl);
+    line-height: var(--leading-heading);
+  }
+
+  .description-section {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: var(--font-size-lg);
+    line-height: var(--leading-copy);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .meeting-link {
+    width: fit-content;
+    min-height: var(--touch-target-min);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    margin-block-start: var(--space-3);
+    border-radius: var(--shape-radius-md);
+    border: var(--border-width-default) solid var(--paper-accent);
+    padding-block: var(--space-2);
+    padding-inline: var(--space-5);
+    color: var(--surface-elevated);
+    background-color: var(--paper-accent);
+    box-shadow: var(--elevation-1);
+    text-decoration: none;
+    transition:
+      transform var(--motion-duration-base) var(--motion-ease-standard),
+      background-color var(--motion-duration-base) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-base) var(--motion-ease-standard);
 
     &:hover {
-      background-color: var(--primary---green--8);
-      box-shadow: var(--main---box--shadow--hover);
+      transform: translateY(calc(var(--motion-translate-xs) * -1));
+      background-color: var(--paper-accent);
+      box-shadow: var(--elevation-2);
+      color: var(--surface-elevated);
+    }
+
+    &:focus-visible {
+      outline: var(--focus-outline-width) solid var(--focus-ring);
+      outline-offset: var(--focus-outline-offset-md);
     }
   }
 </style>

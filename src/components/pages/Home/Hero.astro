@@ -27,21 +27,21 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 1rem;
-    max-width: 52rem;
+    gap: var(--space-4);
+    max-width: var(--measure-content-max);
     margin-inline: auto;
-    margin-block-end: 2rem;
+    margin-block-end: var(--space-8);
   }
 
   .hero::after {
     content: '';
     position: absolute;
     inset-inline: 15%;
-    inset-block-start: -1.8rem;
-    height: 13rem;
+    inset-block-start: calc(var(--space-7) * -1);
+    height: var(--measure-hero-glow-height);
     background: radial-gradient(
       ellipse,
-      var(--primary---green--6--alpha--2) 0%,
+      var(--paper-accent-soft) 0%,
       transparent 70%
     );
     z-index: -1;
@@ -49,39 +49,41 @@
 
   .img-avatar {
     border-radius: 50%;
-    border: 1px solid var(--primary---green--6--alpha);
-    box-shadow: var(--box-shadow-green);
+    border: var(--border-width-default) solid var(--border-strong);
+    box-shadow: var(--elevation-2);
     object-fit: cover;
   }
 
   .eyebrow {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: var(--font-size-sm);
+    line-height: var(--leading-tight);
     letter-spacing: 0.03em;
-    color: var(--neutrals---black--6);
+    color: var(--text-secondary);
   }
 
   h1 {
     margin: 0;
     max-width: 20ch;
-    line-height: 1.08;
-    font-size: clamp(2.1rem, 5vw, 3.8rem);
+    line-height: var(--leading-tight);
+    font-size: var(--font-size-hero);
     text-wrap: balance;
+    color: var(--text-primary);
   }
 
   .lead {
     margin: 0;
-    max-width: 60ch;
-    color: var(--neutrals---black--4);
-    font-size: clamp(1.05rem, 1.5vw, 1.2rem);
-    line-height: 1.7;
+    max-width: var(--reading-max-width);
+    color: var(--text-secondary);
+    font-size: var(--font-size-lg);
+    line-height: var(--leading-copy-compact);
     text-wrap: pretty;
   }
 
   .actions {
-    margin-block-start: 0.8rem;
+    margin-block-start: var(--space-3);
     display: flex;
-    gap: 0.8rem;
+    gap: var(--space-3);
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -91,35 +93,44 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 999px;
-    padding: 0.62rem 1.05rem;
-    font-weight: 700;
-    font-size: 0.95rem;
+    min-height: var(--touch-target-min);
+    border-radius: var(--shape-radius-pill);
+    padding: var(--space-2) var(--space-5);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+    line-height: var(--leading-tight);
     transition:
-      transform 0.2s ease,
-      border-color 0.2s ease,
-      background-color 0.2s ease;
+      transform var(--motion-duration-base) var(--motion-ease-standard),
+      border-color var(--motion-duration-base) var(--motion-ease-standard),
+      background-color var(--motion-duration-base) var(--motion-ease-standard),
+      color var(--motion-duration-base) var(--motion-ease-standard);
   }
 
   .primary-link {
-    background-color: var(--primary---green--6);
-    color: var(--neutrals---black--13);
-    border: 1px solid transparent;
+    background-color: var(--paper-accent);
+    color: var(--surface-elevated);
+    border: var(--border-width-default) solid transparent;
   }
 
   .primary-link:hover {
-    transform: translateY(-1px);
-    background-color: var(--primary---green--5);
+    transform: translateY(calc(var(--motion-translate-xs) * -1));
+    background-color: var(--paper-accent);
   }
 
   .secondary-link {
-    border: 1px solid var(--primary---green--6--alpha);
-    background-color: var(--main---background--alpha);
-    color: var(--neutrals---black--1);
+    border: var(--border-width-default) solid var(--border-strong);
+    background-color: var(--surface-muted);
+    color: var(--text-primary);
   }
 
   .secondary-link:hover {
-    transform: translateY(-1px);
-    border-color: var(--primary---green--6);
+    transform: translateY(calc(var(--motion-translate-xs) * -1));
+    border-color: var(--paper-accent);
+  }
+
+  .primary-link:focus-visible,
+  .secondary-link:focus-visible {
+    outline: var(--focus-outline-width) solid var(--focus-ring);
+    outline-offset: var(--focus-outline-offset-sm);
   }
 </style>

@@ -1,8 +1,8 @@
 ---
-import ArrowDown from '@components/icons/arrow-down.astro';
+import ArrowDown from "@components/icons/arrow-down.astro";
 
 interface Props {
-  label: string;
+	label: string;
 }
 
 const { label } = Astro.props;
@@ -21,52 +21,57 @@ const { label } = Astro.props;
     position: relative;
     display: inline-flex;
     overflow: hidden;
-    margin-block-start: 40px;
-    border-radius: 2rem;
-    padding-inline: 2px;
-    padding-block: 2px;
+    margin-block-start: var(--space-10);
+    border-radius: var(--shape-radius-pill);
+    padding-inline: var(--space-1);
+    padding-block: var(--space-1);
     border: none;
-    transition: box-shadow 0.3s ease-in-out;
+    box-shadow: var(--elevation-1);
+    transition: box-shadow var(--motion-duration-base) var(--motion-ease-standard);
 
-    &:focus {
+    &:focus-visible {
       outline: none;
+      box-shadow: 0 0 0 var(--space-1) var(--focus-ring-soft);
     }
 
     &:hover {
-      box-shadow: 0 0 4px 3px #9cd89f;
+      box-shadow: var(--elevation-2);
     }
 
     &:hover .icon-arrow {
-      animation: bounce 0.5s ease-in-out;
+      animation: bounce var(--motion-duration-slow) var(--motion-ease-standard);
     }
   }
 
   .gradient {
     position: absolute;
     inset: -1000%;
-    animation: spin 2s linear infinite;
+    animation: spin var(--motion-duration-spin) linear infinite;
     background-image: conic-gradient(
       from 90deg at 50% 50%,
-      #1a2e84 0%,
-      #9cd89f 50%,
-      #1a2e84 100%
+      var(--text-primary) 0%,
+      var(--paper-accent) 50%,
+      var(--text-primary) 100%
     );
   }
 
   .content {
     display: inline-flex;
-    gap: 0.45rem;
+    gap: var(--space-2);
     cursor: pointer;
     align-items: center;
     justify-content: center;
     height: 100%;
     width: 100%;
-    border-radius: 2rem;
-    padding-inline: 1rem;
-    padding-block: 0.5rem;
-    font-weight: bold;
-    color: white;
-    background-color: black;
-    backdrop-filter: blur(64px);
+    min-height: var(--touch-target-min);
+    border-radius: var(--shape-radius-pill);
+    padding-inline: var(--space-4);
+    padding-block: var(--space-2);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-tight);
+    color: var(--surface-elevated);
+    background-color: var(--text-primary);
+    backdrop-filter: blur(var(--effect-blur-overlay));
   }
 </style>
