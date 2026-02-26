@@ -142,16 +142,59 @@
 	--paper-line: hsl(var(--paper-line-hsl));
 	--paper-accent: hsl(var(--paper-accent-hsl));
 	--paper-accent-soft: hsla(var(--paper-accent-hsl), 0.1);
+	--paper-background-dark: hsl(228deg, 32%, 9%);
+	--paper-surface-dark: hsl(228deg, 24%, 13%);
+	--paper-ink-dark: hsl(43deg, 33%, 92%);
+	--paper-muted-dark: hsl(42deg, 18%, 76%);
+	--paper-line-dark: hsl(226deg, 20%, 31%);
+	--paper-accent-dark: hsl(123deg, 36%, 58%);
+	--paper-accent-soft-dark: hsla(123deg, 36%, 58%, 0.16);
 
 	--text-primary: var(--paper-ink);
 	--text-secondary: var(--paper-muted);
 	--text-tertiary: hsla(var(--paper-muted-hsl), 0.76);
+	--text-tertiary-dark: hsla(42deg, 18%, 76%, 0.78);
 	--surface-base: var(--paper-background);
 	--surface-elevated: var(--paper-surface);
 	--surface-muted: hsla(var(--paper-accent-hsl), 0.08);
+	--surface-muted-dark: hsla(123deg, 36%, 58%, 0.12);
 	--border-subtle: var(--paper-line);
 	--border-strong: hsla(var(--paper-muted-hsl), 0.5);
+	--border-strong-dark: hsla(42deg, 18%, 76%, 0.36);
 	--focus-ring: hsla(var(--paper-accent-hsl), 0.34);
+	--focus-ring-dark: hsla(123deg, 36%, 58%, 0.58);
+	--focus-ring-soft: hsla(var(--paper-accent-hsl), 0.18);
+	--focus-ring-soft-dark: hsla(123deg, 36%, 58%, 0.24);
+
+	--status-danger: var(--supporting---error--8);
+	--status-danger-strong: var(--supporting---error--7);
+	--status-warning: var(--supporting---warning--6);
+	--status-success: var(--supporting---success--8);
+	--status-info: var(--supporting---info--8);
+
+	--chart-tone-1: var(--paper-accent);
+	--chart-tone-2: var(--primary---blue--5);
+	--chart-tone-3: var(--secondary---dark--green--3);
+	--chart-tone-4: var(--secondary---dark--fiusha--4);
+	--chart-tone-5: var(--status-warning);
+	--chart-tone-dark-1: var(--paper-accent-dark);
+	--chart-tone-dark-2: var(--primary---blue--5);
+	--chart-tone-dark-3: var(--secondary---dark--purple--3);
+	--chart-tone-dark-4: var(--secondary---dark--fiusha--4);
+	--chart-tone-dark-5: var(--status-warning);
+
+	--surface-secondary: hsl(205deg, 27%, 88%);
+	--surface-secondary-dark: hsl(226deg, 28%, 20%);
+
+	--atmosphere-accent-light: hsla(var(--paper-accent-hsl), 0.1);
+	--atmosphere-cool-light: hsla(205deg, 23%, 78%, 0.16);
+	--atmosphere-layer-light: hsla(var(--paper-surface-hsl), 0.58);
+	--atmosphere-accent-dark: hsla(123deg, 36%, 58%, 0.18);
+	--atmosphere-cool-dark: hsla(220deg, 35%, 35%, 0.25);
+	--atmosphere-layer-dark: hsla(228deg, 24%, 13%, 0.36);
+	--atmosphere-accent: var(--atmosphere-accent-light);
+	--atmosphere-cool: var(--atmosphere-cool-light);
+	--atmosphere-layer: var(--atmosphere-layer-light);
 
 	--space-1: 0.25rem;
 	--space-2: 0.5rem;
@@ -201,6 +244,11 @@
 
 	--reading-max-width: 64ch;
 	--touch-target-min: 2.75rem;
+	--z-base: 0;
+	--z-content: 1;
+	--z-header: 10;
+	--z-overlay: 100;
+	--z-modal: 1000;
 
 	--layout-max-width: 68rem;
 	--layout-shell-max-width: 68rem;
@@ -237,7 +285,6 @@
 	--focus-outline-width: 2px;
 	--focus-outline-offset-sm: 3px;
 	--focus-outline-offset-md: 4px;
-	--focus-ring-soft: hsla(var(--paper-accent-hsl), 0.18);
 
 	--elevation-1: 0 1px 2px hsla(var(--paper-ink-hsl), 0.08);
 	--elevation-2: 0 2px 8px hsla(var(--paper-ink-hsl), 0.1);

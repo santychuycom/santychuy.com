@@ -37,6 +37,7 @@ Legacy palettes remain for compatibility (`--primary---*`, `--secondary---*`, `-
 Use these in component styles by default.
 
 - **Color:** `--text-*`, `--surface-*`, `--border-*`, `--focus-ring`, `--paper-*`
+- **Status & charts:** `--status-*`, `--chart-tone-*`
 - **Typography:** `--font-size-*`, `--leading-*`, `--font-weight-*`, `--reading-max-width`
 - **Spacing:** `--space-1` to `--space-17`
 - **Radii:** `--shape-radius-*`
@@ -44,6 +45,7 @@ Use these in component styles by default.
 - **Motion:** `--motion-duration-*`, `--motion-ease-*`, `--motion-translate-*`, `--motion-delay-step`
 - **Elevation:** `--elevation-*`
 - **Focus:** `--focus-outline-*`, `--focus-ring-soft`
+- **Layering:** `--z-*`
 
 ### 3) Utility Bridge
 
@@ -63,6 +65,7 @@ Use these in component styles by default.
 
 - Current canonical UI direction: light paper theme (readability-first).
 - `.dark` mappings exist in `globals.css` for compatibility but are secondary to paper semantics.
+- Dark token values are defined in `vars.css` as source-of-truth and remapped in `.dark`.
 - Theme changes should be implemented by remapping semantic tokens, not rewriting component styles.
 
 ## Usage Rules (Required)
@@ -75,6 +78,7 @@ Use these in component styles by default.
    - Keep readable contrast, visible focus states, and minimum touch target (`--touch-target-min`).
 4. **Motion is subtle by default.**
    - Use motion tokens and always support `prefers-reduced-motion`.
+   - A global reduced-motion fallback is defined in `globals.css`; component-level motion should still be optional and restrained.
 5. **Content-first rhythm.**
    - Keep line lengths, heading rhythm, and section spacing optimized for long reading.
 

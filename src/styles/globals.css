@@ -30,20 +30,31 @@ body {
 	background-image:
 		radial-gradient(
 			1200px 600px at 8% -15%,
-			hsla(var(--paper-accent-hsl), 0.1) 0%,
+			var(--atmosphere-accent) 0%,
 			transparent 65%
 		),
 		radial-gradient(
 			900px 460px at 96% -10%,
-			hsla(205deg, 23%, 78%, 0.16) 0%,
+			var(--atmosphere-cool) 0%,
 			transparent 62%
 		),
-		linear-gradient(
-			180deg,
-			hsla(var(--paper-surface-hsl), 0.58) 0%,
-			transparent 32%
-		);
+		linear-gradient(180deg, var(--atmosphere-layer) 0%, transparent 32%);
 	text-rendering: optimizeLegibility;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		animation-duration: 1ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 1ms !important;
+		scroll-behavior: auto !important;
+	}
 }
 
 main {
@@ -140,21 +151,21 @@ svg {
 	--popover-foreground: var(--text-primary);
 	--primary: var(--paper-accent);
 	--primary-foreground: var(--surface-elevated);
-	--secondary: hsl(205deg, 27%, 88%);
+	--secondary: var(--surface-secondary);
 	--secondary-foreground: var(--text-primary);
 	--muted: var(--surface-muted);
 	--muted-foreground: var(--text-secondary);
 	--accent: var(--paper-accent-soft);
 	--accent-foreground: var(--text-primary);
-	--destructive: var(--supporting---error--8);
+	--destructive: var(--status-danger);
 	--border: var(--border-subtle);
 	--input: var(--surface-elevated);
 	--ring: var(--paper-accent);
-	--chart-1: var(--paper-accent);
-	--chart-2: var(--primary---blue--5);
-	--chart-3: var(--secondary---dark--green--3);
-	--chart-4: var(--secondary---dark--fiusha--4);
-	--chart-5: var(--supporting---warning--6);
+	--chart-1: var(--chart-tone-1);
+	--chart-2: var(--chart-tone-2);
+	--chart-3: var(--chart-tone-3);
+	--chart-4: var(--chart-tone-4);
+	--chart-5: var(--chart-tone-5);
 	--sidebar: var(--surface-elevated);
 	--sidebar-foreground: var(--text-primary);
 	--sidebar-primary: var(--paper-accent);
@@ -166,24 +177,27 @@ svg {
 }
 
 .dark {
-	--paper-background: hsl(228deg, 32%, 9%);
-	--paper-surface: hsl(228deg, 24%, 13%);
-	--paper-ink: hsl(43deg, 33%, 92%);
-	--paper-muted: hsl(42deg, 18%, 76%);
-	--paper-line: hsl(226deg, 20%, 31%);
-	--paper-accent: hsl(123deg, 36%, 58%);
-	--paper-accent-soft: hsla(123deg, 36%, 58%, 0.16);
+	--paper-background: var(--paper-background-dark);
+	--paper-surface: var(--paper-surface-dark);
+	--paper-ink: var(--paper-ink-dark);
+	--paper-muted: var(--paper-muted-dark);
+	--paper-line: var(--paper-line-dark);
+	--paper-accent: var(--paper-accent-dark);
+	--paper-accent-soft: var(--paper-accent-soft-dark);
 
 	--text-primary: var(--paper-ink);
 	--text-secondary: var(--paper-muted);
-	--text-tertiary: hsla(42deg, 18%, 76%, 0.78);
+	--text-tertiary: var(--text-tertiary-dark);
 	--surface-base: var(--paper-background);
 	--surface-elevated: var(--paper-surface);
-	--surface-muted: hsla(123deg, 36%, 58%, 0.12);
+	--surface-muted: var(--surface-muted-dark);
 	--border-subtle: var(--paper-line);
-	--border-strong: hsla(42deg, 18%, 76%, 0.36);
-	--focus-ring: hsla(123deg, 36%, 58%, 0.58);
-	--focus-ring-soft: hsla(123deg, 36%, 58%, 0.24);
+	--border-strong: var(--border-strong-dark);
+	--focus-ring: var(--focus-ring-dark);
+	--focus-ring-soft: var(--focus-ring-soft-dark);
+	--atmosphere-accent: var(--atmosphere-accent-dark);
+	--atmosphere-cool: var(--atmosphere-cool-dark);
+	--atmosphere-layer: var(--atmosphere-layer-dark);
 
 	--background: var(--surface-base);
 	--foreground: var(--text-primary);
@@ -193,21 +207,21 @@ svg {
 	--popover-foreground: var(--text-primary);
 	--primary: var(--paper-accent);
 	--primary-foreground: var(--surface-elevated);
-	--secondary: hsl(226deg, 28%, 20%);
+	--secondary: var(--surface-secondary-dark);
 	--secondary-foreground: var(--text-primary);
 	--muted: var(--surface-muted);
 	--muted-foreground: var(--text-secondary);
 	--accent: var(--paper-accent-soft);
 	--accent-foreground: var(--text-primary);
-	--destructive: var(--supporting---error--7);
+	--destructive: var(--status-danger-strong);
 	--border: var(--border-subtle);
 	--input: var(--surface-elevated);
 	--ring: var(--paper-accent);
-	--chart-1: var(--paper-accent);
-	--chart-2: var(--primary---blue--5);
-	--chart-3: var(--secondary---dark--purple--3);
-	--chart-4: var(--secondary---dark--fiusha--4);
-	--chart-5: var(--supporting---warning--6);
+	--chart-1: var(--chart-tone-dark-1);
+	--chart-2: var(--chart-tone-dark-2);
+	--chart-3: var(--chart-tone-dark-3);
+	--chart-4: var(--chart-tone-dark-4);
+	--chart-5: var(--chart-tone-dark-5);
 	--sidebar: var(--surface-elevated);
 	--sidebar-foreground: var(--text-primary);
 	--sidebar-primary: var(--paper-accent);
@@ -216,25 +230,6 @@ svg {
 	--sidebar-accent-foreground: var(--text-primary);
 	--sidebar-border: var(--border-subtle);
 	--sidebar-ring: var(--paper-accent);
-}
-
-.dark body {
-	background-image:
-		radial-gradient(
-			1200px 600px at 8% -15%,
-			hsla(var(--paper-accent-hsl), 0.18) 0%,
-			transparent 65%
-		),
-		radial-gradient(
-			900px 460px at 96% -10%,
-			hsla(220deg, 35%, 35%, 0.25) 0%,
-			transparent 62%
-		),
-		linear-gradient(
-			180deg,
-			hsla(var(--paper-surface-hsl), 0.36) 0%,
-			transparent 36%
-		);
 }
 
 @layer base {
