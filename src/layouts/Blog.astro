@@ -5,8 +5,6 @@ import "@styles/globals.css";
 import "@styles/animations.css";
 
 import { ViewTransitions } from "astro:transitions";
-import Footer from "@components/layout/Footer.astro";
-import Header from "@components/layout/Header.astro";
 
 interface Props {
 	title: string;
@@ -101,16 +99,8 @@ const hreflangAlternates = {
       data-website-id="2f3b8fca-a83a-4d9d-b851-0d70e1a6f43b"></script>
   </head>
   <body>
-    <Header />
     <main>
       <slot />
     </main>
-    <Footer />
-    <style>
-      main {
-        width: 100%;
-        padding-block-end: 80px;
-      }
-    </style>
   </body>
 </html>
