@@ -1,5 +1,5 @@
-import { atom } from 'nanostores';
+import { atom } from "nanostores";
 
-export const activeTab = atom<'experience' | 'projects' | 'example-projects'>(
-  'experience'
+export const activeTab = atom<"experience" | "projects" | "example-projects">(
+	"experience",
 );

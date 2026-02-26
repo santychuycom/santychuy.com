@@ -3,9 +3,17 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@assets/*": ["./src/assets/*"],
+			"@components/*": ["./src/components/*"],
+			"@content/*": ["./src/content/*"],
+			"@layouts/*": ["./src/layouts/*"],
+			"@schemas/*": ["./src/schemas/*"],
+			"@styles/*": ["./src/styles/*"],
+			"@ts/*": ["./src/ts/*"]
 		},
 		"jsx": "react-jsx",
 		"jsxImportSource": "react"
-	}
+	},
+	"exclude": ["dist", ".astro", "sst.config.ts"]
 }
