@@ -20,20 +20,16 @@ const currentFocus = [
 ---
 
 <div class="home-layer">
-  <section class="intro" aria-label="Intro">
-    <p class="intro-line">Hello, I am Santiago Carrasco from Hermosillo, Mexico.</p>
-  </section>
-
-  <section class="hero" aria-labelledby="home-title">
+  <header class="hero" aria-labelledby="home-title">
     <h1 id="home-title">Software engineer building practical AI experiences.</h1>
     <p class="hero-lead">
       This space is being redesigned in public. Each layer adds clarity, better
       writing flow, and a cleaner reading experience.
     </p>
-  </section>
+  </header>
 
   <section class="currently-building" aria-labelledby="currently-building-title">
-    <h2 id="currently-building-title">Currently building</h2>
+    <h2 id="currently-building-title">Now</h2>
     <ul>
       {
         currentFocus.map((item) => (
@@ -46,7 +42,7 @@ const currentFocus = [
   <section class="latest-posts" aria-labelledby="latest-posts-title" id="latest-posts">
     <div class="latest-heading">
       <h2 id="latest-posts-title">Latest posts</h2>
-      <a href="/feed.xml">RSS</a>
+      <a href="/feed.xml" aria-label="RSS Feed">RSS</a>
     </div>
 
     {
@@ -60,7 +56,6 @@ const currentFocus = [
                 title={data.title}
                 description={data.shortDesc}
                 date={data.pubDate}
-                topics={data.categories}
                 slug={slug}
                 lang={data.lang}
               />
@@ -78,55 +73,43 @@ const currentFocus = [
   .home-layer {
     display: flex;
     flex-direction: column;
-    gap: var(--layout-section-gap);
-
-    section {
-      opacity: 0;
-      animation: reveal-up var(--motion-duration-reveal)
-        var(--motion-ease-standard) forwards;
-    }
-
-    section:nth-child(2) {
-      animation-delay: calc(var(--motion-delay-step) + var(--motion-delay-offset));
-    }
-
-    section:nth-child(3) {
-      animation-delay: calc(var(--motion-delay-step) * 2);
-    }
-
-    section:nth-child(4) {
-      animation-delay: calc(var(--motion-delay-step) * 3 - var(--motion-delay-offset));
-    }
+    gap: var(--space-10);
+    padding-block-start: var(--space-4);
   }
 
-  .intro {
-    border-bottom: var(--border-width-default) solid var(--border-subtle);
-    padding-block-end: var(--space-5);
+  .home-layer > * {
+    opacity: 0;
+    animation: reveal-up var(--motion-duration-reveal) var(--motion-ease-standard) forwards;
   }
 
-  .intro-line {
-    margin: 0;
-    max-width: var(--reading-max-width);
-    font-size: var(--font-size-sm);
-    color: var(--text-secondary);
-    letter-spacing: 0.01em;
-    line-height: var(--leading-copy-compact);
+  .home-layer > *:nth-child(1) {
+    animation-delay: calc(var(--motion-delay-step) * 1);
   }
 
+  .home-layer > *:nth-child(2) {
+    animation-delay: calc(var(--motion-delay-step) * 2);
+  }
+
+  .home-layer > *:nth-child(3) {
+    animation-delay: calc(var(--motion-delay-step) * 3);
+  }
+
+  /* --- Hero / Header --- */
   .hero {
     max-width: var(--measure-hero-max);
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
+    gap: var(--space-4);
+  }
 
-    h1 {
-      margin: 0;
-      font-size: var(--font-size-hero);
-      line-height: var(--leading-tight);
-      text-wrap: pretty;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-    }
+  .hero h1 {
+    margin: 0;
+    font-size: var(--font-size-hero);
+    line-height: var(--leading-tight);
+    text-wrap: balance;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    font-weight: var(--font-weight-semibold);
   }
 
   .hero-lead {
@@ -138,42 +121,50 @@ const currentFocus = [
     text-wrap: pretty;
   }
 
+  /* --- Currently Building / Now --- */
   .currently-building {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
     max-width: var(--measure-section-max);
-
-    h2 {
-      margin: 0;
-      font-size: var(--font-size-xl);
-      color: var(--text-primary);
-      letter-spacing: -0.01em;
-      line-height: var(--leading-heading);
-    }
-
-    ul {
-      margin: 0;
-      padding-inline-start: var(--space-5);
-      list-style: disc;
-      display: grid;
-      gap: var(--space-3);
-    }
-
-    li {
-      color: var(--text-secondary);
-      line-height: var(--leading-copy);
-
-      &::marker {
-        color: var(--paper-accent);
-      }
-    }
   }
 
+  .currently-building h2 {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .currently-building ul {
+    margin: 0;
+    padding-inline-start: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .currently-building li {
+    position: relative;
+    padding-inline-start: var(--space-4);
+    color: var(--text-secondary);
+    line-height: var(--leading-copy);
+  }
+
+  .currently-building li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--border-strong);
+  }
+
+  /* --- Latest Posts / Writing --- */
   .latest-posts {
     display: flex;
     flex-direction: column;
-    gap: var(--space-7);
+    gap: var(--space-5);
+    width: 100%;
   }
 
   .latest-heading {
@@ -181,49 +172,59 @@ const currentFocus = [
     align-items: center;
     justify-content: space-between;
     gap: var(--space-4);
+    padding-block-end: var(--space-2);
     border-bottom: var(--border-width-default) solid var(--border-subtle);
-    padding-block-end: var(--space-4);
+  }
 
-    h2 {
-      margin: 0;
-      font-size: var(--font-size-xl);
-      color: var(--text-primary);
-      letter-spacing: -0.01em;
-      line-height: var(--leading-heading);
-    }
+  .latest-heading h2 {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
 
-    a {
-      font-size: var(--font-size-sm);
-      color: var(--text-secondary);
-      text-decoration: underline;
-      text-underline-offset: var(--space-1);
-      min-height: var(--touch-target-min);
-      display: inline-flex;
-      align-items: center;
-      padding-inline: var(--space-2);
+  .latest-heading a {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    text-decoration: none;
+    min-height: var(--touch-target-min);
+    display: inline-flex;
+    align-items: center;
+    padding-inline: var(--space-2);
+    border-radius: var(--shape-radius-sm);
+    transition: color var(--motion-duration-base) var(--motion-ease-standard),
+                background-color var(--motion-duration-base) var(--motion-ease-standard);
+  }
 
-      &:focus-visible {
-        outline-offset: var(--focus-outline-offset-md);
-      }
-    }
+  .latest-heading a:hover {
+    color: var(--text-primary);
+    background-color: var(--surface-hover);
+  }
+
+  .latest-heading a:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
   }
 
   .posts-list {
-    display: grid;
-    gap: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4); /* Added spacing here */
   }
 
   .empty-posts {
     margin: 0;
     color: var(--text-secondary);
+    font-style: italic;
   }
 
+  /* --- Animations & Media Queries --- */
   @keyframes reveal-up {
     from {
       opacity: 0;
       transform: translateY(var(--motion-translate-sm));
     }
-
     to {
       opacity: 1;
       transform: translateY(0);
@@ -231,7 +232,7 @@ const currentFocus = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .home-layer section {
+    .home-layer > * {
       animation: none;
       opacity: 1;
     }
@@ -239,25 +240,23 @@ const currentFocus = [
 
   @media screen and (min-width: 68.75rem) {
     .home-layer {
-      gap: var(--layout-section-gap);
+      gap: var(--space-12);
+      padding-block-start: var(--space-6);
     }
-
+    
     .posts-list {
-      gap: var(--space-6);
+      gap: var(--space-6); /* Larger gap on desktop */
     }
   }
 
   @media screen and (max-width: 34.374rem) {
     .home-layer {
-      gap: var(--layout-section-gap-mobile);
+      gap: var(--space-8);
+      padding-block-start: var(--space-4);
     }
 
-    .intro {
-      padding-block-end: var(--space-4);
-    }
-
-    .intro-line {
-      line-height: var(--leading-copy-compact);
+    .hero {
+      gap: var(--space-4);
     }
 
     .hero h1 {
@@ -266,19 +265,7 @@ const currentFocus = [
     }
 
     .hero-lead {
-      line-height: var(--leading-copy-compact);
-    }
-
-    .currently-building {
-      gap: var(--space-3);
-    }
-
-    .currently-building ul {
-      gap: var(--space-3);
-    }
-
-    .latest-posts {
-      gap: var(--space-6);
+      font-size: var(--font-size-base);
     }
 
     .latest-heading {
