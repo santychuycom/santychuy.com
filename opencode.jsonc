@@ -1,7 +1,5 @@
 {
 	"$schema": "https://opencode.ai/config.json",
-	// Theme configuration
-	"theme": "vercel",
 	"plugin": ["opencode-lmstudio@latest", "@ramtinj95/opencode-tokenscope"],
 	// Auto-load .context/ detail files as instructions
 	"instructions": [".context/*.md"],
@@ -28,9 +26,6 @@
 				"baseURL": "http://127.0.0.1:1234/v1"
 			}
 		}
-	},
-	"keybinds": {
-		"variant_cycle": "<leader>t"
 	},
 	"autoupdate": true
 }
