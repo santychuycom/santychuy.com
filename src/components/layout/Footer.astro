@@ -1,9 +1,14 @@
 ---
+import SantychuyLogo from "@components/icons/santychuyISO.astro";
+
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <p>&copy; {year} Santiago Carrasco. Building in public.</p>
+  <div class="footer-content">
+    <SantychuyLogo class="footer-logo" />
+    <p>&copy; {year} Santiago Carrasco. Building in public.</p>
+  </div>
 </footer>
 
 <style>
@@ -14,7 +19,7 @@ const year = new Date().getFullYear();
     );
     margin-inline: auto;
     margin-block-start: auto;
-    padding-block: var(--space-5) var(--space-9);
+    padding-block: var(--space-9); /* Made top and bottom padding equal */
     border-top: var(--border-width-default) solid var(--border-subtle);
 
     @media screen and (min-width: 34.375rem) {
@@ -23,6 +28,21 @@ const year = new Date().getFullYear();
         calc(100% - var(--layout-shell-edge-tablet))
       );
     }
+  }
+
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    text-align: center;
+  }
+
+  .footer-logo {
+    width: var(--space-8);
+    height: auto;
+    color: var(--text-tertiary);
   }
 
   p {
