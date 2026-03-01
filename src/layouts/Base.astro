@@ -226,36 +226,11 @@ const hreflangAlternates = {
       src="https://umami.santychuy.com/script.js"
       data-website-id="2f3b8fca-a83a-4d9d-b851-0d70e1a6f43b"></script>
   </head>
-  <body>
+  <body class="min-h-svh">
     <Header />
-    <main>
+    <main class="w-full max-w-[var(--layout-max-width)] mx-auto flex-1 relative pt-[var(--layout-main-padding-top)] pb-[var(--layout-main-padding-bottom)] px-[var(--layout-gutter-mobile)] tablet:px-[var(--layout-gutter-tablet)] desktop:pt-[var(--layout-main-padding-top-desktop)] desktop:pb-[var(--layout-main-padding-bottom-desktop)] desktop:px-[var(--layout-gutter-desktop)]">
       <slot />
     </main>
     <Footer />
-
-    <style>
-      body {
-        min-height: 100svh;
-      }
-
-      main {
-        width: min(var(--layout-max-width), 100%);
-        margin-inline: auto;
-        padding: var(--layout-main-padding-top) var(--layout-gutter-mobile)
-          var(--layout-main-padding-bottom);
-        flex: 1;
-        position: relative;
-
-        @media screen and (min-width: 34.375rem) {
-          padding-inline: var(--layout-gutter-tablet);
-        }
-
-        @media screen and (min-width: 68.75rem) {
-          padding-block: var(--layout-main-padding-top-desktop)
-            var(--layout-main-padding-bottom-desktop);
-          padding-inline: var(--layout-gutter-desktop);
-        }
-      }
-    </style>
   </body>
 </html>
