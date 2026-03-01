@@ -19,35 +19,36 @@ const currentFocus = [
 ];
 ---
 
-<div class="home-layer">
-  <header class="hero" aria-labelledby="home-title">
-    <h1 id="home-title">Software engineer building practical AI experiences.</h1>
-    <p class="hero-lead">
+<div class="flex flex-col gap-10 desktop:gap-[var(--space-12)] desktop:pt-6 max-tablet:gap-8">
+  <header class="opacity-0 animate-reveal-up max-w-[var(--measure-hero-max)] flex flex-col gap-4" style="animation-delay: calc(var(--motion-delay-step) * 1)" aria-labelledby="home-title">
+    <h1 id="home-title" class="m-0 text-hero leading-tight text-wrap-balance text-ink tracking-[-0.02em] font-semibold max-tablet:text-hero-mobile max-tablet:leading-hero-mobile"
+    >Software engineer building practical AI experiences.</h1>
+    <p class="m-0 max-w-[var(--reading-max-width)] text-ink-muted text-lg leading-copy text-wrap-pretty max-tablet:text-base">
       This space is being redesigned in public. Each layer adds clarity, better
       writing flow, and a cleaner reading experience.
     </p>
   </header>
 
-  <section class="currently-building" aria-labelledby="currently-building-title">
-    <h2 id="currently-building-title">Now</h2>
-    <ul>
+  <section class="opacity-0 animate-reveal-up flex flex-col gap-4 max-w-[var(--measure-section-max)]" style="animation-delay: calc(var(--motion-delay-step) * 2)" aria-labelledby="currently-building-title">
+    <h2 id="currently-building-title" class="m-0 text-lg font-semibold text-ink tracking-[-0.01em]">Now</h2>
+    <ul class="m-0 ps-0 list-none grid gap-3">
       {
         currentFocus.map((item) => (
-          <li>{item}</li>
+          <li class="ps-4 border-s-2 border-brand text-ink-muted leading-copy">{item}</li>
         ))
       }
     </ul>
   </section>
 
-  <section class="latest-posts" aria-labelledby="latest-posts-title" id="latest-posts">
-    <div class="latest-heading">
-      <h2 id="latest-posts-title">Latest posts</h2>
-      <a href="/feed.xml" aria-label="RSS Feed">RSS</a>
+  <section class="opacity-0 animate-reveal-up flex flex-col gap-5 w-full" style="animation-delay: calc(var(--motion-delay-step) * 3)" aria-labelledby="latest-posts-title" id="latest-posts">
+    <div class="flex items-center justify-between gap-4 pb-2 border-b border-line max-tablet:items-end">
+      <h2 id="latest-posts-title" class="m-0 text-lg font-semibold text-ink tracking-[-0.01em]">Latest posts</h2>
+      <a href="/feed.xml" class="text-sm text-ink-muted no-underline touch-target inline-flex items-center px-2 rounded-sm transition-[color,background-color] duration-base ease-standard hover:text-ink hover:bg-[var(--surface-hover)] focus-ring" aria-label="RSS Feed">RSS</a>
     </div>
 
     {
       latestPosts.length > 0 ? (
-        <div class="posts-list">
+        <div class="flex flex-col gap-4 desktop:gap-6">
           {latestPosts.map(({ data, id }) => {
             const slug = normalizePostId(id);
 
@@ -63,213 +64,17 @@ const currentFocus = [
           })}
         </div>
       ) : (
-        <p class="empty-posts">New posts are on the way.</p>
+        <p class="m-0 text-ink-muted italic">New posts are on the way.</p>
       )
     }
   </section>
 </div>
 
 <style>
-  .home-layer {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-10);
-    padding-block-start: var(--space-4);
-  }
-
-  .home-layer > * {
-    opacity: 0;
-    animation: reveal-up var(--motion-duration-reveal) var(--motion-ease-standard) forwards;
-  }
-
-  .home-layer > *:nth-child(1) {
-    animation-delay: calc(var(--motion-delay-step) * 1);
-  }
-
-  .home-layer > *:nth-child(2) {
-    animation-delay: calc(var(--motion-delay-step) * 2);
-  }
-
-  .home-layer > *:nth-child(3) {
-    animation-delay: calc(var(--motion-delay-step) * 3);
-  }
-
-  /* --- Hero / Header --- */
-  .hero {
-    max-width: var(--measure-hero-max);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-  }
-
-  .hero h1 {
-    margin: 0;
-    font-size: var(--font-size-hero);
-    line-height: var(--leading-tight);
-    text-wrap: balance;
-    color: var(--text-primary);
-    letter-spacing: -0.02em;
-    font-weight: var(--font-weight-semibold);
-  }
-
-  .hero-lead {
-    margin: 0;
-    max-width: var(--reading-max-width);
-    color: var(--text-secondary);
-    font-size: var(--font-size-lg);
-    line-height: var(--leading-copy);
-    text-wrap: pretty;
-  }
-
-  /* --- Currently Building / Now --- */
-  .currently-building {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    max-width: var(--measure-section-max);
-  }
-
-  .currently-building h2 {
-    margin: 0;
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-semibold);
-    color: var(--text-primary);
-    letter-spacing: -0.01em;
-  }
-
-  .currently-building ul {
-    margin: 0;
-    padding-inline-start: 0;
-    list-style: none;
-    display: grid;
-    gap: var(--space-3);
-  }
-
-  .currently-building li {
-    position: relative;
-    padding-inline-start: var(--space-4);
-    color: var(--text-secondary);
-    line-height: var(--leading-copy);
-  }
-
-  .currently-building li::before {
-    content: "—";
-    position: absolute;
-    left: 0;
-    color: var(--border-strong);
-  }
-
-  /* --- Latest Posts / Writing --- */
-  .latest-posts {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
-    width: 100%;
-  }
-
-  .latest-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-4);
-    padding-block-end: var(--space-2);
-    border-bottom: var(--border-width-default) solid var(--border-subtle);
-  }
-
-  .latest-heading h2 {
-    margin: 0;
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-semibold);
-    color: var(--text-primary);
-    letter-spacing: -0.01em;
-  }
-
-  .latest-heading a {
-    font-size: var(--font-size-sm);
-    color: var(--text-secondary);
-    text-decoration: none;
-    min-height: var(--touch-target-min);
-    display: inline-flex;
-    align-items: center;
-    padding-inline: var(--space-2);
-    border-radius: var(--shape-radius-sm);
-    transition: color var(--motion-duration-base) var(--motion-ease-standard),
-                background-color var(--motion-duration-base) var(--motion-ease-standard);
-  }
-
-  .latest-heading a:hover {
-    color: var(--text-primary);
-    background-color: var(--surface-hover);
-  }
-
-  .latest-heading a:focus-visible {
-    outline: 2px solid var(--focus-ring);
-    outline-offset: 2px;
-  }
-
-  .posts-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4); /* Added spacing here */
-  }
-
-  .empty-posts {
-    margin: 0;
-    color: var(--text-secondary);
-    font-style: italic;
-  }
-
-  /* --- Animations & Media Queries --- */
-  @keyframes reveal-up {
-    from {
-      opacity: 0;
-      transform: translateY(var(--motion-translate-sm));
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .home-layer > * {
-      animation: none;
-      opacity: 1;
-    }
-  }
-
-  @media screen and (min-width: 68.75rem) {
-    .home-layer {
-      gap: var(--space-12);
-      padding-block-start: var(--space-6);
-    }
-    
-    .posts-list {
-      gap: var(--space-6); /* Larger gap on desktop */
-    }
-  }
-
-  @media screen and (max-width: 34.374rem) {
-    .home-layer {
-      gap: var(--space-8);
-      padding-block-start: var(--space-4);
-    }
-
-    .hero {
-      gap: var(--space-4);
-    }
-
-    .hero h1 {
-      font-size: var(--font-size-hero-mobile);
-      line-height: var(--leading-hero-mobile);
-    }
-
-    .hero-lead {
-      font-size: var(--font-size-base);
-    }
-
-    .latest-heading {
-      align-items: flex-end;
+    .animate-reveal-up {
+      animation: none !important;
+      opacity: 1 !important;
     }
   }
 </style>
