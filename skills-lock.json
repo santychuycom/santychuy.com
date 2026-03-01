@@ -1,6 +1,11 @@
 {
 	"version": 1,
 	"skills": {
+		"analytics-tracking": {
+			"source": "coreyhaines31/marketingskills",
+			"sourceType": "github",
+			"computedHash": "aa38a5b93a5e3b0b52fea5e84c1e8e0c48e18a75967ef2cafc2706e357fb2e27"
+		},
 		"brainstorming": {
 			"source": "obra/superpowers",
 			"sourceType": "github",
