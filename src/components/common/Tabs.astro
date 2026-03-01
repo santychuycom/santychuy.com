@@ -1,12 +1,12 @@
-<div class="tabs">
-  <input type="radio" name="tab" id="experience" checked />
-  <label for="experience">Experience</label>
+<div class="flex gap-4 bg-surface-up border border-line rounded-sm px-1 py-1 w-full touch-target">
+  <input type="radio" name="tab" id="experience" class="peer/exp sr-only" checked />
+  <label for="experience" class="flex justify-center items-center flex-1 cursor-pointer touch-target p-2 text-ink-faint text-sm leading-tight rounded-sm transition-[background-color,color] duration-base ease-standard peer-checked/exp:text-ink peer-checked/exp:bg-surface-dim peer-checked/exp:border peer-checked/exp:border-line-strong peer-checked/exp:font-medium peer-focus-visible/exp:outline-[length:var(--focus-outline-width)] peer-focus-visible/exp:outline-focus peer-focus-visible/exp:outline-offset-[var(--focus-outline-offset-sm)]">Experience</label>
 
-  <input type="radio" name="tab" id="projects" />
-  <label for="projects">Projects</label>
+  <input type="radio" name="tab" id="projects" class="peer/proj sr-only" />
+  <label for="projects" class="flex justify-center items-center flex-1 cursor-pointer touch-target p-2 text-ink-faint text-sm leading-tight rounded-sm transition-[background-color,color] duration-base ease-standard peer-checked/proj:text-ink peer-checked/proj:bg-surface-dim peer-checked/proj:border peer-checked/proj:border-line-strong peer-checked/proj:font-medium peer-focus-visible/proj:outline-[length:var(--focus-outline-width)] peer-focus-visible/proj:outline-focus peer-focus-visible/proj:outline-offset-[var(--focus-outline-offset-sm)]">Projects</label>
 
-  <input type="radio" name="tab" id="example-projects" />
-  <label for="example-projects">Example Projects</label>
+  <input type="radio" name="tab" id="example-projects" class="peer/exproj sr-only" />
+  <label for="example-projects" class="flex justify-center items-center flex-1 cursor-pointer touch-target p-2 text-ink-faint text-sm leading-tight rounded-sm transition-[background-color,color] duration-base ease-standard peer-checked/exproj:text-ink peer-checked/exproj:bg-surface-dim peer-checked/exproj:border peer-checked/exproj:border-line-strong peer-checked/exproj:font-medium peer-focus-visible/exproj:outline-[length:var(--focus-outline-width)] peer-focus-visible/exproj:outline-focus peer-focus-visible/exproj:outline-offset-[var(--focus-outline-offset-sm)]">Example Projects</label>
 </div>
 
 <script>
@@ -21,53 +21,3 @@
     radio.addEventListener('change', handleTabChange);
   });
 </script>
-
-<style>
-  .tabs {
-    display: flex;
-    gap: var(--space-4);
-    background-color: var(--surface-elevated);
-    border: var(--border-width-default) solid var(--border-subtle);
-    border-radius: var(--shape-radius-sm);
-    padding-inline: var(--space-1);
-    padding-block: var(--space-1);
-    width: 100%;
-    min-height: var(--touch-target-min);
-  }
-
-  input[type='radio'] {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  label {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
-    cursor: pointer;
-    min-height: var(--touch-target-min);
-    padding: var(--space-2);
-    color: var(--text-tertiary);
-    font-size: var(--font-size-sm);
-    line-height: var(--leading-tight);
-    border-radius: var(--shape-radius-sm);
-    transition:
-      background-color var(--motion-duration-base) var(--motion-ease-standard),
-      color var(--motion-duration-base) var(--motion-ease-standard);
-  }
-
-  input[type='radio']:checked + label {
-    color: var(--text-primary);
-    background-color: var(--surface-muted);
-    border-radius: var(--shape-radius-sm);
-    border: var(--border-width-default) solid var(--border-strong);
-    font-weight: var(--font-weight-medium);
-  }
-
-  input[type='radio']:focus-visible + label {
-    outline: var(--focus-outline-width) solid var(--focus-ring);
-    outline-offset: var(--focus-outline-offset-sm);
-  }
-</style>

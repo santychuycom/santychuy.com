@@ -1,77 +1,16 @@
-<section class="container" id="contact-me">
-  <h2 class="subtitle-section">Let’s get in touch!</h2>
-  <p class="description-section">
-    I’m always open to new opportunities. Feel free to reach out to me if you
+<section class="flex flex-col gap-5 mx-auto max-w-[var(--measure-content-max)] py-[var(--space-11)] px-8 max-tablet:py-9 max-tablet:px-4" id="contact-me">
+  <h2 class="text-ink m-0 text-xl leading-heading">Let's get in touch!</h2>
+  <p class="m-0 text-ink-muted text-lg leading-copy font-medium">
+    I'm always open to new opportunities. Feel free to reach out to me if you
     have any questions or just want to say hi!
   </p>
 
-  <a class="meeting-link" href="https://cal.com/santychuy" target="_blank" rel="noopener">
+  <a
+    class="w-fit touch-target inline-flex items-center justify-center self-start mt-3 rounded-md border border-brand py-2 px-5 text-surface-up bg-brand shadow-1 no-underline transition-[transform,background-color,box-shadow] duration-base ease-standard hover-lift hover:bg-brand hover:shadow-2 hover:text-surface-up focus-ring-md"
+    href="https://cal.com/santychuy"
+    target="_blank"
+    rel="noopener"
+  >
     Schedule meeting
   </a>
 </section>
-
-<style>
-  .container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
-    margin-inline: auto;
-    max-width: var(--measure-content-max);
-    padding-block: var(--space-11);
-    padding-inline: var(--space-8);
-
-    @media screen and (max-width: 34.374rem) {
-      padding-block: var(--space-9);
-      padding-inline: var(--space-4);
-    }
-  }
-
-  .subtitle-section {
-    color: var(--text-primary);
-    margin: 0;
-    font-size: var(--font-size-xl);
-    line-height: var(--leading-heading);
-  }
-
-  .description-section {
-    margin: 0;
-    color: var(--text-secondary);
-    font-size: var(--font-size-lg);
-    line-height: var(--leading-copy);
-    font-weight: var(--font-weight-medium);
-  }
-
-  .meeting-link {
-    width: fit-content;
-    min-height: var(--touch-target-min);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    align-self: flex-start;
-    margin-block-start: var(--space-3);
-    border-radius: var(--shape-radius-md);
-    border: var(--border-width-default) solid var(--paper-accent);
-    padding-block: var(--space-2);
-    padding-inline: var(--space-5);
-    color: var(--surface-elevated);
-    background-color: var(--paper-accent);
-    box-shadow: var(--elevation-1);
-    text-decoration: none;
-    transition:
-      transform var(--motion-duration-base) var(--motion-ease-standard),
-      background-color var(--motion-duration-base) var(--motion-ease-standard),
-      box-shadow var(--motion-duration-base) var(--motion-ease-standard);
-
-    &:hover {
-      transform: translateY(calc(var(--motion-translate-xs) * -1));
-      background-color: var(--paper-accent);
-      box-shadow: var(--elevation-2);
-      color: var(--surface-elevated);
-    }
-
-    &:focus-visible {
-      outline: var(--focus-outline-width) solid var(--focus-ring);
-      outline-offset: var(--focus-outline-offset-md);
-    }
-  }
-</style>
