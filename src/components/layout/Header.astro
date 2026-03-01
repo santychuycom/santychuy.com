@@ -1,130 +1,27 @@
 ---
+import MoonIcon from "@components/icons/moon.astro";
 import SantychuyLogo from "@components/icons/santychuyISO.astro";
+import SunIcon from "@components/icons/sun.astro";
 ---
 
-<header class="site-header">
-  <a href="/" class="logo-link" aria-label="Go to homepage">
-    <SantychuyLogo class="logo" />
+<header class="flex items-center justify-between gap-4 shell-width py-5 border-b border-line desktop:py-6">
+  <a href="/" class="inline-flex items-center justify-center rounded-pill text-ink transition-[transform,color] duration-base ease-standard hover-lift hover:text-brand focus-ring" aria-label="Go to homepage">
+    <SantychuyLogo class="w-[var(--brand-logo-size)] h-auto desktop:w-[var(--brand-logo-size-desktop)]" />
   </a>
 
   <button
-    class="theme-toggle"
+    class="group touch-target inline-flex items-center gap-2 p-1 border-none rounded-pill bg-transparent cursor-pointer focus-ring"
     type="button"
     data-theme-toggle
     data-theme="light"
     aria-label="Switch to dark mode"
     aria-pressed="false"
   >
-    <span class="theme-indicator" aria-hidden="true"></span>
-    <span data-theme-label>Light</span>
+    <SunIcon class="w-[18px] h-[18px] text-ink-faint transition-colors duration-base ease-standard group-data-[theme=light]:text-ink" aria-hidden="true" />
+    <span class="switch-track relative w-9 h-5 rounded-pill bg-line shadow-[inset_0_1px_2px_rgb(0_0_0/0.1)] transition-colors duration-base ease-standard group-hover:bg-line-strong group-data-[theme=dark]:bg-brand group-data-[theme=dark]:hover:bg-brand" aria-hidden="true">
+      <span class="absolute top-0.5 left-0.5 w-4 h-4 rounded-pill bg-surface-up shadow-[0_1px_3px_rgb(0_0_0/0.15)] translate-x-0 transition-transform duration-base ease-[cubic-bezier(0.5,-0.3,0.1,1.5)] motion-reduce:transition-[transform_0.01ms] group-data-[theme=dark]:translate-x-4"></span>
+    </span>
+    <MoonIcon class="w-[18px] h-[18px] text-ink-faint transition-colors duration-base ease-standard group-data-[theme=dark]:text-ink" aria-hidden="true" />
+    <span class="sr-only" data-theme-label>Light</span>
   </button>
 </header>
-
-<style>
-  .site-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-4);
-    width: min(
-      var(--layout-shell-max-width),
-      calc(100% - var(--layout-shell-edge-mobile))
-    );
-    margin-inline: auto;
-    padding-block: var(--space-5);
-    border-bottom: var(--border-width-default) solid var(--border-subtle);
-
-    @media screen and (min-width: 34.375rem) {
-      width: min(
-        var(--layout-shell-max-width),
-        calc(100% - var(--layout-shell-edge-tablet))
-      );
-    }
-
-    @media screen and (min-width: 68.75rem) {
-      padding-block: var(--space-6);
-    }
-  }
-
-  .theme-toggle {
-    min-height: var(--touch-target-min);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-2);
-    border: var(--border-width-default) solid var(--border-subtle);
-    border-radius: var(--shape-radius-pill);
-    background-color: var(--surface-elevated);
-    color: var(--text-secondary);
-    padding-inline: var(--space-4);
-    padding-block: var(--space-2);
-    font-size: var(--font-size-sm);
-    line-height: var(--leading-tight);
-    font-weight: var(--font-weight-medium);
-    cursor: pointer;
-    transition:
-      color var(--motion-duration-base) var(--motion-ease-standard),
-      border-color var(--motion-duration-base) var(--motion-ease-standard),
-      transform var(--motion-duration-base) var(--motion-ease-standard),
-      box-shadow var(--motion-duration-base) var(--motion-ease-standard);
-
-    &:hover {
-      color: var(--text-primary);
-      border-color: var(--border-strong);
-      transform: translateY(calc(var(--motion-translate-xs) * -1));
-      box-shadow: var(--elevation-1);
-    }
-
-    &:focus-visible {
-      outline: var(--focus-outline-width) solid var(--focus-ring);
-      outline-offset: var(--focus-outline-offset-sm);
-    }
-  }
-
-  .theme-indicator {
-    width: var(--space-2);
-    height: var(--space-2);
-    border-radius: var(--shape-radius-pill);
-    background-color: var(--paper-accent);
-    box-shadow: 0 0 0 var(--space-1) var(--focus-ring-soft);
-    transition:
-      transform var(--motion-duration-base) var(--motion-ease-standard),
-      background-color var(--motion-duration-base) var(--motion-ease-standard);
-  }
-
-  .theme-toggle[data-theme="dark"] .theme-indicator {
-    transform: scale(1.08);
-    background-color: var(--text-primary);
-  }
-
-  .logo-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--shape-radius-pill);
-    color: var(--text-primary);
-    transition:
-      transform var(--motion-duration-base) var(--motion-ease-standard),
-      color var(--motion-duration-base) var(--motion-ease-standard);
-
-    &:hover,
-    &:focus-visible {
-      transform: translateY(calc(var(--motion-translate-xs) * -1));
-      color: var(--paper-accent);
-    }
-
-    &:focus-visible {
-      outline: var(--focus-outline-width) solid var(--focus-ring);
-      outline-offset: var(--focus-outline-offset-sm);
-    }
-  }
-
-  .logo {
-    width: var(--brand-logo-size);
-    height: auto;
-
-    @media screen and (min-width: 68.75rem) {
-      width: var(--brand-logo-size-desktop);
-    }
-  }
-</style>
