@@ -13,10 +13,10 @@ const normalizePostId = (id: string) =>
 	id.replace(/\.(md|mdx|markdown)$/i, "").replaceAll(".", "");
 ---
 
-<section class="latest-posts" aria-labelledby="latest-posts">
-  <div class="posts-heading">
-    <h2 class="subtitle-section" id="latest-posts">Latest writing</h2>
-    <p>
+<section class="flex flex-col gap-9 max-w-[var(--layout-max-width)] mx-auto" aria-labelledby="latest-posts">
+  <div class="flex flex-col gap-3">
+    <h2 class="text-ink text-xl leading-heading m-0" id="latest-posts">Latest writing</h2>
+    <p class="m-0 max-w-[var(--measure-section-max)] text-ink-muted text-base leading-copy-compact">
       Recent posts on AI agents, software engineering, and personal growth
       through building.
     </p>
@@ -24,7 +24,7 @@ const normalizePostId = (id: string) =>
 
   {
     featuredPosts.length > 0 ? (
-      <div class="posts-list">
+      <div class="grid gap-5 desktop:gap-6">
         {featuredPosts.map(({ data, id }) => {
           const slug = normalizePostId(id);
 
@@ -41,56 +41,7 @@ const normalizePostId = (id: string) =>
         })}
       </div>
     ) : (
-      <h3 class="no-posts">New posts are on the way.</h3>
+      <h3 class="text-xl leading-heading text-ink-muted m-0">New posts are on the way.</h3>
     )
   }
 </section>
-
-<style>
-  .latest-posts {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-9);
-    max-width: var(--layout-max-width);
-    margin-inline: auto;
-  }
-
-  .posts-heading {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-
-  .subtitle-section {
-    color: var(--text-primary);
-    font-size: var(--font-size-xl);
-    line-height: var(--leading-heading);
-    margin: 0;
-  }
-
-  .posts-heading p {
-    margin: 0;
-    max-width: var(--measure-section-max);
-    color: var(--text-secondary);
-    font-size: var(--font-size-base);
-    line-height: var(--leading-copy-compact);
-  }
-
-  .posts-list {
-    display: grid;
-    gap: var(--space-5);
-  }
-
-  .no-posts {
-    font-size: var(--font-size-xl);
-    line-height: var(--leading-heading);
-    color: var(--text-secondary);
-    margin: 0;
-  }
-
-  @media screen and (min-width: 68.75rem) {
-    .posts-list {
-      gap: var(--space-6);
-    }
-  }
-</style>

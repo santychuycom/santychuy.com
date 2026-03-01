@@ -7,21 +7,6 @@ interface Props {
 const { title, className } = Astro.props;
 ---
 
-<div class:list={['badge', className]}>
+<div class:list={['text-xs leading-tight font-medium text-ink-muted bg-brand-soft border border-line-strong rounded-pill py-1 px-2 w-fit', className]}>
   {title}
 </div>
-
-<style>
-  .badge {
-    font-size: var(--font-size-xs);
-    line-height: var(--leading-tight);
-    font-weight: var(--font-weight-medium);
-    color: var(--text-secondary);
-    background-color: var(--paper-accent-soft);
-    border: var(--border-width-default) solid var(--border-strong);
-    border-radius: var(--shape-radius-pill);
-    padding-block: var(--space-1);
-    padding-inline: var(--space-2);
-    width: fit-content;
-  }
-</style>

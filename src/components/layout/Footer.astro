@@ -4,51 +4,9 @@ import SantychuyLogo from "@components/icons/santychuyISO.astro";
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer">
-  <div class="footer-content">
-    <SantychuyLogo class="footer-logo" />
-    <p>&copy; {year} Santiago Carrasco. Building in public.</p>
+<footer class="shell-width mt-auto py-9 border-t border-line">
+  <div class="flex flex-col items-center justify-center gap-4 text-center">
+    <SantychuyLogo class="w-8 h-auto text-ink-faint" />
+    <p class="m-0 text-sm text-ink-muted leading-copy-compact">&copy; {year} Santiago Carrasco. Building in public.</p>
   </div>
 </footer>
-
-<style>
-  .site-footer {
-    width: min(
-      var(--layout-shell-max-width),
-      calc(100% - var(--layout-shell-edge-mobile))
-    );
-    margin-inline: auto;
-    margin-block-start: auto;
-    padding-block: var(--space-9); /* Made top and bottom padding equal */
-    border-top: var(--border-width-default) solid var(--border-subtle);
-
-    @media screen and (min-width: 34.375rem) {
-      width: min(
-        var(--layout-shell-max-width),
-        calc(100% - var(--layout-shell-edge-tablet))
-      );
-    }
-  }
-
-  .footer-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-4);
-    text-align: center;
-  }
-
-  .footer-logo {
-    width: var(--space-8);
-    height: auto;
-    color: var(--text-tertiary);
-  }
-
-  p {
-    margin: 0;
-    font-size: var(--font-size-sm);
-    color: var(--text-secondary);
-    line-height: var(--leading-copy-compact);
-  }
-</style>
