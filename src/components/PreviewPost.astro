@@ -7,9 +7,20 @@ interface Props {
 	description: string;
 	slug: string;
 	lang?: "en" | "es";
+	topics?: string[];
+	surface?: string;
+	position?: number;
 }
 
-const { title, date, description, slug, lang = "en" } = Astro.props;
+const {
+	title,
+	date,
+	description,
+	slug,
+	lang = "en",
+	surface,
+	position,
+} = Astro.props;
 const dateLabel = new Intl.DateTimeFormat(lang === "es" ? "es-MX" : "en-US", {
 	dateStyle: "medium",
 }).format(date);
@@ -17,7 +28,7 @@ const readLabel = lang === "es" ? "Leer articulo" : "Read article";
 ---
 
 <article class="group">
-  <a href={`/blog/${slug}`} class="flex flex-col gap-2 py-4 no-underline text-inherit hover:text-inherit transition-none outline-none rounded-sm focus-visible:bg-[var(--surface-hover)] focus-visible:shadow-[0_0_0_var(--space-2)_var(--surface-hover)] desktop:flex-row desktop:items-start desktop:gap-8">
+  <a href={`/blog/${slug}`} class="flex flex-col gap-2 py-4 no-underline text-inherit hover:text-inherit transition-none outline-none rounded-sm focus-visible:bg-[var(--surface-hover)] focus-visible:shadow-[0_0_0_var(--space-2)_var(--surface-hover)] desktop:flex-row desktop:items-start desktop:gap-8" data-analytics-event={surface ? "post_card_click" : undefined} data-post-slug={slug} data-post-lang={lang} data-surface={surface} data-position={typeof position === "number" ? String(position) : undefined}>
     <div class="flex flex-col gap-2 desktop:flex-[0_0_120px]">
       <time class="text-ink-faint text-sm font-[var(--font-mono,monospace)]" datetime={date.toISOString()}>{dateLabel}</time>
       <div class="hidden items-center gap-2 text-ink text-xs font-medium desktop:flex desktop:opacity-0 desktop:-translate-y-1 desktop:transition-all desktop:duration-base desktop:ease-standard desktop:pointer-events-none group-hover:opacity-100 group-hover:translate-y-0" aria-hidden="true">

@@ -1,0 +1,239 @@
+---
+const umamiWebsiteId = import.meta.env.UMAMI_WEBSITE_ID;
+---
+
+{umamiWebsiteId && (
+	<script
+		defer
+		src="/stats/script.js"
+		data-website-id={umamiWebsiteId}
+		data-host-url="/stats"
+		data-domains="santychuy.com"
+		data-auto-track="false"
+		data-exclude-search="true"
+		data-do-not-track="true"
+	/>
+)}
+{umamiWebsiteId && (
+	<script is:inline>
+		(() => {
+			const root = document.documentElement;
+
+			if (root.dataset.umamiTrackingBound === "true") {
+				return;
+			}
+
+			root.dataset.umamiTrackingBound = "true";
+
+			const BLOG_PATH_PATTERN = /^\/(?:es\/)?blog\/([^/?#]+)/;
+			const PROGRESS_MARKERS = [25, 50, 75, 100];
+
+			let cleanupPostReadProgress = null;
+
+			const trackEvent = (name, data) => {
+				const tracker = window.umami;
+
+				if (!tracker || typeof tracker.track !== "function") {
+					return;
+				}
+
+				if (name) {
+					tracker.track(name, data);
+					return;
+				}
+
+				tracker.track();
+			};
+
+			const getBlogMeta = () => {
+				const match = window.location.pathname.match(BLOG_PATH_PATTERN);
+
+				if (!match) {
+					return null;
+				}
+
+				return {
+					post_lang: document.documentElement.lang === "es" ? "es" : "en",
+					slug: decodeURIComponent(match[1]),
+				};
+			};
+
+			const trackCampaignLanding = () => {
+				const params = new URLSearchParams(window.location.search);
+				const source = params.get("utm_source")?.trim();
+				const medium = params.get("utm_medium")?.trim();
+				const campaign = params.get("utm_campaign")?.trim();
+				const content = params.get("utm_content")?.trim();
+
+				if (!source && !medium && !campaign && !content) {
+					return;
+				}
+
+				const dedupeKey = [
+					window.location.pathname,
+					source ?? "",
+					medium ?? "",
+					campaign ?? "",
+					content ?? "",
+				].join("|");
+
+				try {
+					if (window.sessionStorage.getItem(`umami_campaign:${dedupeKey}`) === "1") {
+						return;
+					}
+
+					window.sessionStorage.setItem(`umami_campaign:${dedupeKey}`, "1");
+				} catch {
+					// Ignore storage access issues.
+				}
+
+				const payload = {
+					landing_path: window.location.pathname,
+					...(source ? { source } : {}),
+					...(medium ? { medium } : {}),
+					...(campaign ? { campaign } : {}),
+					...(content ? { content } : {}),
+				};
+
+				trackEvent("campaign_landing", payload);
+			};
+
+			const bindPostReadProgress = () => {
+				if (typeof cleanupPostReadProgress === "function") {
+					cleanupPostReadProgress();
+				}
+
+				cleanupPostReadProgress = null;
+
+				const blogMeta = getBlogMeta();
+
+				if (!blogMeta) {
+					return;
+				}
+
+				const firedMarkers = new Set();
+				let frameRequest = null;
+
+				const evaluateProgress = () => {
+					const scrollableHeight =
+						document.documentElement.scrollHeight - window.innerHeight;
+					const progress =
+						scrollableHeight <= 0
+							? 100
+							: Math.min(100, Math.round((window.scrollY / scrollableHeight) * 100));
+
+					for (const marker of PROGRESS_MARKERS) {
+						if (progress < marker || firedMarkers.has(marker)) {
+							continue;
+						}
+
+						firedMarkers.add(marker);
+						trackEvent("post_read_progress", {
+							...blogMeta,
+							progress: marker,
+						});
+					}
+				};
+
+				const onScroll = () => {
+					if (frameRequest !== null) {
+						return;
+					}
+
+					frameRequest = window.requestAnimationFrame(() => {
+						frameRequest = null;
+						evaluateProgress();
+					});
+				};
+
+				const onVisibilityChange = () => {
+					if (document.visibilityState === "hidden") {
+						evaluateProgress();
+					}
+				};
+
+				window.addEventListener("scroll", onScroll, { passive: true });
+				window.addEventListener("resize", onScroll);
+				document.addEventListener("visibilitychange", onVisibilityChange);
+
+				onScroll();
+
+				cleanupPostReadProgress = () => {
+					window.removeEventListener("scroll", onScroll);
+					window.removeEventListener("resize", onScroll);
+					document.removeEventListener("visibilitychange", onVisibilityChange);
+
+					if (frameRequest !== null) {
+						window.cancelAnimationFrame(frameRequest);
+						frameRequest = null;
+					}
+				};
+			};
+
+			document.addEventListener("click", (event) => {
+				if (!(event.target instanceof Element)) {
+					return;
+				}
+
+				const anchor = event.target.closest("a");
+
+				if (!(anchor instanceof HTMLAnchorElement)) {
+					return;
+				}
+
+				if (anchor.dataset.analyticsEvent === "post_card_click") {
+					trackEvent("post_card_click", {
+						slug: anchor.dataset.postSlug,
+						post_lang: anchor.dataset.postLang,
+						surface: anchor.dataset.surface,
+						position: Number(anchor.dataset.position),
+					});
+					return;
+				}
+
+				if (!anchor.closest("main")) {
+					return;
+				}
+
+				const blogMeta = getBlogMeta();
+
+				if (!blogMeta) {
+					return;
+				}
+
+				let destination;
+
+				try {
+					destination = new URL(anchor.href, window.location.origin);
+				} catch {
+					return;
+				}
+
+				if (destination.origin === window.location.origin) {
+					return;
+				}
+
+				trackEvent("post_outbound_click", {
+					...blogMeta,
+					destination_host: destination.hostname,
+					link_type: anchor.dataset.linkType ?? "external",
+				});
+			});
+
+			const onPageLoad = () => {
+				const pageKey = `${window.location.pathname}${window.location.search}`;
+
+				if (root.dataset.umamiLastPageview !== pageKey) {
+					root.dataset.umamiLastPageview = pageKey;
+					trackEvent();
+				}
+
+				trackCampaignLanding();
+				bindPostReadProgress();
+			};
+
+			onPageLoad();
+			document.addEventListener("astro:page-load", onPageLoad);
+		})();
+	</script>
+)}

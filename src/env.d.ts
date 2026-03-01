@@ -5,6 +5,7 @@ type Runtime = import("@astrojs/cloudflare").Runtime<Env>;
 
 interface ImportMetaEnv {
 	readonly UMAMI_AUTH_TOKEN: string;
+	readonly UMAMI_PROXY_TARGET: string;
 	readonly UMAMI_WEBSITE_ID: string;
 }
 
