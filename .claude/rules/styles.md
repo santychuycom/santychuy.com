@@ -1,6 +1,7 @@
 ---
 paths:
   - 'src/styles/**/*.css'
+  - 'src/**/*.astro'
 ---
 
 # CSS Rules
@@ -17,8 +18,8 @@ paths:
 | ---------------- | -------------------------------------------------------------- |
 | `reset.css`      | CSS reset (box-sizing, margins, fluid body, balanced headings) |
 | `vars.css`       | Design tokens (colors, shadows, spacing, breakpoints)          |
-| `globals.css`    | Base styles, `@font-face`, body/link defaults                  |
-| `animations.css` | Keyframe animations (bounce, appear, waving, spin)             |
+| `globals.css`    | Base styles, `@font-face`, body/link defaults, `@theme inline` tokens, `@utility` definitions |
+| `animations.css` | Keyframe animations (bounce, appear, waving, spin, reveal-up)  |
 
 ## Responsive Design
 
@@ -30,7 +31,7 @@ paths:
 
 ## Conventions
 
-- No CSS frameworks (no Tailwind, no CSS-in-JS).
+- Use Tailwind utility classes for component styling. Reserve scoped `<style>` blocks only for patterns that can't be expressed as utilities (pseudo-elements with complex backgrounds, nth-child staggered animations).
+- Global token files (`vars.css`, `globals.css`, `reset.css`, `animations.css`) stay as CSS.
 - Prefer CSS custom properties over preprocessor variables.
-- Keep global styles minimal; prefer scoped `<style>` in Astro components.
 - Use logical properties where practical (`margin-inline`, `padding-block`).
