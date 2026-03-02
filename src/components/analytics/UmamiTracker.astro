@@ -4,6 +4,7 @@ const umamiWebsiteId = import.meta.env.UMAMI_WEBSITE_ID;
 
 {umamiWebsiteId && (
 	<script
+		is:inline
 		defer
 		src="/stats/script.js"
 		data-website-id={umamiWebsiteId}
