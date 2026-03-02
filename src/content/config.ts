@@ -3,7 +3,7 @@ import { glob } from "astro/loaders";
 import { postSchema } from "../schemas/post";
 
 const posts = defineCollection({
-	loader: glob({ pattern: "**/[^_]*.md", base: "./src/content/posts" }),
+	loader: glob({ pattern: "**/[^_]*.{md,mdx}", base: "./src/content/posts" }),
 	schema: postSchema,
 });
 

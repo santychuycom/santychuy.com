@@ -2,6 +2,7 @@
 export const prerender = false;
 
 import { getEntry, render } from "astro:content";
+import Note from "@components/mdx/Note.astro";
 import BlogContent from "@components/pages/Blog/index.astro";
 import BlogLayout from "@layouts/Blog.astro";
 
@@ -65,7 +66,28 @@ const alternates =
 		? { es: canonicalURL, "x-default": canonicalURL }
 		: { en: canonicalURL, "x-default": canonicalURL };
 
-const { Content } = await render(entry);
+const { Content, headings, remarkPluginFrontmatter } = await render(entry);
+const mdxComponents = { Note };
+const isMdx = entry.id.toLowerCase().endsWith(".mdx");
+const readingMeta = remarkPluginFrontmatter.minutesRead as
+	| { minutes?: number }
+	| undefined;
+const fallbackWords = (entry.body ?? "")
+	.trim()
+	.split(/\s+/u)
+	.filter(Boolean).length;
+const fallbackMinutes = Math.max(1, Math.ceil(fallbackWords / 220));
+const minutesRead = Math.max(
+	1,
+	Math.ceil(readingMeta?.minutes ?? fallbackMinutes),
+);
+const readingTime = {
+	minutes: minutesRead,
+	text:
+		entry.data.lang === "es"
+			? `${minutesRead} min de lectura`
+			: `${minutesRead} min read`,
+};
 ---
 
 <BlogLayout
@@ -77,121 +99,13 @@ const { Content } = await render(entry);
   alternates={alternates}
   schema={articleSchema}
 >
-  <BlogContent post={entry.data} id={normalizedId}>
-    <Content />
+  <BlogContent
+    post={entry.data}
+    id={normalizedId}
+    headings={headings}
+    readingTime={readingTime}
+    canonicalURL={canonicalURL}
+  >
+    {isMdx ? <Content components={mdxComponents} /> : <Content />}
   </BlogContent>
 </BlogLayout>
-
-<style is:global>
-  h1 {
-    font-size: var(--font-size-display);
-    line-height: var(--leading-tight);
-  }
-
-  h2,
-  h3,
-  h4,
-  h5 {
-    color: var(--text-primary);
-    margin-block-start: var(--space-11);
-    margin-block-end: var(--space-6);
-    line-height: var(--leading-heading);
-  }
-
-  p {
-    margin-block-end: var(--space-6);
-    font-size: var(--font-size-lg);
-    line-height: var(--leading-copy);
-    color: var(--text-secondary);
-  }
-
-  a {
-    text-decoration: underline;
-    text-decoration-thickness: var(--text-decoration-thickness-thin);
-    text-underline-offset: var(--space-1);
-  }
-
-  blockquote {
-    border-left: var(--space-1) solid var(--paper-accent);
-    border-top-left-radius: var(--shape-radius-xs);
-    border-bottom-left-radius: var(--shape-radius-xs);
-    font-style: italic;
-    padding-inline-start: var(--space-6);
-    padding-block: var(--space-4);
-    margin-block: var(--space-10);
-    color: var(--text-secondary);
-
-    p {
-      font-size: var(--font-size-prose-quote);
-      margin-block: 0;
-      color: inherit;
-    }
-  }
-
-  hr {
-    border-width: var(--border-width-default);
-    border-radius: var(--shape-radius-pill);
-    border-color: var(--border-subtle);
-    margin-block-start: var(--space-13);
-    margin-block-end: var(--space-11);
-  }
-
-  code {
-    background-color: var(--surface-muted);
-    color: var(--text-primary);
-    padding-block: var(--space-1);
-    padding-inline: var(--space-2);
-    border-radius: var(--shape-radius-sm);
-    font-size: var(--font-size-prose-code);
-  }
-
-  pre {
-    border-radius: var(--shape-radius-xl);
-    padding-block: var(--space-5);
-    padding-inline: var(--space-5);
-    margin-block: var(--space-9);
-    border: var(--border-width-default) solid var(--border-subtle);
-    background-color: var(--surface-elevated);
-
-    code {
-      background-color: transparent;
-    }
-  }
-
-  ol,
-  ul {
-    padding-inline-start: var(--space-8);
-    margin-block: var(--space-4);
-  }
-
-  ul > li {
-    margin-block: var(--space-2);
-    color: var(--text-secondary);
-
-    &::marker {
-      color: var(--paper-accent);
-    }
-  }
-
-  img {
-    max-width: 100%;
-    border-radius: var(--shape-radius-md);
-    margin-block-start: var(--space-8);
-    margin-block-end: var(--space-2);
-  }
-
-  mark {
-    color: inherit;
-    padding-inline: 0.22em;
-    border-radius: var(--shape-radius-xs);
-    background: linear-gradient(
-      180deg,
-      transparent 18%,
-      var(--paper-accent-soft) 18%,
-      var(--paper-accent-soft) 88%,
-      transparent 88%
-    );
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
-  }
-</style>

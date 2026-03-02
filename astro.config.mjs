@@ -1,9 +1,12 @@
 import { resolve } from "node:path";
 import cloudflare from "@astrojs/cloudflare";
+import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
+import { remarkAlert } from "remark-github-blockquote-alert";
+import remarkReadingTime from "remark-reading-time";
 
 // https://astro.build/config
 export default defineConfig({
@@ -26,5 +29,15 @@ export default defineConfig({
 	prefetch: {
 		defaultStrategy: "tap",
 	},
-	integrations: [react(), sitemap()],
+	markdown: {
+		remarkPlugins: [
+			[remarkReadingTime, { attribute: "minutesRead" }],
+			remarkAlert,
+		],
+		remarkRehype: {
+			footnoteLabel: "References",
+			footnoteBackLabel: "Back to content",
+		},
+	},
+	integrations: [react(), sitemap(), mdx()],
 });
