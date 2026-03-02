@@ -6,6 +6,7 @@ import "@styles/animations.css";
 
 import { ViewTransitions } from "astro:transitions";
 import UmamiTracker from "@components/analytics/UmamiTracker.astro";
+import Header from "@components/layout/Header.astro";
 
 interface Props {
 	title: string;
@@ -57,6 +58,114 @@ const hreflangAlternates = {
       crossorigin
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      (() => {
+        const key = "theme";
+        const dark = "dark";
+        const light = "light";
+        const root = document.documentElement;
+
+        const getStoredTheme = () => {
+          try {
+            const value = localStorage.getItem(key);
+            return value === dark || value === light ? value : null;
+          } catch {
+            return null;
+          }
+        };
+
+        const getSystemTheme = () =>
+          window.matchMedia("(prefers-color-scheme: dark)").matches ? dark : light;
+
+        const getPreferredTheme = () => getStoredTheme() ?? getSystemTheme();
+
+        const applyTheme = (theme) => {
+          const isDark = theme === dark;
+          root.classList.toggle(dark, isDark);
+          root.style.colorScheme = isDark ? dark : light;
+        };
+
+        const syncToggle = () => {
+          const toggle = document.querySelector("[data-theme-toggle]");
+
+          if (!(toggle instanceof HTMLButtonElement)) {
+            return;
+          }
+
+          const isDark = root.classList.contains(dark);
+
+          toggle.dataset.theme = isDark ? dark : light;
+          toggle.setAttribute("aria-pressed", String(isDark));
+          toggle.setAttribute(
+            "aria-label",
+            isDark ? "Switch to light mode" : "Switch to dark mode",
+          );
+
+          const label = toggle.querySelector("[data-theme-label]");
+
+          if (label) {
+            label.textContent = isDark ? "Dark" : "Light";
+          }
+        };
+
+        const bindToggle = () => {
+          const toggle = document.querySelector("[data-theme-toggle]");
+
+          if (!(toggle instanceof HTMLButtonElement)) {
+            return;
+          }
+
+          if (toggle.dataset.bound === "true") {
+            syncToggle();
+            return;
+          }
+
+          toggle.dataset.bound = "true";
+
+          toggle.addEventListener("click", () => {
+            const nextTheme = root.classList.contains(dark) ? light : dark;
+
+            try {
+              localStorage.setItem(key, nextTheme);
+            } catch {
+              // Ignore storage failures (e.g. privacy mode).
+            }
+
+            applyTheme(nextTheme);
+            syncToggle();
+          });
+
+          syncToggle();
+        };
+
+        const applyAndSync = () => {
+          applyTheme(getPreferredTheme());
+          bindToggle();
+        };
+
+        if (root.dataset.themeBootstrapped !== "true") {
+          root.dataset.themeBootstrapped = "true";
+
+          document.addEventListener("astro:after-swap", applyAndSync);
+          document.addEventListener("astro:page-load", bindToggle);
+
+          const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+          const onSystemThemeChange = () => {
+            if (getStoredTheme() === null) {
+              applyAndSync();
+            }
+          };
+
+          if (typeof mediaQuery.addEventListener === "function") {
+            mediaQuery.addEventListener("change", onSystemThemeChange);
+          } else if (typeof mediaQuery.addListener === "function") {
+            mediaQuery.addListener(onSystemThemeChange);
+          }
+        }
+
+        applyAndSync();
+      })();
+    </script>
     <title>
       {`${title} - Santiago Carrasco (Santychuy)`}
     </title>
@@ -96,9 +205,72 @@ const hreflangAlternates = {
     ))}
     <UmamiTracker />
   </head>
-  <body>
+  <body class="min-h-svh">
+    <div class="blog-header-shell" data-blog-header-shell data-scrolled="false">
+      <Header />
+    </div>
+    <script is:inline>
+      (() => {
+        const setupStickyHeaderState = () => {
+          const headerShell = document.querySelector("[data-blog-header-shell]");
+
+          if (!(headerShell instanceof HTMLElement)) {
+            return;
+          }
+
+          if (headerShell.dataset.scrollBound === "true") {
+            headerShell.dataset.scrolled = window.scrollY > 16 ? "true" : "false";
+            return;
+          }
+
+          const updateScrolledState = () => {
+            headerShell.dataset.scrolled = window.scrollY > 16 ? "true" : "false";
+          };
+
+          headerShell.dataset.scrollBound = "true";
+          updateScrolledState();
+
+          window.addEventListener("scroll", updateScrolledState, { passive: true });
+          document.addEventListener(
+            "astro:before-swap",
+            () => {
+              window.removeEventListener("scroll", updateScrolledState);
+              delete headerShell.dataset.scrollBound;
+            },
+            { once: true },
+          );
+        };
+
+        setupStickyHeaderState();
+        document.addEventListener("astro:page-load", setupStickyHeaderState);
+      })();
+    </script>
     <main>
       <slot />
     </main>
   </body>
 </html>
+
+<style>
+  .blog-header-shell {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+  }
+
+  .blog-header-shell :global(header) {
+    background: transparent;
+    transition: background-color var(--motion-duration-base) var(--motion-ease-standard);
+  }
+
+  .blog-header-shell[data-scrolled="true"] :global(header) {
+    background: color-mix(in srgb, var(--surface-base) 92%, transparent);
+    backdrop-filter: blur(6px);
+  }
+
+  @supports not ((backdrop-filter: blur(6px))) {
+    .blog-header-shell[data-scrolled="true"] :global(header) {
+      background: var(--surface-base);
+    }
+  }
+</style>
