@@ -6,6 +6,7 @@ import "@styles/animations.css";
 
 import { ViewTransitions } from "astro:transitions";
 import UmamiTracker from "@components/analytics/UmamiTracker.astro";
+import Footer from "@components/layout/Footer.astro";
 import Header from "@components/layout/Header.astro";
 
 interface Props {
@@ -248,6 +249,7 @@ const hreflangAlternates = {
     <main>
       <slot />
     </main>
+    <Footer />
   </body>
 </html>
 
@@ -260,17 +262,29 @@ const hreflangAlternates = {
 
   .blog-header-shell :global(header) {
     background: transparent;
+    position: relative;
     transition: background-color var(--motion-duration-base) var(--motion-ease-standard);
   }
 
-  .blog-header-shell[data-scrolled="true"] :global(header) {
-    background: color-mix(in srgb, var(--surface-base) 92%, transparent);
-    backdrop-filter: blur(6px);
+  .blog-header-shell :global(header)::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 0.75rem;
+    translate: 0 100%;
+    background: linear-gradient(to bottom, var(--surface-base), transparent);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--motion-duration-base) var(--motion-ease-standard);
   }
 
-  @supports not ((backdrop-filter: blur(6px))) {
-    .blog-header-shell[data-scrolled="true"] :global(header) {
-      background: var(--surface-base);
-    }
+  .blog-header-shell[data-scrolled="true"] :global(header) {
+    backdrop-filter: blur(55px);
+    -webkit-backdrop-filter: blur(55px);
+  }
+
+  .blog-header-shell[data-scrolled="true"] :global(header)::after {
+    opacity: 1;
   }
 </style>

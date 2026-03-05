@@ -59,9 +59,6 @@ const labels =
 				back: "Volver al blog",
 				onThisPage: "En esta pagina",
 				share: "Compartir",
-				shareTitle: "Comparte este articulo",
-				shareDescription:
-					"Si este post te fue util, compartelo con alguien mas.",
 				copyLink: "Copiar enlace",
 				copySuccess: "Copiado",
 				published: "Publicado",
@@ -72,8 +69,6 @@ const labels =
 				back: "Back to blog",
 				onThisPage: "On this page",
 				share: "Share",
-				shareTitle: "Share this article",
-				shareDescription: "If this post helped, share it with someone else.",
 				copyLink: "Copy link",
 				copySuccess: "Copied",
 				published: "Published",
@@ -107,7 +102,7 @@ const labels =
 					</svg>
 				</div>
 
-				<div class="utility-share-row" aria-label={labels.share}>
+				<div class="utility-share-row" data-share-row aria-label={labels.share}>
 					<a
 						class="icon-action focus-ring"
 						href={shareXURL}
@@ -160,7 +155,7 @@ const labels =
 					<span>{readingTime.text}</span>
 				</div>
 
-				<figure class="post-cover">
+				<figure class="post-cover" data-post-cover>
 					<img src={post.image} alt={post.imageAlt} loading="eager" decoding="async" />
 				</figure>
 			</header>
@@ -185,49 +180,6 @@ const labels =
 				<slot />
 			</div>
 
-			<footer class="share-cta" aria-labelledby="share-article-title">
-				<h2 id="share-article-title">{labels.shareTitle}</h2>
-				<p>{labels.shareDescription}</p>
-				<div class="share-actions">
-					<a
-						class="share-action focus-ring"
-						href={shareXURL}
-						target="_blank"
-						rel="noopener noreferrer"
-						data-analytics-event="post_share_click"
-						data-share-network="x"
-						data-link-type="share_x"
-					>
-						<XIcon aria-hidden="true" class="icon" />
-						<span>X</span>
-					</a>
-					<a
-						class="share-action focus-ring"
-						href={shareLinkedinURL}
-						target="_blank"
-						rel="noopener noreferrer"
-						data-analytics-event="post_share_click"
-						data-share-network="linkedin"
-						data-link-type="share_linkedin"
-					>
-						<LinkedinIcon aria-hidden="true" class="icon" />
-						<span>LinkedIn</span>
-					</a>
-					<button
-						type="button"
-						class="share-action focus-ring"
-						data-copy-link
-						data-copy-url={canonicalURL}
-						data-default-label={labels.copyLink}
-						data-success-label={labels.copySuccess}
-						data-analytics-event="post_share_click"
-						data-share-network="copy"
-					>
-						<LinkIcon aria-hidden="true" class="icon" />
-						<span data-copy-label>{labels.copyLink}</span>
-					</button>
-				</div>
-			</footer>
 		</div>
 
 		<aside class="post-toc" aria-label={labels.onThisPage}>
@@ -261,6 +213,8 @@ const labels =
 
 		const progressRing = root.querySelector<SVGElement>("[data-progress-ring]");
 		const postContent = root.querySelector<HTMLElement>("[data-post-content]");
+		const postCover = root.querySelector<HTMLElement>("[data-post-cover]");
+		const shareRow = root.querySelector<HTMLElement>("[data-share-row]");
 		const tocLinks = Array.from(
 			root.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"),
 		);
@@ -279,13 +233,15 @@ const labels =
 			const viewportOffset = window.innerHeight * 0.45;
 			const start = postContent.offsetTop - viewportOffset;
 			const end = postContent.offsetTop + postContent.offsetHeight - viewportOffset;
+			const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
 
 			if (end <= start) {
 				applyProgress(0);
 				return;
 			}
 
-			const progress = (window.scrollY - start) / (end - start);
+			const clampedEnd = Math.min(end, maxScroll);
+			const progress = (window.scrollY - start) / (clampedEnd - start);
 			const normalized = Math.max(0, Math.min(1, progress));
 			applyProgress(normalized);
 		};
@@ -315,12 +271,25 @@ const labels =
 			}
 		};
 
+		const updateShareVisibility = () => {
+			if (!shareRow || !postCover || !postContent) return;
+
+			const coverBottom = postCover.getBoundingClientRect().bottom;
+			const contentBottom = postContent.getBoundingClientRect().bottom;
+			const coverGone = coverBottom < 0;
+			const nearEnd = contentBottom <= window.innerHeight * 1.2;
+
+			const shouldHide = coverGone && !nearEnd;
+			shareRow.dataset.shareHidden = shouldHide ? "true" : "false";
+		};
+
 		let frame: number | null = null;
 		const handleScroll = () => {
 			if (frame !== null) return;
 			frame = window.requestAnimationFrame(() => {
 				updateProgress();
 				updateActiveHeading();
+				updateShareVisibility();
 				frame = null;
 			});
 		};
@@ -393,6 +362,7 @@ const labels =
 
 		updateProgress();
 		updateActiveHeading();
+		updateShareVisibility();
 		window.addEventListener("scroll", handleScroll, { passive: true });
 		window.addEventListener("resize", handleScroll, { passive: true });
 
@@ -539,50 +509,6 @@ const labels =
 		margin-left: var(--space-4);
 	}
 
-	.share-cta {
-		margin-top: var(--space-12);
-		padding: var(--space-6);
-		border: var(--border-width-default) solid var(--border-subtle);
-		border-radius: var(--shape-radius-xl);
-		background: var(--surface-elevated);
-	}
-
-	.share-cta h2 {
-		margin: 0;
-		font-size: var(--font-size-xl);
-	}
-
-	.share-cta p {
-		margin: var(--space-2) 0 0;
-		color: var(--text-secondary);
-	}
-
-	.share-actions {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-3);
-		margin-top: var(--space-5);
-	}
-
-	.share-action {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: var(--space-2);
-		text-decoration: none;
-		border: var(--border-width-default) solid var(--border-subtle);
-		background: var(--surface-base);
-		color: var(--text-primary);
-		border-radius: var(--shape-radius-pill);
-		font-weight: var(--font-weight-medium);
-		transition-property: transform, border-color, background-color;
-		transition-duration: var(--motion-duration-base);
-		transition-timing-function: var(--motion-ease-standard);
-	}
-
-	.share-action {
-		padding: var(--space-2) var(--space-4);
-	}
 
 	.icon-action {
 		display: inline-flex;
@@ -598,14 +524,6 @@ const labels =
 			var(--motion-ease-standard);
 	}
 
-	.share-action:hover,
-	.share-action:focus-visible,
-	.share-action:focus-visible {
-		border-color: var(--paper-accent-soft);
-		background: var(--surface-muted);
-		transform: translateY(calc(var(--motion-translate-sm) * -1));
-	}
-
 	.icon-action:hover,
 	.icon-action:focus-visible {
 		border-color: var(--text-muted);
@@ -614,7 +532,8 @@ const labels =
 
 	.utility-share-row {
 		display: flex;
-		flex-wrap: wrap;
+		flex-direction: column;
+		align-items: center;
 		gap: var(--space-2);
 	}
 
@@ -637,13 +556,13 @@ const labels =
 	.utility-progress {
 		display: flex;
 		align-items: center;
-		justify-content: flex-start;
+		justify-content: center;
 	}
 
 	.progress-ring {
 		--progress-value: 0;
-		width: 3.5rem;
-		height: 3.5rem;
+		width: calc(var(--touch-target-min) + var(--space-1));
+		height: calc(var(--touch-target-min) + var(--space-1));
 	}
 
 	.progress-track,
@@ -807,6 +726,10 @@ const labels =
 		-webkit-box-decoration-break: clone;
 	}
 
+	:global(.dark .post-content mark) {
+		color: var(--surface-base);
+	}
+
 	:global(.post-content .markdown-alert) {
 		margin-block: var(--space-8);
 		padding: var(--space-5);
@@ -867,9 +790,6 @@ const labels =
 			gap: var(--space-10);
 		}
 
-		.share-cta {
-			padding: var(--space-7);
-		}
 	}
 
 	@media (min-width: 68.75rem) {
@@ -878,17 +798,14 @@ const labels =
 		}
 
 		.post-grid {
-			grid-template-columns: minmax(10rem, 12.5rem) minmax(0, var(--measure-content-max)) minmax(
-				12rem,
-				16rem
-			);
+			grid-template-columns: auto minmax(0, 1fr) minmax(10rem, 12.5rem);
 			justify-content: center;
 			align-items: start;
 			gap: var(--space-8);
 		}
 
 		.post-main {
-			max-width: var(--measure-content-max);
+			max-width: none;
 		}
 
 		.post-utilities,
@@ -910,6 +827,46 @@ const labels =
 		.post-utilities-inner {
 			display: grid;
 			gap: var(--space-3);
+			justify-items: center;
+		}
+
+		.utility-share-row .icon-action {
+			transition-property: opacity, transform;
+			transition-duration: var(--motion-duration-base);
+			transition-timing-function: var(--motion-ease-standard);
+		}
+
+		.utility-share-row .icon-action:nth-child(1) {
+			transition-delay: var(--motion-delay-step, 40ms);
+		}
+
+		.utility-share-row .icon-action:nth-child(2) {
+			transition-delay: calc(var(--motion-delay-step, 40ms) * 2);
+		}
+
+		.utility-share-row .icon-action:nth-child(3) {
+			transition-delay: calc(var(--motion-delay-step, 40ms) * 3);
+		}
+
+		.utility-share-row[data-share-hidden="true"] {
+			pointer-events: none;
+		}
+
+		.utility-share-row[data-share-hidden="true"] .icon-action {
+			opacity: 0;
+			transform: translateY(calc(var(--space-3) * -3)) scale(0.5);
+		}
+
+		.utility-share-row[data-share-hidden="true"] .icon-action:nth-child(1) {
+			transition-delay: calc(var(--motion-delay-step, 40ms) * 3);
+		}
+
+		.utility-share-row[data-share-hidden="true"] .icon-action:nth-child(2) {
+			transition-delay: calc(var(--motion-delay-step, 40ms) * 2);
+		}
+
+		.utility-share-row[data-share-hidden="true"] .icon-action:nth-child(3) {
+			transition-delay: var(--motion-delay-step, 40ms);
 		}
 
 		.post-toc-mobile {
@@ -919,10 +876,10 @@ const labels =
 		.post-toc-inner {
 			padding: var(--space-4);
 			border: var(--border-width-default) solid
-				color-mix(in srgb, var(--border-subtle) 72%, transparent);
+				color-mix(in srgb, var(--border-subtle) 50%, transparent);
 			border-radius: var(--shape-radius-lg);
 			background: transparent;
-			color: color-mix(in srgb, var(--text-muted) 78%, var(--surface-base));
+			color: color-mix(in srgb, var(--border-subtle) 50%, transparent);
 			transition-property: color, border-color;
 			transition-duration: var(--motion-duration-fast);
 			transition-timing-function: var(--motion-ease-standard);
@@ -930,8 +887,8 @@ const labels =
 
 		.post-toc-inner:hover,
 		.post-toc-inner:focus-within {
-			color: color-mix(in srgb, var(--text-primary) 84%, var(--text-secondary));
-			border-color: currentColor;
+			color: var(--text-primary);
+			border-color: color-mix(in srgb, var(--text-primary) 40%, transparent);
 		}
 
 		.post-toc-inner summary {
@@ -972,7 +929,7 @@ const labels =
 			display: inline-flex;
 			line-height: var(--leading-heading);
 			font-size: var(--font-size-sm);
-			color: color-mix(in srgb, var(--text-muted) 84%, var(--surface-base));
+			color: inherit;
 			text-decoration: none;
 			transition-property: color, transform;
 			transition-duration: var(--motion-duration-fast);
@@ -980,14 +937,14 @@ const labels =
 		}
 
 		.post-toc-inner a[data-active="true"] {
-			color: color-mix(in srgb, var(--text-primary) 66%, var(--text-secondary));
+			color: color-mix(in srgb, var(--text-primary) 60%, var(--text-muted));
 			font-weight: var(--font-weight-semibold);
 			transform: translateX(var(--motion-translate-xs));
 		}
 
 		.post-toc-inner:hover a[data-active="true"],
 		.post-toc-inner:focus-within a[data-active="true"] {
-			color: color-mix(in srgb, var(--text-primary) 84%, var(--text-secondary));
+			color: var(--text-primary);
 		}
 	}
 </style>
