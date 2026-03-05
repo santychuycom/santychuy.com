@@ -611,11 +611,29 @@ const labels =
 	:global(.post-content h3),
 	:global(.post-content h4),
 	:global(.post-content h5) {
-		color: color-mix(in srgb, var(--text-primary) 80%, var(--text-secondary));
-		margin-block-start: var(--space-11);
-		margin-block-end: var(--space-6);
+		color: var(--text-primary);
+		font-weight: var(--font-weight-semibold);
 		line-height: var(--leading-heading);
 		scroll-margin-top: var(--space-10);
+	}
+
+	:global(.post-content h2) {
+		font-size: var(--font-size-xl);
+		margin-block-start: var(--space-13);
+		margin-block-end: var(--space-6);
+	}
+
+	:global(.post-content h3) {
+		font-size: clamp(1.18rem, 1.1rem + 0.5vw, 1.5rem);
+		margin-block-start: var(--space-11);
+		margin-block-end: var(--space-5);
+	}
+
+	:global(.post-content h4),
+	:global(.post-content h5) {
+		font-size: var(--font-size-lg);
+		margin-block-start: var(--space-9);
+		margin-block-end: var(--space-4);
 	}
 
 	:global(.post-content p) {
@@ -695,13 +713,25 @@ const labels =
 		margin-block: var(--space-4);
 	}
 
-	:global(.post-content ul > li) {
+	:global(.post-content ul > li),
+	:global(.post-content ol > li) {
 		margin-block: var(--space-2);
+		font-size: var(--font-size-lg);
+		line-height: var(--leading-copy);
 		color: var(--text-secondary);
+	}
+
+	:global(.post-content ul) {
+		list-style-type: "◼︎  ";
 	}
 
 	:global(.post-content ul > li::marker) {
 		color: var(--paper-accent);
+	}
+
+	:global(.post-content ol > li::marker) {
+		color: var(--text-muted);
+		font-weight: var(--font-weight-semibold);
 	}
 
 	:global(.post-content img) {
