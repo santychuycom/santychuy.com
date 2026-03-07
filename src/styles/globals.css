@@ -266,6 +266,8 @@
 	--border-strong: var(--border-strong-dark);
 	--focus-ring: var(--focus-ring-dark);
 	--focus-ring-soft: var(--focus-ring-soft-dark);
+	--surface-hover: var(--surface-hover-dark);
+	--mark-highlight: var(--mark-highlight-dark);
 	--atmosphere-accent: var(--atmosphere-accent-dark);
 	--atmosphere-cool: var(--atmosphere-cool-dark);
 	--atmosphere-layer: var(--atmosphere-layer-dark);

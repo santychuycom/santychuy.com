@@ -165,6 +165,10 @@
 	--focus-ring-dark: hsla(123deg, 36%, 58%, 0.58);
 	--focus-ring-soft: hsla(var(--paper-accent-hsl), 0.18);
 	--focus-ring-soft-dark: hsla(123deg, 36%, 58%, 0.24);
+	--surface-hover: hsla(var(--paper-accent-hsl), 0.08);
+	--surface-hover-dark: hsla(123deg, 36%, 58%, 0.12);
+	--mark-highlight: #bbfabb;
+	--mark-highlight-dark: hsla(123deg, 36%, 58%, 0.3);
 
 	--status-danger: var(--supporting---error--8);
 	--status-danger-strong: var(--supporting---error--7);
