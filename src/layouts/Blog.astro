@@ -8,6 +8,7 @@ import { ViewTransitions } from "astro:transitions";
 import UmamiTracker from "@components/analytics/UmamiTracker.astro";
 import Footer from "@components/layout/Footer.astro";
 import Header from "@components/layout/Header.astro";
+import ThemeScript from "@components/ThemeScript.astro";
 
 interface Props {
 	title: string;
@@ -59,114 +60,7 @@ const hreflangAlternates = {
       crossorigin
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script is:inline>
-      (() => {
-        const key = "theme";
-        const dark = "dark";
-        const light = "light";
-        const root = document.documentElement;
-
-        const getStoredTheme = () => {
-          try {
-            const value = localStorage.getItem(key);
-            return value === dark || value === light ? value : null;
-          } catch {
-            return null;
-          }
-        };
-
-        const getSystemTheme = () =>
-          window.matchMedia("(prefers-color-scheme: dark)").matches ? dark : light;
-
-        const getPreferredTheme = () => getStoredTheme() ?? getSystemTheme();
-
-        const applyTheme = (theme) => {
-          const isDark = theme === dark;
-          root.classList.toggle(dark, isDark);
-          root.style.colorScheme = isDark ? dark : light;
-        };
-
-        const syncToggle = () => {
-          const toggle = document.querySelector("[data-theme-toggle]");
-
-          if (!(toggle instanceof HTMLButtonElement)) {
-            return;
-          }
-
-          const isDark = root.classList.contains(dark);
-
-          toggle.dataset.theme = isDark ? dark : light;
-          toggle.setAttribute("aria-pressed", String(isDark));
-          toggle.setAttribute(
-            "aria-label",
-            isDark ? "Switch to light mode" : "Switch to dark mode",
-          );
-
-          const label = toggle.querySelector("[data-theme-label]");
-
-          if (label) {
-            label.textContent = isDark ? "Dark" : "Light";
-          }
-        };
-
-        const bindToggle = () => {
-          const toggle = document.querySelector("[data-theme-toggle]");
-
-          if (!(toggle instanceof HTMLButtonElement)) {
-            return;
-          }
-
-          if (toggle.dataset.bound === "true") {
-            syncToggle();
-            return;
-          }
-
-          toggle.dataset.bound = "true";
-
-          toggle.addEventListener("click", () => {
-            const nextTheme = root.classList.contains(dark) ? light : dark;
-
-            try {
-              localStorage.setItem(key, nextTheme);
-            } catch {
-              // Ignore storage failures (e.g. privacy mode).
-            }
-
-            applyTheme(nextTheme);
-            syncToggle();
-          });
-
-          syncToggle();
-        };
-
-        const applyAndSync = () => {
-          applyTheme(getPreferredTheme());
-          bindToggle();
-        };
-
-        if (root.dataset.themeBootstrapped !== "true") {
-          root.dataset.themeBootstrapped = "true";
-
-          document.addEventListener("astro:after-swap", applyAndSync);
-          document.addEventListener("astro:page-load", bindToggle);
-
-          const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-          const onSystemThemeChange = () => {
-            if (getStoredTheme() === null) {
-              applyAndSync();
-            }
-          };
-
-          if (typeof mediaQuery.addEventListener === "function") {
-            mediaQuery.addEventListener("change", onSystemThemeChange);
-          } else if (typeof mediaQuery.addListener === "function") {
-            mediaQuery.addListener(onSystemThemeChange);
-          }
-        }
-
-        applyAndSync();
-      })();
-    </script>
+    <ThemeScript />
     <title>
       {`${title} - Santiago Carrasco (Santychuy)`}
     </title>
@@ -188,17 +82,17 @@ const hreflangAlternates = {
     <ViewTransitions />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={`${title} - Santiago Carrasco (Santychuy)`} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="article" />
     <meta property="og:url" content={url} />
     <meta property="og:image" content={image} />
-    <meta property="og:site_name" content="Santiago Carrasco Blog" />
+    <meta property="og:site_name" content="Santiago Carrasco (Santychuy)" />
     <meta property="og:locale" content={ogLocale} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@santychuy" />
     <meta name="twitter:creator" content="@santychuy" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={`${title} - Santiago Carrasco (Santychuy)`} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
     {structuredData.map((item) => (
@@ -207,7 +101,7 @@ const hreflangAlternates = {
     <UmamiTracker />
   </head>
   <body class="min-h-svh">
-    <div class="blog-header-shell" data-blog-header-shell data-scrolled="false">
+    <div class="blog-header-shell sticky top-0 z-[var(--z-header)]" data-blog-header-shell data-scrolled="false">
       <Header />
     </div>
     <script is:inline>
@@ -249,15 +143,29 @@ const hreflangAlternates = {
     <main>
       <slot />
     </main>
-    <Footer />
+    <div class="blog-footer-shell">
+      <Footer />
+    </div>
   </body>
 </html>
 
 <style>
-  .blog-header-shell {
-    position: sticky;
-    top: 0;
-    z-index: var(--z-header);
+  .blog-header-shell :global(header),
+  .blog-footer-shell :global(footer) {
+    @media (width < 68.75rem) {
+      width: 100%;
+      padding-inline: var(--layout-gutter-mobile);
+    }
+
+    @media (width >= 34.375rem) and (width < 68.75rem) {
+      padding-inline: var(--layout-gutter-tablet);
+    }
+  }
+
+  .blog-footer-shell :global(footer) {
+    @media (width < 68.75rem) {
+      padding-block: var(--space-5);
+    }
   }
 
   .blog-header-shell :global(header) {

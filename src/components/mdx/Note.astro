@@ -14,56 +14,31 @@ const toneLabelMap = {
 	caution: "Caution",
 } as const;
 
+const toneColorMap = {
+	note: "var(--status-info)",
+	tip: "var(--status-success)",
+	important: "var(--paper-accent)",
+	warning: "var(--status-warning)",
+	caution: "var(--status-warning)",
+} as const;
+
 const displayTitle = title ?? toneLabelMap[tone];
+const borderColor = toneColorMap[tone];
 ---
 
-<aside class={`mdx-note mdx-note-${tone}`} aria-label={displayTitle}>
-	<p class="mdx-note-title">{displayTitle}</p>
-	<div class="mdx-note-body">
+<aside
+	class="border border-line border-l-[length:var(--space-1)] rounded-lg bg-surface-up p-[var(--space-5)] my-[var(--space-8)]"
+	style={`border-left-color: ${borderColor}`}
+	aria-label={displayTitle}
+>
+	<p class="m-0 text-sm font-semibold uppercase tracking-[0.03em]">{displayTitle}</p>
+	<div class="mdx-note-body mt-[var(--space-2)]">
 		<slot />
 	</div>
 </aside>
 
 <style>
-	.mdx-note {
-		border: var(--border-width-default) solid var(--border-subtle);
-		border-left-width: var(--space-1);
-		border-radius: var(--shape-radius-lg);
-		background: var(--surface-elevated);
-		padding: var(--space-5);
-		margin-block: var(--space-8);
-	}
-
-	.mdx-note-title {
-		margin: 0;
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-semibold);
-		text-transform: uppercase;
-		letter-spacing: 0.03em;
-	}
-
-	.mdx-note-body {
-		margin-top: var(--space-2);
-	}
-
 	.mdx-note-body :global(p:last-child) {
 		margin-bottom: 0;
-	}
-
-	.mdx-note-note {
-		border-left-color: var(--status-info);
-	}
-
-	.mdx-note-tip {
-		border-left-color: var(--status-success);
-	}
-
-	.mdx-note-important {
-		border-left-color: var(--paper-accent);
-	}
-
-	.mdx-note-warning,
-	.mdx-note-caution {
-		border-left-color: var(--status-warning);
 	}
 </style>
