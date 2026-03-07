@@ -8,6 +8,7 @@ import { ViewTransitions } from "astro:transitions";
 import UmamiTracker from "@components/analytics/UmamiTracker.astro";
 import Footer from "@components/layout/Footer.astro";
 import Header from "@components/layout/Header.astro";
+import ThemeScript from "@components/ThemeScript.astro";
 
 interface Props {
 	title?: string;
@@ -57,114 +58,7 @@ const hreflangAlternates = {
       crossorigin
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script is:inline>
-      (() => {
-        const key = "theme";
-        const dark = "dark";
-        const light = "light";
-        const root = document.documentElement;
-
-        const getStoredTheme = () => {
-          try {
-            const value = localStorage.getItem(key);
-            return value === dark || value === light ? value : null;
-          } catch {
-            return null;
-          }
-        };
-
-        const getSystemTheme = () =>
-          window.matchMedia("(prefers-color-scheme: dark)").matches ? dark : light;
-
-        const getPreferredTheme = () => getStoredTheme() ?? getSystemTheme();
-
-        const applyTheme = (theme) => {
-          const isDark = theme === dark;
-          root.classList.toggle(dark, isDark);
-          root.style.colorScheme = isDark ? dark : light;
-        };
-
-        const syncToggle = () => {
-          const toggle = document.querySelector("[data-theme-toggle]");
-
-          if (!(toggle instanceof HTMLButtonElement)) {
-            return;
-          }
-
-          const isDark = root.classList.contains(dark);
-
-          toggle.dataset.theme = isDark ? dark : light;
-          toggle.setAttribute("aria-pressed", String(isDark));
-          toggle.setAttribute(
-            "aria-label",
-            isDark ? "Switch to light mode" : "Switch to dark mode",
-          );
-
-          const label = toggle.querySelector("[data-theme-label]");
-
-          if (label) {
-            label.textContent = isDark ? "Dark" : "Light";
-          }
-        };
-
-        const bindToggle = () => {
-          const toggle = document.querySelector("[data-theme-toggle]");
-
-          if (!(toggle instanceof HTMLButtonElement)) {
-            return;
-          }
-
-          if (toggle.dataset.bound === "true") {
-            syncToggle();
-            return;
-          }
-
-          toggle.dataset.bound = "true";
-
-          toggle.addEventListener("click", () => {
-            const nextTheme = root.classList.contains(dark) ? light : dark;
-
-            try {
-              localStorage.setItem(key, nextTheme);
-            } catch {
-              // Ignore storage failures (e.g. privacy mode).
-            }
-
-            applyTheme(nextTheme);
-            syncToggle();
-          });
-
-          syncToggle();
-        };
-
-        const applyAndSync = () => {
-          applyTheme(getPreferredTheme());
-          bindToggle();
-        };
-
-        if (root.dataset.themeBootstrapped !== "true") {
-          root.dataset.themeBootstrapped = "true";
-
-          document.addEventListener("astro:after-swap", applyAndSync);
-          document.addEventListener("astro:page-load", bindToggle);
-
-          const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-          const onSystemThemeChange = () => {
-              if (getStoredTheme() === null) {
-                applyAndSync();
-              }
-            };
-
-          if (typeof mediaQuery.addEventListener === "function") {
-            mediaQuery.addEventListener("change", onSystemThemeChange);
-          } else if (typeof mediaQuery.addListener === "function") {
-            mediaQuery.addListener(onSystemThemeChange);
-          }
-        }
-
-        applyAndSync();
-      })();
-    </script>
+    <ThemeScript />
     <title>
       {
         title
