@@ -16,6 +16,7 @@ const toExcerpt = (body: string, limit = 320) => {
 	const plain = body
 		.replace(/```[\s\S]*?```/g, " ")
 		.replace(/`[^`]*`/g, " ")
+		.replace(/<[^>]*>/g, " ")
 		.replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
 		.replace(/\[[^\]]*\]\([^)]*\)/g, " ")
 		.replace(/#+\s+/g, " ")
