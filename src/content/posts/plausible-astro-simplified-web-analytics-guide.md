@@ -26,7 +26,7 @@ To illustrate the importance of _web analytics_, let me offer you this analogy:
 
 > Imagine being the captain of a vast ship sailing the oceans. Without a map, compass, or the ability to read the stars, it would be incredibly difficult to determine your direction. You risk going in circles or, worse, colliding with an iceberg. Web analytics work like your map, compass, and astronomical knowledge, providing you with crucial data to navigate successfully towards your goals.
 
-With this in mind, I decided that for my next project, [santychuy.com](http://santychuy.com/), it would be essential to delve into and apply a robust analytics system from the beginning. This decision would not only provide me with a clear vision of what users value and how they interact with the site but also allow me to make informed decisions for future improvements, increasing confidence in the product.
+With this in mind, I decided that for my next project, [santychuy.com](https://santychuy.com/), it would be essential to delve into and apply a robust analytics system from the beginning. This decision would not only provide me with a clear vision of what users value and how they interact with the site but also allow me to make informed decisions for future improvements, increasing confidence in the product.
 
 ## The Search for the Right Tool
 
