@@ -3,7 +3,7 @@ import rss from "@astrojs/rss";
 import MarkdownIt from "markdown-it";
 import sanitizeHtml from "sanitize-html";
 
-const md = new MarkdownIt();
+const md = new MarkdownIt({ html: true });
 
 const normalizePostId = (id) =>
 	id.replace(/\.(md|mdx|markdown)$/i, "").replaceAll(".", "");
@@ -29,7 +29,9 @@ export async function GET(context) {
 			link: `/blog/${normalizePostId(id)}`,
 			author: data.author.name,
 			categories: data.categories,
-			content: sanitizeHtml(md.render(body)),
+			content: sanitizeHtml(md.render(body), {
+				allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img", "mark"]),
+			}),
 		})),
 		customData: `<language>${feedLang}</language>`,
 	});
