@@ -11,9 +11,7 @@
 			"@schemas/*": ["./src/schemas/*"],
 			"@styles/*": ["./src/styles/*"],
 			"@ts/*": ["./src/ts/*"]
-		},
-		"jsx": "react-jsx",
-		"jsxImportSource": "react"
+		}
 	},
 	"exclude": ["dist", ".astro", "sst.config.ts"]
 }
