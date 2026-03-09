@@ -14,6 +14,9 @@ export async function GET(context) {
 		(a, b) => new Date(b.data.pubDate) - new Date(a.data.pubDate),
 	);
 
+	const hasSpanishPosts = sortedPosts.some((p) => p.data.lang === "es");
+	const feedLang = hasSpanishPosts ? "en-us es-mx" : "en-us";
+
 	return rss({
 		title: "Santychuy's Blog",
 		description:
@@ -28,6 +31,6 @@ export async function GET(context) {
 			categories: data.categories,
 			content: sanitizeHtml(md.render(body)),
 		})),
-		customData: `<language>en-us</language>`,
+		customData: `<language>${feedLang}</language>`,
 	});
 }

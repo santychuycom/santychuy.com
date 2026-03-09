@@ -146,8 +146,8 @@ const labels =
 
 		<div class="min-w-0">
 			<header class="flex flex-col gap-[var(--space-5)] mb-[var(--space-9)]">
-				<h1 class="m-0 text-display leading-tight max-w-[var(--measure-hero-max)]">{post.title}</h1>
-				<p class="m-0 max-w-[var(--reading-max-width)] text-lg leading-copy text-ink-muted">{post.description}</p>
+				<h1 class="m-0 text-display leading-tight max-w-[var(--measure-hero-max)]" data-article-headline>{post.title}</h1>
+				<p class="m-0 max-w-[var(--reading-max-width)] text-lg leading-copy text-ink-muted" data-article-summary>{post.description}</p>
 
 				<div class="flex flex-wrap gap-x-[var(--space-4)] gap-y-[var(--space-2)] text-sm text-ink-faint" aria-label="Post metadata">
 					<span>{labels.published} {publishedDate}</span>
