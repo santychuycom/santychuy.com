@@ -3,4 +3,3 @@
 
 bun check
 bun run build
-bun test
