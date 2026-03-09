@@ -11,6 +11,12 @@ categories:
   - productivity
   - programming
   - burnout
+keywords:
+  - burnout
+  - software development
+  - mental health
+  - work-life balance
+  - developer productivity
 image: /uploads/burnout.webp
 imageAlt: Abstract burnout concept illustration for software developers
 ---

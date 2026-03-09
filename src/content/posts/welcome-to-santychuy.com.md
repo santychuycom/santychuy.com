@@ -8,6 +8,11 @@ author:
 categories:
   - astro
   - blog
+keywords:
+  - personal blog
+  - astro
+  - web development
+  - content creation
 description: Welcome to my new platform, the main goal will be to share my thoughts, projects and solutions for any problem to face.
 shortDesc: Introduction of why I start Santychuy.com and what's going be the main goal in the future with this project
 image: /uploads/logo-dark.png

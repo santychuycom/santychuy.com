@@ -9,6 +9,7 @@ export const postSchema = z
 		updatedDate: z.date().optional(),
 		description: z.string(),
 		shortDesc: z.string(),
+		tldr: z.string().optional(),
 		author: z.object({
 			name: z.string(),
 			img: z.string().optional(),
@@ -16,7 +17,10 @@ export const postSchema = z
 		image: z.string(),
 		imageAlt: z.string(),
 		categories: z.array(z.string()).min(1),
-		keywords: z.array(z.string()).optional(),
+		keywords: z.array(z.string()).min(1),
+		faq: z
+			.array(z.object({ q: z.string(), a: z.string() }).strict())
+			.optional(),
 		canonical: z.string().url().optional(),
 	})
 	.strict();

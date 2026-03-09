@@ -19,17 +19,26 @@ title: 'Post Title'
 pubDate: 2024-03-21
 description: 'Full description for SEO and previews'
 shortDesc: 'Short description for cards and lists'
+tldr: 'Factual, answer-first summary for AI citation' # optional, strongly recommended for GEO
 author:
   name: 'Santiago Carrasco'
   img: '/path/to/author-image.webp' # optional
 image: '/path/to/cover-image.webp'
+imageAlt: 'Descriptive alt text for cover image'
 categories:
   - astro
   - blog
+keywords:
+  - astro
+  - web development
+faq: # optional, generates FAQPage schema for GEO
+  - q: 'What is this post about?'
+    a: 'A concise answer to the question.'
 ---
 ```
 
-**Required fields:** title, pubDate, description, shortDesc, author.name, image, categories.
+**Required fields:** title, pubDate, description, shortDesc, author.name, image, imageAlt, categories, keywords.
+**Optional (GEO):** tldr, faq, updatedDate, slug, lang, canonical, author.img.
 
 ### Content Collections
 

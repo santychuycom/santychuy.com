@@ -60,12 +60,24 @@ const articleSchema = {
 		"@type": "SpeakableSpecification",
 		cssSelector: ["[data-article-headline]", "[data-article-summary]"],
 	},
-	...(entry.data.keywords
-		? {
-				keywords: entry.data.keywords.join(", "),
-			}
-		: {}),
+	keywords: entry.data.keywords.join(", "),
 };
+
+const faqSchema =
+	entry.data.faq && entry.data.faq.length > 0
+		? {
+				"@context": "https://schema.org",
+				"@type": "FAQPage",
+				mainEntity: entry.data.faq.map(({ q, a }) => ({
+					"@type": "Question",
+					name: q,
+					acceptedAnswer: {
+						"@type": "Answer",
+						text: a,
+					},
+				})),
+			}
+		: null;
 
 const breadcrumbSchema = {
 	"@context": "https://schema.org",
@@ -121,7 +133,7 @@ const readingTime = {
   url={canonicalURL}
   lang={entry.data.lang}
   alternates={alternates}
-  schema={[articleSchema, breadcrumbSchema]}
+  schema={[articleSchema, breadcrumbSchema, ...(faqSchema ? [faqSchema] : [])]}
 >
   <BlogContent
     post={entry.data}

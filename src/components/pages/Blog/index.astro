@@ -147,7 +147,7 @@ const labels =
 		<div class="min-w-0">
 			<header class="flex flex-col gap-[var(--space-5)] mb-[var(--space-9)]">
 				<h1 class="m-0 text-display leading-tight max-w-[var(--measure-hero-max)]" data-article-headline>{post.title}</h1>
-				<p class="m-0 max-w-[var(--reading-max-width)] text-lg leading-copy text-ink-muted" data-article-summary>{post.description}</p>
+				<p class="m-0 max-w-[var(--reading-max-width)] text-lg leading-copy text-ink-muted" {...(!post.tldr ? {'data-article-summary': ''} : {})}>{post.description}</p>
 
 				<div class="flex flex-wrap gap-x-[var(--space-4)] gap-y-[var(--space-2)] text-sm text-ink-faint" aria-label="Post metadata">
 					<span>{labels.published} {publishedDate}</span>
@@ -159,6 +159,13 @@ const labels =
 					<img class="block w-full max-w-[var(--measure-content-max)] rounded-xl border border-line bg-surface-up" src={post.image} alt={post.imageAlt} loading="eager" decoding="async" />
 				</figure>
 			</header>
+
+			{post.tldr && (
+				<aside class="post-tldr" data-article-summary>
+					<p class="post-tldr-label">{post.lang === "es" ? "En resumen" : "TL;DR"}</p>
+					<p class="post-tldr-text">{post.tldr}</p>
+				</aside>
+			)}
 
 			{hasTableOfContents && (
 				<details class="post-toc-mobile m-0 mb-[var(--space-8)] border border-line rounded-lg bg-surface-up p-[var(--space-4)] desktop:hidden">
@@ -182,6 +189,20 @@ const labels =
 			<div id={articleContentId} class="post-content" data-post-content>
 				<slot />
 			</div>
+
+			{post.faq && post.faq.length > 0 && (
+				<section class="post-faq">
+					<h2 class="post-faq-heading">{post.lang === "es" ? "Preguntas frecuentes" : "Frequently Asked Questions"}</h2>
+					<dl class="post-faq-list">
+						{post.faq.map(({ q, a }) => (
+							<div class="post-faq-item">
+								<dt class="post-faq-question">{q}</dt>
+								<dd class="post-faq-answer">{a}</dd>
+							</div>
+						))}
+					</dl>
+				</section>
+			)}
 
 		</div>
 
@@ -549,6 +570,77 @@ const labels =
 		.post-toc-inner:focus-within a[data-active="true"] {
 			color: var(--text-primary);
 		}
+	}
+
+	/* --- TL;DR summary box --- */
+
+	.post-tldr {
+		margin-block-end: var(--space-8);
+		padding: var(--space-5);
+		border: var(--border-width-default) solid var(--paper-accent);
+		border-left-width: var(--space-1);
+		border-radius: var(--shape-radius-lg);
+		background: var(--surface-elevated);
+	}
+
+	.post-tldr-label {
+		margin: 0 0 var(--space-2);
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-bold);
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		color: var(--paper-accent);
+	}
+
+	.post-tldr-text {
+		margin: 0;
+		font-size: var(--font-size-lg);
+		line-height: var(--leading-copy);
+		color: var(--text-secondary);
+	}
+
+	/* --- FAQ section --- */
+
+	.post-faq {
+		margin-block-start: var(--space-13);
+		padding-block-start: var(--space-6);
+		border-top: var(--border-width-default) solid var(--border-subtle);
+	}
+
+	.post-faq-heading {
+		margin: 0 0 var(--space-6);
+		font-size: var(--font-size-xl);
+		font-weight: var(--font-weight-semibold);
+		line-height: var(--leading-heading);
+		color: var(--text-primary);
+	}
+
+	.post-faq-list {
+		margin: 0;
+		display: grid;
+		gap: var(--space-6);
+	}
+
+	.post-faq-item {
+		padding: var(--space-5);
+		border: var(--border-width-default) solid var(--border-subtle);
+		border-radius: var(--shape-radius-lg);
+		background: var(--surface-elevated);
+	}
+
+	.post-faq-question {
+		margin: 0 0 var(--space-3);
+		font-size: var(--font-size-lg);
+		font-weight: var(--font-weight-semibold);
+		line-height: var(--leading-heading);
+		color: var(--text-primary);
+	}
+
+	.post-faq-answer {
+		margin: 0;
+		font-size: var(--font-size-lg);
+		line-height: var(--leading-copy);
+		color: var(--text-secondary);
 	}
 
 	/* ===== Markdown-rendered content (cannot add classes) ===== */

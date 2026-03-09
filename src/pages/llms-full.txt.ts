@@ -57,7 +57,7 @@ export async function GET({ site }: { site?: URL }) {
 		const published = data.pubDate.toISOString();
 		const updated = (data.updatedDate ?? data.pubDate).toISOString();
 		const categories = data.categories.join(", ");
-		const keywords = data.keywords?.join(", ") ?? "";
+		const keywords = data.keywords.join(", ");
 		const excerpt = toExcerpt(body ?? "");
 
 		lines.push(`### ${data.title}`);
@@ -66,9 +66,17 @@ export async function GET({ site }: { site?: URL }) {
 		lines.push(`- Updated: ${updated}`);
 		lines.push(`- Language: ${language}`);
 		lines.push(`- Categories: ${categories}`);
-		if (keywords.length > 0) lines.push(`- Keywords: ${keywords}`);
+		lines.push(`- Keywords: ${keywords}`);
 		lines.push(`- Summary: ${data.shortDesc}`);
+		if (data.tldr) lines.push(`- TL;DR: ${data.tldr}`);
 		if (excerpt.length > 0) lines.push(`- Excerpt: ${excerpt}`);
+		if (data.faq && data.faq.length > 0) {
+			lines.push("- FAQ:");
+			for (const { q, a } of data.faq) {
+				lines.push(`  - Q: ${q}`);
+				lines.push(`    A: ${a}`);
+			}
+		}
 		lines.push("");
 	}
 
