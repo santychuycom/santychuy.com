@@ -1,7 +1,6 @@
 {
-  "*.{astro,ts}": [
-    "prettier -w . --cache",
-    "eslint --ext .ts,.astro src",
-    "git add"
+  "*.{astro,ts,tsx,js,jsx,css,md,mdx,json,yml,yaml}": [
+    "biome check --write --no-errors-on-unmatched",
+    "biome check --no-errors-on-unmatched"
   ]
 }

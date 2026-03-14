@@ -1,20 +1,20 @@
-/* eslint-disable @typescript-eslint/triple-slash-reference */
 /// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
 
-type Runtime = import('@astrojs/cloudflare').Runtime<Env>;
+type Runtime = import("@astrojs/cloudflare").Runtime<Env>;
 
 interface ImportMetaEnv {
-  readonly UMAMI_AUTH_TOKEN: string;
-  readonly UMAMI_WEBSITE_ID: string;
+	readonly UMAMI_AUTH_TOKEN: string;
+	readonly UMAMI_PROXY_TARGET: string;
+	readonly UMAMI_WEBSITE_ID: string;
 }
 
 interface ImportMeta {
-  readonly env: ImportMetaEnv;
+	readonly env: ImportMetaEnv;
 }
 
 declare namespace App {
-  interface Locals extends Runtime {
-    env: Record<string, string>;
-  }
+	interface Locals extends Runtime {
+		env: Record<string, string>;
+	}
 }

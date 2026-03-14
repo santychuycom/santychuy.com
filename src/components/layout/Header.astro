@@ -1,112 +1,27 @@
 ---
-import X from '@components/icons/x.astro';
-import Github from '@components/icons/github.astro';
-import Linkedin from '@components/icons/linkedin.astro';
-import Youtube from '@components/icons/youtube.astro';
-import SantychuyLogo from '@components/icons/santychuyISO.astro';
+import MoonIcon from "@components/icons/moon.astro";
+import SantychuyLogo from "@components/icons/santychuyISO.astro";
+import SunIcon from "@components/icons/sun.astro";
 ---
 
-<header>
-  <a href="/" class="logo-link">
-    <SantychuyLogo class="logo" />
+<header class="flex items-center justify-between gap-4 shell-width py-5 border-b border-line desktop:py-6">
+  <a href="/" class="inline-flex items-center justify-center rounded-pill text-ink transition-[transform,color] duration-base ease-standard hover-lift hover:text-brand focus-ring" aria-label="Go to homepage">
+    <SantychuyLogo class="w-[var(--brand-logo-size)] h-auto desktop:w-[var(--brand-logo-size-desktop)]" />
   </a>
 
-  <a href="/about" title="About Page">About</a>
-  <span></span>
-  <a
-    href="https://youtube.com/@santychuy_dev"
-    target="_blank"
-    rel="noopener"
-    title="YouTube Channel"
+  <button
+    class="group touch-target inline-flex items-center gap-2 p-1 border-none rounded-pill bg-transparent cursor-pointer focus-ring"
+    type="button"
+    data-theme-toggle
+    data-theme="light"
+    aria-label="Switch to dark mode"
+    aria-pressed="false"
   >
-    <Youtube class="social-icon" />
-  </a>
-  <a
-    href="https://github.com/santychuy"
-    target="_blank"
-    rel="noopener"
-    title="Github Profile"
-  >
-    <Github class="social-icon" />
-  </a>
-  <a
-    href="https://x.com/santychuy_dev"
-    target="_blank"
-    rel="noopener"
-    title="X (Twitter) Profile"
-  >
-    <X class="x-icon" />
-  </a>
-  <a
-    href="https://linkedin.com/in/santiagocarrascocampa"
-    target="_blank"
-    rel="noopener"
-    title="Linkedin Profile"
-  >
-    <Linkedin class="social-icon" />
-  </a>
+    <SunIcon class="w-4.5 h-4.5 text-ink-faint transition-colors duration-base ease-standard group-data-[theme=light]:text-ink" aria-hidden="true" />
+    <span class="switch-track relative w-9 h-5 rounded-pill bg-line shadow-[inset_0_1px_2px_rgb(0_0_0/0.1)] transition-colors duration-base ease-standard group-hover:bg-line-strong group-data-[theme=dark]:bg-brand group-data-[theme=dark]:hover:bg-brand" aria-hidden="true">
+      <span class="absolute top-0.5 left-0.5 w-4 h-4 rounded-pill bg-surface-up shadow-[0_1px_3px_rgb(0_0_0/0.15)] translate-x-0 transition-transform duration-base ease-[cubic-bezier(0.5,-0.3,0.1,1.5)] motion-reduce:transition-[transform_0.01ms] group-data-[theme=dark]:translate-x-4"></span>
+    </span>
+    <MoonIcon class="w-4.5 h-4.5 text-ink-faint transition-colors duration-base ease-standard group-data-[theme=dark]:text-ink" aria-hidden="true" />
+    <span class="sr-only" data-theme-label>Light</span>
+  </button>
 </header>
-
-<style>
-  header {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    margin-inline: auto;
-    gap: 1.4rem;
-    padding-block: 1.5rem;
-    padding-inline: 1.5rem;
-
-    @media screen and (min-width: 34.375rem) {
-      gap: 2rem;
-      padding-inline: 2rem;
-    }
-
-    @media screen and (min-width: 68.75rem) {
-      padding-block: 3rem;
-    }
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  .logo-link {
-    margin-right: auto;
-  }
-
-  .logo {
-    width: 60px;
-
-    @media screen and (min-width: 68.75rem) {
-      width: 80px;
-    }
-  }
-
-  .social-icon {
-    width: 30px;
-    height: 30px;
-    transition: fill 0.2s ease-in-out;
-
-    &:hover {
-      fill: var(--primary---green--6);
-    }
-
-    @media screen and (min-width: 68.75rem) {
-      width: 32px;
-      height: 32px;
-    }
-  }
-
-  .x-icon {
-    width: 28px;
-    height: 28px;
-  }
-
-  span {
-    width: 1px;
-    height: 30px;
-    background-color: var(--primary---green--10);
-  }
-</style>

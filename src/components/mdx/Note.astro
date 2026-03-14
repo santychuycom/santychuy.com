@@ -1,0 +1,44 @@
+---
+interface Props {
+	tone?: "note" | "tip" | "important" | "warning" | "caution";
+	title?: string;
+}
+
+const { tone = "note", title } = Astro.props;
+
+const toneLabelMap = {
+	note: "Note",
+	tip: "Tip",
+	important: "Important",
+	warning: "Warning",
+	caution: "Caution",
+} as const;
+
+const toneColorMap = {
+	note: "var(--status-info)",
+	tip: "var(--status-success)",
+	important: "var(--paper-accent)",
+	warning: "var(--status-warning)",
+	caution: "var(--status-warning)",
+} as const;
+
+const displayTitle = title ?? toneLabelMap[tone];
+const borderColor = toneColorMap[tone];
+---
+
+<aside
+	class="border border-line border-l-[length:var(--space-1)] rounded-lg bg-surface-up p-[var(--space-5)] my-[var(--space-8)]"
+	style={`border-left-color: ${borderColor}`}
+	aria-label={displayTitle}
+>
+	<p class="m-0 text-sm font-semibold uppercase tracking-[0.03em]">{displayTitle}</p>
+	<div class="mdx-note-body mt-[var(--space-2)]">
+		<slot />
+	</div>
+</aside>
+
+<style>
+	.mdx-note-body :global(p:last-child) {
+		margin-bottom: 0;
+	}
+</style>

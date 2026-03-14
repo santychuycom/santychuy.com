@@ -1,21 +1,12 @@
 ---
-import SantychuyLogo from '@components/icons/santychuyISO.astro';
+import SantychuyLogo from "@components/icons/santychuyISO.astro";
+
+const year = new Date().getFullYear();
 ---
 
-<footer>
-  <SantychuyLogo class="logo" />
+<footer class="shell-width mt-auto py-9 border-t border-line">
+  <div class="flex flex-col items-center justify-center gap-4 text-center">
+    <SantychuyLogo class="w-8 h-auto text-ink-faint" />
+    <p class="m-0 text-sm text-ink-muted leading-copy-compact">&copy; {year} Santiago Carrasco. Building in public.</p>
+  </div>
 </footer>
-
-<style>
-  footer {
-    display: grid;
-    min-height: 150px;
-    place-items: center;
-    background-color: var(--main---background--alpha);
-  }
-
-  .logo {
-    width: 60px;
-    height: 60px;
-  }
-</style>

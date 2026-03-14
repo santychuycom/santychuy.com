@@ -1,11 +1,12 @@
 ---
 title: 'ESLint Essentials: Clarifying Configuration'
 pubDate: 2024-07-31T23:31:22.487Z
+lang: en
 author:
   name: Santiago Carrasco
   img: /imgs/profile.jpg
-type: posts
-image: /uploads/ESLint-Essentials-Thumbnail.jpg
+image: /uploads/eslint-essentials-thumbnail.jpg
+imageAlt: ESLint essentials article thumbnail with linter branding
 keywords:
   - configuration
   - eslint
@@ -21,13 +22,13 @@ description: Simplify ESLint setup with this guide. Learn key concepts, explore 
 shortDesc: "Start understanding ESLint's power: Simplify setup, master configs, boost your code quality."
 ---
 
-[ESLint](https://eslint.org/) is an open source linter for the JavaScript/Node (←might change this part) ecosystem. Can be integrated on most of your text editors and run it on your pipeline process (terminal).
+[ESLint](https://eslint.org/) is an open source linter for the JavaScript/Node ecosystem. Can be integrated on most of your text editors and run it on your pipeline process (terminal).
 
-> 🗣️ <mark style="background: #BBFABB; padding-inline: 4px;">IMPORTANT NOTE</mark>: some of the concepts are based on the newer versions of ESLint (^v9.0.0) to have it in mind if you encounter with some differences. If you want to [read](https://eslint.org/docs/latest/use/configure/migration-guide) the migration process and its differences you can go to the article and check it out
+> 🗣️ <mark>IMPORTANT NOTE</mark>: some of the concepts are based on the newer versions of ESLint (^v9.0.0) to have it in mind if you encounter with some differences. If you want to [read](https://eslint.org/docs/latest/use/configure/migration-guide) the migration process and its differences you can go to the article and check it out
 
-One struggle that I often have is to not understand quite good of all the <mark style="background: #BBFABB; padding-inline: 4px;">configuration and set ups for eslint</mark>, what are the differences of configurations and plugins, what means each property inside the `.eslintrc` (or similar) file.
+One struggle that I often have is to not understand quite good of all the <mark>configuration and set ups for eslint</mark>, what are the differences of configurations and plugins, what means each property inside the `.eslintrc` (or similar) file.
 
-The goal of this note will be to <mark style="background: #BBFABB; padding-inline: 4px;">explain and understand ESLint</mark> to not get confused and do the right thing on our next project that will be using ESLint.
+The goal of this note will be to <mark>explain and understand ESLint</mark> to not get confused and do the right thing on our next project that will be using ESLint.
 
 ## Terminology
 
@@ -37,13 +38,13 @@ The goal of this note will be to <mark style="background: #BBFABB; padding-inlin
 
 - **Rule**: Code that checks an AST for expected patterns, many rules can be loaded in by plugins
 
-- **Plugin**: Package that <mark style="background: #BBFABB; padding-inline: 4px;">can contain a set of configurations, processors and/or rules</mark>
+- **Plugin**: Package that <mark>can contain a set of configurations, processors and/or rules</mark>
 
 - **Configuration**: Set of a bunch of rules, and can include plugins
 
-- **Configuration file**: File containing preferences of how ESLint should <mark style="background: #BBFABB; padding-inline: 4px;">parse files and run rules</mark>
+- **Configuration file**: File containing preferences of how ESLint should <mark>parse files and run rules</mark>
 
-- **Parser**: An object containing a method that reads in a string and coverts it to a <mark style="background: #BBFABB; padding-inline: 4px;">standardized format</mark>. ESLint uses parsers to convert source code strings into an AST shape. They’re custom parsers to let ESLint parse non-standard JavaScript syntax, for example [@typescript-eslint/parser](https://www.npmjs.com/package/@typescript-eslint/parser) is a custom parser included in the [typescript-eslint](https://typescript-eslint.io/) project that lets ESLint parse TypeScript code
+- **Parser**: An object containing a method that reads in a string and coverts it to a <mark>standardized format</mark>. ESLint uses parsers to convert source code strings into an AST shape. They’re custom parsers to let ESLint parse non-standard JavaScript syntax, for example [@typescript-eslint/parser](https://www.npmjs.com/package/@typescript-eslint/parser) is a custom parser included in the [typescript-eslint](https://typescript-eslint.io/) project that lets ESLint parse TypeScript code
 
 - **Processor**: Part of a plugin that extracts JavaScript code from other kinds of files, then lets ESLint lint the JavaScript code. For example [`eslint-plugin-markdown`](https://github.com/eslint/eslint-plugin-markdown) includes a processor that converts the text of ` ``` ` code blocks in Markdown files into code that can be linted
 
@@ -51,7 +52,7 @@ The goal of this note will be to <mark style="background: #BBFABB; padding-inlin
 
 ## Understand ESLint
 
-> _ESLint is completely pluggable. <mark style="background: #BBFABB; padding-inline: 4px;">Every single rule is a plugin</mark>, and you can add more at runtime_
+> _ESLint is completely pluggable. <mark>Every single rule is a plugin</mark>, and you can add more at runtime_
 
 ### Values for rules
 
@@ -59,7 +60,7 @@ The rules will be defined inside the property `rules` that is an object and will
 
 - `name-rule`: Will be to identify the kind of error/warning you want to use
 
-- `value`: Could be of type `string` or `number` whatever you choose will be the same result; <mark style="background: #BBFABB; padding-inline: 4px;">the order of each value of the two types will be the equivalent of each one</mark>:
+- `value`: Could be of type `string` or `number` whatever you choose will be the same result; <mark>the order of each value of the two types will be the equivalent of each one</mark>:
   - `string`
     - `off`
     - `warn`
@@ -71,7 +72,7 @@ The rules will be defined inside the property `rules` that is an object and will
 
 ## ESLint Config File
 
-Will be to configure your <mark style="background: #BBFABB; padding-inline: 4px;">ESLint project</mark> in a single place. You can include built-in rules, how you want them enforced, plugins with custom rules, shareable configurations, which files you want rules to apply to, and more.
+Will be to configure your <mark>ESLint project</mark> in a single place. You can include built-in rules, how you want them enforced, plugins with custom rules, shareable configurations, which files you want rules to apply to, and more.
 
 Set it up like (for ^v9.0.0):
 
@@ -86,7 +87,7 @@ And for versions below <v9.0.0:
 - `.eslintrc.js`
 - `.eslintrc.mjs`
 
-And placed on the <mark style="background: #BBFABB; padding-inline: 4px;">root of your project and exports an array</mark>.
+And placed on the <mark>root of your project and exports an array</mark>.
 
 [Here](https://eslint.org/docs/latest/use/configure/configuration-files#configuration-objects) you can consult each configuration object that contains all the information needed for ESLint to execute correctly.
 
@@ -96,7 +97,7 @@ And placed on the <mark style="background: #BBFABB; padding-inline: 4px;">root o
 
 - `root`: Is a boolean that indicates whether the current configuration file is the root of the ESLint configuration hierarchy
 
-- `env`: Declares which environments your code is expected to run in. Each environment brings with it a certain set of predefined global variables. For example this prevents of throwing `no-undef` rule errors when expecting variables from the <mark style="background: #BBFABB; padding-inline: 4px;">browser</mark> like `window` or `document`. [List of envs](https://eslint.org/docs/v8.x/use/configure/language-options#specifying-environments)
+- `env`: Declares which environments your code is expected to run in. Each environment brings with it a certain set of predefined global variables. For example this prevents of throwing `no-undef` rule errors when expecting variables from the <mark>browser</mark> like `window` or `document`. [List of envs](https://eslint.org/docs/v8.x/use/configure/language-options#specifying-environments)
 
   Some of the most commons:
 
@@ -131,7 +132,7 @@ module.exports = {
 
 - `rules`: Allows enabling additional rules from plugins and overriding options for rules set by existing configurations.
 
-- `overrides`: This property is an <mark style="background: #BBFABB; padding-inline: 4px;">array of objects</mark>, where each object can contain its <mark style="background: #BBFABB; padding-inline: 4px;">own set of configuration options</mark>. These options will override the default configuration for the specified files or patterns. So you’ll reuse some of the properties mentioned above
+- `overrides`: This property is an <mark>array of objects</mark>, where each object can contain its <mark>own set of configuration options</mark>. These options will override the default configuration for the specified files or patterns. So you’ll reuse some of the properties mentioned above
 
 ```javascript
 module.exports = {
@@ -148,7 +149,7 @@ module.exports = {
 
 There are other options available to set up, but these are the most often we’re going to see in our day-to-day.
 
-I know that here I covered the basic terms and how to set it up, and there are more advance topics to cover, but <mark style="background: #BBFABB; padding-inline: 4px;">we don’t need to worry to know everything that ESLint offer us</mark>, getting started and knowing the basics is more important than trying to know everything and getting overwhelm in the process. Keep learning!
+I know that here I covered the basic terms and how to set it up, and there are more advance topics to cover, but <mark>we don’t need to worry to know everything that ESLint offer us</mark>, getting started and knowing the basics is more important than trying to know everything and getting overwhelm in the process. Keep learning!
 
 ## Resources
 

@@ -1,26 +1,52 @@
 ---
-import '@styles/reset.css';
-import '@styles/vars.css';
-import '@styles/globals.css';
-import '@styles/animations.css';
+import "@styles/reset.css";
+import "@styles/vars.css";
+import "@styles/globals.css";
+import "@styles/animations.css";
 
-import { ViewTransitions } from 'astro:transitions';
-
-import Header from '@components/layout/Header.astro';
-import Footer from '@components/layout/Footer.astro';
+import { ClientRouter } from "astro:transitions";
+import UmamiTracker from "@components/analytics/UmamiTracker.astro";
+import Footer from "@components/layout/Footer.astro";
+import Header from "@components/layout/Header.astro";
+import ThemeScript from "@components/ThemeScript.astro";
 
 interface Props {
-  title: string;
-  description: string;
-  image: string;
-  url: string;
-  noIndex?: boolean;
+	title: string;
+	description: string;
+	image: string;
+	url: string;
+	noIndex?: boolean;
+	lang?: "en" | "es";
+	schema?: Record<string, unknown> | Record<string, unknown>[];
+	alternates?: Partial<Record<"en" | "es" | "x-default", string>>;
 }
 
-const { title, description, image, url, noIndex } = Astro.props;
+const {
+	title,
+	description,
+	image,
+	url,
+	noIndex,
+	lang = "en",
+	schema,
+	alternates,
+} = Astro.props;
+
+const structuredData = schema
+	? Array.isArray(schema)
+		? schema
+		: [schema]
+	: [];
+
+const ogLocale = lang === "es" ? "es_MX" : "en_US";
+const hreflangAlternates = {
+	[lang]: url,
+	"x-default": url,
+	...(alternates ?? {}),
+};
 ---
 
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -34,50 +60,139 @@ const { title, description, image, url, noIndex } = Astro.props;
       crossorigin
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ThemeScript />
     <title>
       {`${title} - Santiago Carrasco (Santychuy)`}
     </title>
+    <link rel="canonical" href={url} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Santychuy Blog RSS"
+      href="/feed.xml"
+    />
+    <link rel="alternate" type="text/plain" title="LLMs Manifest" href="/llms.txt" />
+    <link rel="alternate" type="text/plain" title="LLMs Full Index" href="/llms-full.txt" />
+    {hreflangAlternates.en && <link rel="alternate" hreflang="en" href={hreflangAlternates.en} />}
+    {hreflangAlternates.es && <link rel="alternate" hreflang="es" href={hreflangAlternates.es} />}
+    {hreflangAlternates["x-default"] && (
+      <link rel="alternate" hreflang="x-default" href={hreflangAlternates["x-default"]} />
+    )}
     {noIndex && <meta name="robots" content="noindex" />}
-    <ViewTransitions />
+    <ClientRouter />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={`${title} - Santiago Carrasco (Santychuy)`} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="article" />
     <meta property="og:url" content={url} />
     <meta property="og:image" content={image} />
-    <meta property="og:site_name" content="Santiago Carrasco Blog" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Santiago Carrasco (Santychuy)" />
+    <meta property="og:locale" content={ogLocale} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@santychuy" />
     <meta name="twitter:creator" content="@santychuy" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={`${title} - Santiago Carrasco (Santychuy)`} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
-    />
-    <script
-      defer
-      src="https://umami.santychuy.com/script.js"
-      data-website-id="2f3b8fca-a83a-4d9d-b851-0d70e1a6f43b"></script>
+    {structuredData.map((item) => (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(item)} />
+    ))}
+    <UmamiTracker />
   </head>
-  <body>
-    <Header />
+  <body class="min-h-svh">
+    <div class="blog-header-shell sticky top-0 z-[var(--z-header)]" data-blog-header-shell data-scrolled="false">
+      <Header />
+    </div>
+    <script is:inline>
+      (() => {
+        const setupStickyHeaderState = () => {
+          const headerShell = document.querySelector("[data-blog-header-shell]");
+
+          if (!(headerShell instanceof HTMLElement)) {
+            return;
+          }
+
+          if (headerShell.dataset.scrollBound === "true") {
+            headerShell.dataset.scrolled = window.scrollY > 16 ? "true" : "false";
+            return;
+          }
+
+          const updateScrolledState = () => {
+            headerShell.dataset.scrolled = window.scrollY > 16 ? "true" : "false";
+          };
+
+          headerShell.dataset.scrollBound = "true";
+          updateScrolledState();
+
+          window.addEventListener("scroll", updateScrolledState, { passive: true });
+          document.addEventListener(
+            "astro:before-swap",
+            () => {
+              window.removeEventListener("scroll", updateScrolledState);
+              delete headerShell.dataset.scrollBound;
+            },
+            { once: true },
+          );
+        };
+
+        setupStickyHeaderState();
+        document.addEventListener("astro:page-load", setupStickyHeaderState);
+      })();
+    </script>
     <main>
       <slot />
     </main>
-    <Footer />
-    <style>
-      main {
-        width: 100%;
-        padding-block-end: 80px;
-      }
-    </style>
-    <script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <div class="blog-footer-shell">
+      <Footer />
+    </div>
   </body>
 </html>
+
+<style>
+  .blog-header-shell :global(header),
+  .blog-footer-shell :global(footer) {
+    @media (width < 68.75rem) {
+      width: 100%;
+      padding-inline: var(--layout-gutter-mobile);
+    }
+
+    @media (width >= 34.375rem) and (width < 68.75rem) {
+      padding-inline: var(--layout-gutter-tablet);
+    }
+  }
+
+  .blog-footer-shell :global(footer) {
+    @media (width < 68.75rem) {
+      padding-block: var(--space-5);
+    }
+  }
+
+  .blog-header-shell :global(header) {
+    background: transparent;
+    position: relative;
+    transition: background-color var(--motion-duration-base) var(--motion-ease-standard);
+  }
+
+  .blog-header-shell :global(header)::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 0.75rem;
+    translate: 0 100%;
+    background: linear-gradient(to bottom, var(--surface-base), transparent);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--motion-duration-base) var(--motion-ease-standard);
+  }
+
+  .blog-header-shell[data-scrolled="true"] :global(header) {
+    backdrop-filter: blur(55px);
+    -webkit-backdrop-filter: blur(55px);
+  }
+
+  .blog-header-shell[data-scrolled="true"] :global(header)::after {
+    opacity: 1;
+  }
+</style>

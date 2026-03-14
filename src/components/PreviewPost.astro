@@ -1,99 +1,45 @@
 ---
-import ArrowUpRight from './icons/arrow-up-right.astro';
-
-import Badge from './Badge.astro';
+import ArrowUpRight from "./icons/arrow-up-right.astro";
 
 interface Props {
-  title: string;
-  date: Date;
-  description: string;
-  topics: string[];
-  slug: string;
+	title: string;
+	date: Date;
+	description: string;
+	slug: string;
+	lang?: "en" | "es";
+	topics?: string[];
+	surface?: string;
+	position?: number;
 }
 
-const { title, date, description, topics, slug } = Astro.props;
+const {
+	title,
+	date,
+	description,
+	slug,
+	lang = "en",
+	surface,
+	position,
+} = Astro.props;
+const dateLabel = new Intl.DateTimeFormat(lang === "es" ? "es-MX" : "en-US", {
+	dateStyle: "medium",
+}).format(date);
+const readLabel = lang === "es" ? "Leer articulo" : "Read article";
 ---
 
-<article class="post">
-  <h2>{title}</h2>
-  <p class="date" id={`#${title}`}></p>
+<article class="group">
+  <a href={`/blog/${slug}`} class="flex flex-col gap-2 py-4 no-underline text-inherit hover:text-inherit transition-none outline-none rounded-sm focus-visible:bg-[var(--surface-hover)] focus-visible:shadow-[0_0_0_var(--space-2)_var(--surface-hover)] desktop:flex-row desktop:items-start desktop:gap-8" data-analytics-event={surface ? "post_card_click" : undefined} data-post-slug={slug} data-post-lang={lang} data-surface={surface} data-position={typeof position === "number" ? String(position) : undefined}>
+    <div class="flex flex-col gap-2 desktop:flex-[0_0_120px]">
+      <time class="text-ink-faint text-sm font-[var(--font-mono,monospace)]" datetime={date.toISOString()}>{dateLabel}</time>
+      <div class="hidden items-center gap-2 text-ink text-xs font-medium desktop:flex desktop:opacity-0 desktop:-translate-y-1 desktop:transition-all desktop:duration-base desktop:ease-standard desktop:pointer-events-none group-hover:opacity-100 group-hover:translate-y-0" aria-hidden="true">
+        <span>{readLabel}</span>
+        <ArrowUpRight class="rotate-[225deg] w-[0.8em] h-[0.8em] transition-transform duration-base ease-standard group-hover:translate-x-1 group-hover:-translate-y-1" />
+      </div>
+    </div>
 
-  <p class="description">
-    {description}
-  </p>
-
-  <div class="badges-container">
-    {topics.map((topic) => <Badge title={topic} />)}
-  </div>
-
-  <!-- TODO: Refactor this button variant -->
-  <a href={`/blog/${slug}`}>
-    <button class="read-button"
-      >Read more
-      <ArrowUpRight class="read-arrow" />
-    </button>
+    <div class="flex flex-col gap-1 desktop:flex-1">
+      <h3 class="m-0 text-lg leading-heading tracking-[-0.01em] text-ink font-semibold group-hover:underline group-hover:underline-offset-4 group-hover:decoration-1 group-hover:decoration-line-strong">{title}</h3>
+      <p class="m-0 text-ink-faint leading-copy text-sm line-clamp-2 max-w-[var(--measure-card-copy-max)]">{description}</p>
+    </div>
   </a>
 </article>
-
-<style>
-  .post {
-    display: flex;
-    flex-direction: column;
-
-    .date {
-      color: var(--neutrals---black--7);
-      margin-block-start: 4px;
-    }
-
-    .description {
-      font-weight: 500;
-      margin-block: 12px;
-    }
-
-    .badges-container {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.8rem;
-    }
-
-    .read-button {
-      color: var(--neutrals---black--1);
-      cursor: pointer;
-      font-weight: 700;
-      background-color: transparent;
-      border: none;
-      display: flex;
-      flex-direction: row;
-      gap: 4px;
-      align-items: center;
-      max-width: 160px;
-      margin-block-start: 24px;
-
-      .read-arrow {
-        rotate: 225deg;
-        transition: transform 0.2s ease;
-      }
-
-      &:hover .read-arrow {
-        transform: translateY(4px);
-      }
-    }
-  }
-</style>
-
-<script define:vars={{ date, title }}>
-  const pubDate = new Date(date);
-  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-  const formattedDate = pubDate.toLocaleDateString(undefined, {
-    day: 'numeric',
-    month: 'numeric',
-    year: 'numeric',
-    timeZone: tz,
-  });
-
-  const dateElement = document.getElementById(`#${title}`);
-
-  dateElement.textContent = `${formattedDate}`;
-</script>
