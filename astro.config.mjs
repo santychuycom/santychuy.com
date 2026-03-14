@@ -28,6 +28,9 @@ export default defineConfig({
 	prefetch: {
 		defaultStrategy: "tap",
 	},
+	server: {
+		streaming: false,
+	},
 	markdown: {
 		remarkPlugins: [
 			[remarkReadingTime, { attribute: "minutesRead" }],
