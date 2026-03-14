@@ -30,6 +30,7 @@ For detailed context on specific areas, see:
 - Technology stack details @.context/tech-stack.md
 - Deployment pipeline @.context/deployment.md
 - Blog content workflow @.context/content-workflow.md
+- Design context @.context/design-context.md
 - Brand and design system @.context/design-system.md
 - Internationalization strategy @.context/i18n-strategy.md
 - SEO requirements @.context/seo.md

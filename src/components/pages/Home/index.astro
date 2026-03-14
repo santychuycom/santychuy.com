@@ -13,19 +13,24 @@ const normalizePostId = (id: string) =>
 	id.replace(/\.(md|mdx|markdown)$/i, "").replaceAll(".", "");
 
 const currentFocus = [
-	"Redesigning santychuy.com with a layer-by-layer workflow",
-	"Documenting practical AI agent patterns through real projects",
-	"Publishing bilingual long-form writing (English and Spanish)",
+	{
+		prefix: "Building @ ",
+		label: "The & Company",
+		href: "https://and.com",
+	},
+	{
+		label: "Sharing content related to software and thoughts",
+	},
 ];
 ---
 
 <div class="flex flex-col gap-10 desktop:gap-[var(--space-12)] desktop:pt-6 max-tablet:gap-8">
   <header class="opacity-0 animate-reveal-up max-w-[var(--measure-hero-max)] flex flex-col gap-4" style="animation-delay: calc(var(--motion-delay-step) * 1)" aria-labelledby="home-title">
-    <h1 id="home-title" class="m-0 text-hero leading-tight text-wrap-balance text-ink tracking-[-0.02em] font-semibold max-tablet:text-hero-mobile max-tablet:leading-hero-mobile"
-    >Software engineer building practical AI experiences.</h1>
+    <h1 id="home-title" class="m-0 text-hero leading-tight text-wrap-balance text-ink tracking-[-0.02em] font-semibold italic max-tablet:text-hero-mobile max-tablet:leading-hero-mobile"
+    >Why human beings are machines of interpretation?</h1>
     <p class="m-0 max-w-[var(--reading-max-width)] text-ink-muted text-lg leading-copy text-wrap-pretty max-tablet:text-base">
-      This space is being redesigned in public. Each layer adds clarity, better
-      writing flow, and a cleaner reading experience.
+      I'm Santiago Carrasco, a SWE with a plan to share knowledge, thoughts,
+      and the things I learn along the way.
     </p>
   </header>
 
@@ -34,7 +39,14 @@ const currentFocus = [
     <ul class="m-0 ps-0 list-none grid gap-3">
       {
         currentFocus.map((item) => (
-          <li class="ps-4 border-s-2 border-brand text-ink-muted leading-copy">{item}</li>
+          <li class="ps-4 border-s-2 border-brand text-ink-muted leading-copy">
+            {item.prefix}
+            {item.href ? (
+              <a href={item.href} target="_blank" rel="noreferrer" class="text-ink no-underline underline-offset-4 decoration-1 hover:underline focus-visible:underline">{item.label}</a>
+            ) : (
+              item.label
+            )}
+          </li>
         ))
       }
     </ul>
