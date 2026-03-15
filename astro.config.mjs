@@ -9,7 +9,11 @@ import remarkReadingTime from "remark-reading-time";
 
 // https://astro.build/config
 export default defineConfig({
-	adapter: cloudflare(),
+	adapter: cloudflare({
+		workerEntryPoint: {
+			path: "./src/worker.ts",
+		},
+	}),
 	site: "https://santychuy.com",
 	vite: {
 		plugins: [tailwindcss()],
@@ -27,9 +31,6 @@ export default defineConfig({
 	},
 	prefetch: {
 		defaultStrategy: "tap",
-	},
-	server: {
-		streaming: false,
 	},
 	markdown: {
 		remarkPlugins: [
