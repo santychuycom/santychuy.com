@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/santychuycom/santychuy.com/compare/v2.0.0...v2.0.1) (2026-03-15)
+
+### Bug Fixes
+
+* **blog:** disable Astro streaming for SSR responses ([563c721](https://github.com/santychuycom/santychuy.com/commit/563c721dcebae8531a7bbc5a0da5045872fd48f6))
+* **cloudflare:** disable SSR streaming in worker entrypoint ([06e6a89](https://github.com/santychuycom/santychuy.com/commit/06e6a8901784ad87ee14201ae9f72f32216604dd))
+
 ## [2.0.0](https://github.com/santychuycom/santychuy.com/compare/v1.6.0...v2.0.0) (2026-03-14)
 
 ### ⚠ BREAKING CHANGES
