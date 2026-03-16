@@ -1,3 +1,13 @@
+## [2.1.0](https://github.com/santychuycom/santychuy.com/compare/v2.0.1...v2.1.0) (2026-03-16)
+
+### Features
+
+* **skill:** add grill-me interview skill ([78c31bf](https://github.com/santychuycom/santychuy.com/commit/78c31bf438e108091989ff58e4a36b903e8e7f40))
+
+### Bug Fixes
+
+* **assets:** normalize blog cover filenames to lowercase ([37e9ca5](https://github.com/santychuycom/santychuy.com/commit/37e9ca512451fd40100552390b8522e131df4bd6))
+
 ## [2.0.1](https://github.com/santychuycom/santychuy.com/compare/v2.0.0...v2.0.1) (2026-03-15)
 
 ### Bug Fixes
