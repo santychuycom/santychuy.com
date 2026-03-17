@@ -71,9 +71,37 @@ jobs:
         id: deploy
         run: |
           set -euo pipefail
+          stage="pr-${{ github.event.pull_request.number }}"
+
+          deploy() {
+            bunx sst deploy --stage "$stage" --print-logs | tee deploy.log
+          }
+
           bunx sst install
-          bunx sst deploy --stage pr-${{ github.event.pull_request.number }} --print-logs | tee deploy.log
-          grep -oP 'https://[a-z0-9.-]+\.workers\.dev' deploy.log | tail -1 | xargs -I {} echo "url={}" >> "$GITHUB_OUTPUT"
+
+          if ! deploy; then
+            if grep -q "Concurrent update detected" deploy.log; then
+              echo "Detected concurrent SST update lock. Waiting before retry..."
+              sleep 20
+
+              if ! deploy; then
+                if grep -q "Concurrent update detected" deploy.log; then
+                  echo "Lock still present. Unlocking stale lock and retrying once..."
+                  bunx sst unlock --stage "$stage"
+                  deploy
+                else
+                  exit 1
+                fi
+              fi
+            else
+              exit 1
+            fi
+          fi
+
+          preview_url=$(grep -oP 'https://[a-z0-9.-]+\.workers\.dev' deploy.log | tail -1 || true)
+          if [ -n "$preview_url" ]; then
+            echo "url=$preview_url" >> "$GITHUB_OUTPUT"
+          fi
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
