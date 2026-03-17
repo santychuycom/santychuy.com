@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: deploy-${{ github.event.pull_request.number || github.sha }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -71,9 +71,49 @@ jobs:
         id: deploy
         run: |
           set -euo pipefail
+          stage="pr-${{ github.event.pull_request.number }}"
+
+          deploy() {
+            set +e
+            bunx sst deploy --stage "$stage" --print-logs 2>&1 | tee deploy.log
+            deploy_status=${PIPESTATUS[0]}
+            set -e
+            return "$deploy_status"
+          }
+
+          has_lock_error() {
+            grep -Eiq "concurrent update (detected|was detected)|^\|\s+Locked" deploy.log
+          }
+
           bunx sst install
-          bunx sst deploy --stage pr-${{ github.event.pull_request.number }} --print-logs | tee deploy.log
-          grep -oP 'https://[a-z0-9.-]+\.workers\.dev' deploy.log | tail -1 | xargs -I {} echo "url={}" >> "$GITHUB_OUTPUT"
+
+          attempt=1
+          max_attempts=3
+
+          while true; do
+            if deploy; then
+              break
+            fi
+
+            if ! has_lock_error; then
+              exit 1
+            fi
+
+            if [ "$attempt" -ge "$max_attempts" ]; then
+              echo "SST deploy failed after $max_attempts attempts due to persistent lock."
+              exit 1
+            fi
+
+            echo "Detected concurrent SST lock (attempt $attempt/$max_attempts). Unlocking and retrying..."
+            bunx sst unlock --stage "$stage" || true
+            sleep $((attempt * 10))
+            attempt=$((attempt + 1))
+          done
+
+          preview_url=$(grep -oP 'https://[a-z0-9.-]+\.workers\.dev' deploy.log | tail -1 || true)
+          if [ -n "$preview_url" ]; then
+            echo "url=$preview_url" >> "$GITHUB_OUTPUT"
+          fi
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
