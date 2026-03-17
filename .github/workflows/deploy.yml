@@ -74,29 +74,37 @@ jobs:
           stage="pr-${{ github.event.pull_request.number }}"
 
           deploy() {
+            set +e
             bunx sst deploy --stage "$stage" --print-logs | tee deploy.log
+            deploy_status=${PIPESTATUS[0]}
+            set -e
+            return "$deploy_status"
           }
 
           bunx sst install
 
-          if ! deploy; then
-            if grep -q "Concurrent update detected" deploy.log; then
-              echo "Detected concurrent SST update lock. Waiting before retry..."
-              sleep 20
+          attempt=1
+          max_attempts=3
 
-              if ! deploy; then
-                if grep -q "Concurrent update detected" deploy.log; then
-                  echo "Lock still present. Unlocking stale lock and retrying once..."
-                  bunx sst unlock --stage "$stage"
-                  deploy
-                else
-                  exit 1
-                fi
-              fi
-            else
+          while true; do
+            if deploy; then
+              break
+            fi
+
+            if ! grep -q "Concurrent update detected" deploy.log; then
               exit 1
             fi
-          fi
+
+            if [ "$attempt" -ge "$max_attempts" ]; then
+              echo "SST deploy failed after $max_attempts attempts due to persistent lock."
+              exit 1
+            fi
+
+            echo "Detected concurrent SST lock (attempt $attempt/$max_attempts). Unlocking and retrying..."
+            bunx sst unlock --stage "$stage" || true
+            sleep 10
+            attempt=$((attempt + 1))
+          done
 
           preview_url=$(grep -oP 'https://[a-z0-9.-]+\.workers\.dev' deploy.log | tail -1 || true)
           if [ -n "$preview_url" ]; then
