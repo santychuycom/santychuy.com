@@ -20,7 +20,8 @@ if (page.type === "redirect") {
 }
 
 if (page.type === "not-found") {
-	return Astro.redirect("/404");
+	Astro.response.status = 404;
+	return Astro.rewrite("/404");
 }
 
 const {

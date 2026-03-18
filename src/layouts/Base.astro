@@ -46,6 +46,8 @@ const hreflangAlternates = {
 	...(alternates ?? {}),
 };
 const feedHref = getFeedUrl(lang);
+const feedTitle =
+	lang === "es" ? "RSS del blog de Santychuy" : "Santychuy Blog RSS";
 ---
 
 <html lang={lang}>
@@ -74,7 +76,7 @@ const feedHref = getFeedUrl(lang);
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="Santychuy Blog RSS"
+      title={feedTitle}
       href={feedHref}
     />
     <link rel="alternate" type="text/plain" title="LLMs Manifest" href="/llms.txt" />

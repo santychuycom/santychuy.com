@@ -6,7 +6,7 @@ import { getLocaleMessages } from "../../i18n";
 const lang = "es";
 const messages = getLocaleMessages(lang);
 const siteURL = Astro.site ?? Astro.url;
-const canonicalURL = new URL(getLocaleHomeUrl("es"), siteURL).toString();
+const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
 ---
 
 <BaseLayout

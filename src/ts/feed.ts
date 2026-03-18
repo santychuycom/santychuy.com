@@ -17,7 +17,7 @@ const feedConfig = {
 	es: {
 		title: "Blog de Santychuy",
 		description:
-			"Comparto mis ideas y experiencias sobre desarrollo web y otros temas relacionados con tecnologia.",
+			"Comparto mis ideas y experiencias sobre desarrollo web y otros temas relacionados con tecnología.",
 		language: "es-mx",
 	},
 } as const;

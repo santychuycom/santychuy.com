@@ -14,10 +14,10 @@ const es = {
 		},
 	},
 	footer: {
-		tagline: "Construyendo en publico.",
+		tagline: "Construyendo en público.",
 	},
 	home: {
-		title: "¿Por que los seres humanos son maquinas de interpretacion?",
+		title: "¿Por qué los seres humanos son máquinas de interpretación?",
 		intro:
 			"Soy Santiago Carrasco, un SWE con el plan de compartir conocimiento, ideas y las cosas que aprendo en el camino.",
 		currentFocusTitle: "Ahora",
@@ -30,21 +30,21 @@ const es = {
 			{
 				prefix: "",
 				label:
-					"Compartiendo contenido sobre software y las ideas que dan forma a como trabajo.",
+					"Compartiendo contenido sobre software y las ideas que dan forma a cómo trabajo.",
 				href: undefined,
 			},
 		],
-		latestPostsTitle: "Ultimos posts",
+		latestPostsTitle: "Últimos posts",
 		rssLabel: "Feed RSS",
-		emptyState: "Adaptando los posts a Español.",
+		emptyState: "Adaptando los posts a español.",
 		pageDescription:
-			"Santiago Carrasco es un ingeniero de software que comparte notas practicas sobre desarrollo web, IA y los proyectos que moldean como trabaja y piensa.",
+			"Santiago Carrasco es un ingeniero de software que comparte notas prácticas sobre desarrollo web, IA y los proyectos que moldean cómo trabaja y piensa.",
 	},
 	notFound: {
-		title: "Pagina no encontrada",
-		description: "La pagina que buscas no existe o fue movida.",
+		title: "Página no encontrada",
+		description: "La página que buscas no existe o fue movida.",
 		cta: "Volver al inicio",
-		metaTitle: "Pagina No Encontrada",
+		metaTitle: "Página no encontrada",
 		metaDescription: "¿Te perdiste?",
 	},
 } as const;

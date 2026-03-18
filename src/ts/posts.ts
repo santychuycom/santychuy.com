@@ -4,7 +4,7 @@ import { getBlogPostUrl, type Locale } from "@ts/i18n";
 export type PostEntry = CollectionEntry<"posts">;
 
 export const normalizeContentId = (value: string) =>
-	value.replace(/\.(md|mdx|markdown)$/i, "").replaceAll(".", "");
+	value.replace(/\.(md|mdx|markdown)$/i, "");
 
 export const getPostSlugFromId = (id: string) => {
 	const normalizedId = normalizeContentId(id);
