@@ -1,4 +1,4 @@
-import { getCollection } from "astro:content";
+import { getAllPosts, getPostUrl, sortPostsByDate } from "@ts/posts";
 
 export const prerender = true;
 
@@ -8,9 +8,6 @@ const getBaseUrl = (site?: URL) => {
 	const value = site?.toString() ?? fallbackSite;
 	return value.endsWith("/") ? value.slice(0, -1) : value;
 };
-
-const normalizePostId = (id: string) =>
-	id.replace(/\.(md|mdx|markdown)$/i, "").replaceAll(".", "");
 
 const toExcerpt = (body: string, limit = 320) => {
 	const plain = body
@@ -30,11 +27,7 @@ const toExcerpt = (body: string, limit = 320) => {
 
 export async function GET({ site }: { site?: URL }) {
 	const baseUrl = getBaseUrl(site);
-	const posts = await getCollection("posts");
-	const sortedPosts = posts.sort(
-		(a, b) =>
-			Number(new Date(b.data.pubDate)) - Number(new Date(a.data.pubDate)),
-	);
+	const sortedPosts = sortPostsByDate(await getAllPosts());
 
 	const lines: string[] = [
 		"# santychuy.com - llms full index",
@@ -43,7 +36,8 @@ export async function GET({ site }: { site?: URL }) {
 		"Prefer canonical URLs when citing or quoting content.",
 		"",
 		`Generated from ${baseUrl}`,
-		`RSS: ${baseUrl}/feed.xml`,
+		`English RSS: ${baseUrl}/feed.xml`,
+		`Spanish RSS: ${baseUrl}/es/feed.xml`,
 		`Sitemap: ${baseUrl}/sitemap-index.xml`,
 		"",
 		"## Posts",
@@ -51,8 +45,7 @@ export async function GET({ site }: { site?: URL }) {
 	];
 
 	for (const { id, data, body } of sortedPosts) {
-		const slug = normalizePostId(data.slug ?? id);
-		const canonical = data.canonical ?? `${baseUrl}/blog/${slug}`;
+		const canonical = data.canonical ?? `${baseUrl}${getPostUrl({ data, id })}`;
 		const language = data.lang === "es" ? "es-MX" : "en-US";
 		const published = data.pubDate.toISOString();
 		const updated = (data.updatedDate ?? data.pubDate).toISOString();

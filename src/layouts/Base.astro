@@ -9,6 +9,7 @@ import UmamiTracker from "@components/analytics/UmamiTracker.astro";
 import Footer from "@components/layout/Footer.astro";
 import Header from "@components/layout/Header.astro";
 import ThemeScript from "@components/ThemeScript.astro";
+import { getFeedUrl, type LocaleUrlMap } from "@ts/i18n";
 
 interface Props {
 	title?: string;
@@ -18,6 +19,7 @@ interface Props {
 	lang?: "en" | "es";
 	schema?: Record<string, unknown> | Record<string, unknown>[];
 	alternates?: Partial<Record<"en" | "es" | "x-default", string>>;
+	languageSwitcher?: LocaleUrlMap;
 }
 
 const {
@@ -28,6 +30,7 @@ const {
 	lang = "en",
 	schema,
 	alternates,
+	languageSwitcher,
 } = Astro.props;
 
 const structuredData = schema
@@ -42,6 +45,9 @@ const hreflangAlternates = {
 	"x-default": url,
 	...(alternates ?? {}),
 };
+const feedHref = getFeedUrl(lang);
+const feedTitle =
+	lang === "es" ? "RSS del blog de Santychuy" : "Santychuy Blog RSS";
 ---
 
 <html lang={lang}>
@@ -70,8 +76,8 @@ const hreflangAlternates = {
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="Santychuy Blog RSS"
-      href="/feed.xml"
+      title={feedTitle}
+      href={feedHref}
     />
     <link rel="alternate" type="text/plain" title="LLMs Manifest" href="/llms.txt" />
     <link rel="alternate" type="text/plain" title="LLMs Full Index" href="/llms-full.txt" />
@@ -119,10 +125,10 @@ const hreflangAlternates = {
     <UmamiTracker />
   </head>
   <body class="min-h-svh">
-    <Header />
+    <Header lang={lang} languageSwitcher={languageSwitcher} />
     <main class="w-full max-w-[var(--layout-max-width)] mx-auto flex-1 relative pt-[var(--layout-main-padding-top)] pb-[var(--layout-main-padding-bottom)] px-[var(--layout-gutter-mobile)] tablet:px-[var(--layout-gutter-tablet)] desktop:pt-[var(--layout-main-padding-top-desktop)] desktop:pb-[var(--layout-main-padding-bottom-desktop)] desktop:px-[var(--layout-gutter-desktop)]">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
   </body>
 </html>

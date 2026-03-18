@@ -1,41 +1,31 @@
 ---
-import { getCollection } from "astro:content";
-
 import PreviewPost from "@components/PreviewPost.astro";
+import { getFeedUrl, type Locale } from "@ts/i18n";
+import { getPostSlug, getPostsByLocale } from "@ts/posts";
+import { getLocaleMessages } from "../../../i18n";
 
-const allPosts = await getCollection("posts");
-const sortedPosts = allPosts.sort(
-	(a, b) => Number(new Date(b.data.pubDate)) - Number(new Date(a.data.pubDate)),
-);
-const latestPosts = sortedPosts.slice(0, 3);
+interface Props {
+	lang?: Locale;
+}
 
-const normalizePostId = (id: string) =>
-	id.replace(/\.(md|mdx|markdown)$/i, "").replaceAll(".", "");
-
-const currentFocus = [
-	{
-		prefix: "Building @ ",
-		label: "The & Company",
-		href: "https://and.com",
-	},
-	{
-		label: "Sharing content related to software and thoughts",
-	},
-];
+const { lang = "en" } = Astro.props;
+const messages = getLocaleMessages(lang);
+const latestPosts = (await getPostsByLocale(lang)).slice(0, 3);
+const currentFocus = messages.home.currentFocus;
+const feedHref = getFeedUrl(lang);
 ---
 
 <div class="flex flex-col gap-10 desktop:gap-[var(--space-12)] desktop:pt-6 max-tablet:gap-8">
   <header class="opacity-0 animate-reveal-up max-w-[var(--measure-hero-max)] flex flex-col gap-4" style="animation-delay: calc(var(--motion-delay-step) * 1)" aria-labelledby="home-title">
     <h1 id="home-title" class="m-0 text-hero leading-tight text-wrap-balance text-ink tracking-[-0.02em] font-semibold italic max-tablet:text-hero-mobile max-tablet:leading-hero-mobile"
-    >Why human beings are machines of interpretation?</h1>
+    >{messages.home.title}</h1>
     <p class="m-0 max-w-[var(--reading-max-width)] text-ink-muted text-lg leading-copy text-wrap-pretty max-tablet:text-base">
-      I'm Santiago Carrasco, a SWE with a plan to share knowledge, thoughts,
-      and the things I learn along the way.
+      {messages.home.intro}
     </p>
   </header>
 
   <section class="opacity-0 animate-reveal-up flex flex-col gap-4 max-w-[var(--measure-section-max)]" style="animation-delay: calc(var(--motion-delay-step) * 2)" aria-labelledby="currently-building-title">
-    <h2 id="currently-building-title" class="m-0 text-lg font-semibold text-ink tracking-[-0.01em]">Now</h2>
+    <h2 id="currently-building-title" class="m-0 text-lg font-semibold text-ink tracking-[-0.01em]">{messages.home.currentFocusTitle}</h2>
     <ul class="m-0 ps-0 list-none grid gap-3">
       {
         currentFocus.map((item) => (
@@ -54,15 +44,15 @@ const currentFocus = [
 
   <section class="opacity-0 animate-reveal-up flex flex-col gap-5 w-full" style="animation-delay: calc(var(--motion-delay-step) * 3)" aria-labelledby="latest-posts-title" id="latest-posts">
     <div class="flex items-center justify-between gap-4 pb-2 border-b border-line max-tablet:items-end">
-      <h2 id="latest-posts-title" class="m-0 text-lg font-semibold text-ink tracking-[-0.01em]">Latest posts</h2>
-      <a href="/feed.xml" class="text-sm text-ink-muted no-underline touch-target inline-flex items-center px-2 rounded-sm transition-[color,background-color] duration-base ease-standard hover:text-ink hover:bg-[var(--surface-hover)] focus-ring" aria-label="RSS Feed">RSS</a>
+      <h2 id="latest-posts-title" class="m-0 text-lg font-semibold text-ink tracking-[-0.01em]">{messages.home.latestPostsTitle}</h2>
+      <a href={feedHref} class="text-sm text-ink-muted no-underline touch-target inline-flex items-center px-2 rounded-sm transition-[color,background-color] duration-base ease-standard hover:text-ink hover:bg-[var(--surface-hover)] focus-ring" aria-label={messages.home.rssLabel}>RSS</a>
     </div>
 
     {
       latestPosts.length > 0 ? (
         <div class="flex flex-col gap-4 desktop:gap-6">
           {latestPosts.map(({ data, id }, index) => {
-            const slug = normalizePostId(id);
+            const slug = getPostSlug({ data, id });
 
             return (
               <PreviewPost
@@ -70,7 +60,7 @@ const currentFocus = [
                 description={data.shortDesc}
                 date={data.pubDate}
                 slug={slug}
-                lang={data.lang}
+                lang={lang}
                 surface="home_latest_posts"
                 position={index + 1}
               />
@@ -78,7 +68,7 @@ const currentFocus = [
           })}
         </div>
       ) : (
-        <p class="m-0 text-ink-muted italic">New posts are on the way.</p>
+        <p class="m-0 text-ink-muted italic">{messages.home.emptyState}</p>
       )
     }
   </section>

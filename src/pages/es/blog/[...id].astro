@@ -9,7 +9,7 @@ import { resolvePostPage } from "@ts/post-page";
 
 const siteURL = Astro.site ?? Astro.url;
 const page = await resolvePostPage({
-	locale: "en",
+	locale: "es",
 	id: Astro.params.id,
 	siteURL,
 });
@@ -20,7 +20,7 @@ if (page.type === "redirect") {
 
 if (page.type === "not-found") {
 	Astro.response.status = 404;
-	return Astro.rewrite("/404");
+	return Astro.rewrite("/es/404");
 }
 
 const {

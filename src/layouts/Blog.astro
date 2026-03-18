@@ -9,6 +9,7 @@ import UmamiTracker from "@components/analytics/UmamiTracker.astro";
 import Footer from "@components/layout/Footer.astro";
 import Header from "@components/layout/Header.astro";
 import ThemeScript from "@components/ThemeScript.astro";
+import { getFeedUrl, type LocaleUrlMap } from "@ts/i18n";
 
 interface Props {
 	title: string;
@@ -19,6 +20,7 @@ interface Props {
 	lang?: "en" | "es";
 	schema?: Record<string, unknown> | Record<string, unknown>[];
 	alternates?: Partial<Record<"en" | "es" | "x-default", string>>;
+	languageSwitcher?: LocaleUrlMap;
 }
 
 const {
@@ -30,6 +32,7 @@ const {
 	lang = "en",
 	schema,
 	alternates,
+	languageSwitcher,
 } = Astro.props;
 
 const structuredData = schema
@@ -44,6 +47,7 @@ const hreflangAlternates = {
 	"x-default": url,
 	...(alternates ?? {}),
 };
+const feedHref = getFeedUrl(lang);
 ---
 
 <html lang={lang}>
@@ -69,7 +73,7 @@ const hreflangAlternates = {
       rel="alternate"
       type="application/rss+xml"
       title="Santychuy Blog RSS"
-      href="/feed.xml"
+      href={feedHref}
     />
     <link rel="alternate" type="text/plain" title="LLMs Manifest" href="/llms.txt" />
     <link rel="alternate" type="text/plain" title="LLMs Full Index" href="/llms-full.txt" />
@@ -102,7 +106,7 @@ const hreflangAlternates = {
   </head>
   <body class="min-h-svh">
     <div class="blog-header-shell sticky top-0 z-[var(--z-header)]" data-blog-header-shell data-scrolled="false">
-      <Header />
+      <Header lang={lang} languageSwitcher={languageSwitcher} />
     </div>
     <script is:inline>
       (() => {
@@ -144,7 +148,7 @@ const hreflangAlternates = {
       <slot />
     </main>
     <div class="blog-footer-shell">
-      <Footer />
+      <Footer lang={lang} />
     </div>
   </body>
 </html>

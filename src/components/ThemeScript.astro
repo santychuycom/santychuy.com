@@ -25,28 +25,29 @@
       root.style.colorScheme = isDark ? dark : light;
     };
 
-    const syncToggle = () => {
-      const toggle = document.querySelector("[data-theme-toggle]");
+		const syncToggle = () => {
+			const toggle = document.querySelector("[data-theme-toggle]");
 
-      if (!(toggle instanceof HTMLButtonElement)) {
-        return;
-      }
+			if (!(toggle instanceof HTMLButtonElement)) {
+				return;
+			}
 
-      const isDark = root.classList.contains(dark);
+			const isDark = root.classList.contains(dark);
+			const lightLabel = toggle.dataset.labelLight ?? "Light";
+			const darkLabel = toggle.dataset.labelDark ?? "Dark";
+			const lightAriaLabel = toggle.dataset.ariaLight ?? "Switch to light mode";
+			const darkAriaLabel = toggle.dataset.ariaDark ?? "Switch to dark mode";
 
-      toggle.dataset.theme = isDark ? dark : light;
-      toggle.setAttribute("aria-pressed", String(isDark));
-      toggle.setAttribute(
-        "aria-label",
-        isDark ? "Switch to light mode" : "Switch to dark mode",
-      );
+			toggle.dataset.theme = isDark ? dark : light;
+			toggle.setAttribute("aria-pressed", String(isDark));
+			toggle.setAttribute("aria-label", isDark ? lightAriaLabel : darkAriaLabel);
 
-      const label = toggle.querySelector("[data-theme-label]");
+			const label = toggle.querySelector("[data-theme-label]");
 
-      if (label) {
-        label.textContent = isDark ? "Dark" : "Light";
-      }
-    };
+			if (label) {
+				label.textContent = isDark ? darkLabel : lightLabel;
+			}
+		};
 
     const bindToggle = () => {
       const toggle = document.querySelector("[data-theme-toggle]");

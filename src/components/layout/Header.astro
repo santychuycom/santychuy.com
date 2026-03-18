@@ -2,26 +2,85 @@
 import MoonIcon from "@components/icons/moon.astro";
 import SantychuyLogo from "@components/icons/santychuyISO.astro";
 import SunIcon from "@components/icons/sun.astro";
+import { getLocaleHomeUrl, type Locale, type LocaleUrlMap } from "@ts/i18n";
+import { getLocaleMessages } from "../../i18n";
+
+interface Props {
+	lang?: Locale;
+	languageSwitcher?: LocaleUrlMap;
+}
+
+const { lang = "en", languageSwitcher } = Astro.props;
+const messages = getLocaleMessages(lang);
+const englishSwitchHref = languageSwitcher?.en ?? getLocaleHomeUrl("en");
+const spanishSwitchHref = languageSwitcher?.es ?? getLocaleHomeUrl("es");
+const englishFlag = "\u{1F1FA}\u{1F1F8}";
+const spanishFlag = "\u{1F1F2}\u{1F1FD}";
+const showLanguageSwitcher = Boolean(
+	languageSwitcher?.en && languageSwitcher?.es,
+);
 ---
 
 <header class="flex items-center justify-between gap-4 shell-width py-5 border-b border-line desktop:py-6">
-  <a href="/" class="inline-flex items-center justify-center rounded-pill text-ink transition-[transform,color] duration-base ease-standard hover-lift hover:text-brand focus-ring" aria-label="Go to homepage">
+  <a href={getLocaleHomeUrl(lang)} class="inline-flex items-center justify-center rounded-pill text-ink transition-[transform,color] duration-base ease-standard hover-lift hover:text-brand focus-ring" aria-label={messages.header.homeLabel}>
     <SantychuyLogo class="w-[var(--brand-logo-size)] h-auto desktop:w-[var(--brand-logo-size-desktop)]" />
   </a>
 
-  <button
-    class="group touch-target inline-flex items-center gap-2 p-1 border-none rounded-pill bg-transparent cursor-pointer focus-ring"
-    type="button"
-    data-theme-toggle
-    data-theme="light"
-    aria-label="Switch to dark mode"
-    aria-pressed="false"
-  >
-    <SunIcon class="w-4.5 h-4.5 text-ink-faint transition-colors duration-base ease-standard group-data-[theme=light]:text-ink" aria-hidden="true" />
-    <span class="switch-track relative w-9 h-5 rounded-pill bg-line shadow-[inset_0_1px_2px_rgb(0_0_0/0.1)] transition-colors duration-base ease-standard group-hover:bg-line-strong group-data-[theme=dark]:bg-brand group-data-[theme=dark]:hover:bg-brand" aria-hidden="true">
-      <span class="absolute top-0.5 left-0.5 w-4 h-4 rounded-pill bg-surface-up shadow-[0_1px_3px_rgb(0_0_0/0.15)] translate-x-0 transition-transform duration-base ease-[cubic-bezier(0.5,-0.3,0.1,1.5)] motion-reduce:transition-[transform_0.01ms] group-data-[theme=dark]:translate-x-4"></span>
-    </span>
-    <MoonIcon class="w-4.5 h-4.5 text-ink-faint transition-colors duration-base ease-standard group-data-[theme=dark]:text-ink" aria-hidden="true" />
-    <span class="sr-only" data-theme-label>Light</span>
-  </button>
+	<div class="flex items-center gap-2 desktop:gap-3">
+		{showLanguageSwitcher && (
+			<nav
+				class="inline-flex items-center gap-1"
+				aria-label={messages.header.languageLabel}
+			>
+				<a
+					href={englishSwitchHref}
+					class:list={[
+						"inline-flex min-h-8 items-center justify-center gap-1 px-1.5 text-[0.72rem] font-medium tracking-[0.04em] no-underline transition-colors duration-fast ease-standard focus-ring leading-none rounded-sm",
+						lang === "en"
+							? "text-ink"
+							: "text-ink-faint hover:text-ink",
+					]}
+					aria-label={messages.header.localeLabel.en}
+					aria-current={lang === "en" ? "page" : undefined}
+				>
+					<span aria-hidden="true" class="text-[0.9rem] leading-none">{englishFlag}</span>
+					<span>EN</span>
+				</a>
+				<a
+					href={spanishSwitchHref}
+					class:list={[
+						"inline-flex min-h-8 items-center justify-center gap-1 px-1.5 text-[0.72rem] font-medium tracking-[0.04em] no-underline transition-colors duration-fast ease-standard focus-ring leading-none rounded-sm",
+						lang === "es"
+							? "text-ink"
+							: "text-ink-faint hover:text-ink",
+					]}
+					aria-label={messages.header.localeLabel.es}
+					aria-current={lang === "es" ? "page" : undefined}
+				>
+					<span aria-hidden="true" class="text-[0.9rem] leading-none">{spanishFlag}</span>
+					<span>ES</span>
+				</a>
+			</nav>
+    )}
+
+    <button
+      class="group touch-target inline-flex items-center gap-2 p-1 border-none rounded-pill bg-transparent cursor-pointer focus-ring"
+      type="button"
+      data-theme-toggle
+      data-theme="light"
+      data-label-light={messages.header.theme.light}
+      data-label-dark={messages.header.theme.dark}
+      data-aria-light={messages.header.theme.switchToLight}
+      data-aria-dark={messages.header.theme.switchToDark}
+      aria-label={messages.header.theme.switchToDark}
+      aria-pressed="false"
+    >
+      <SunIcon class="w-4.5 h-4.5 text-ink-faint transition-colors duration-base ease-standard group-data-[theme=light]:text-ink" aria-hidden="true" />
+      <span class="switch-track relative w-9 h-5 rounded-pill bg-line shadow-[inset_0_1px_2px_rgb(0_0_0/0.1)] transition-colors duration-base ease-standard group-hover:bg-line-strong group-data-[theme=dark]:bg-brand group-data-[theme=dark]:hover:bg-brand" aria-hidden="true">
+        <span class="absolute top-0.5 left-0.5 w-4 h-4 rounded-pill bg-surface-up shadow-[0_1px_3px_rgb(0_0_0/0.15)] translate-x-0 transition-transform duration-base ease-[cubic-bezier(0.5,-0.3,0.1,1.5)] motion-reduce:transition-[transform_0.01ms] group-data-[theme=dark]:translate-x-4"></span>
+      </span>
+      <MoonIcon class="w-4.5 h-4.5 text-ink-faint transition-colors duration-base ease-standard group-data-[theme=dark]:text-ink" aria-hidden="true" />
+      <span class="sr-only" data-theme-label>{messages.header.theme.light}</span>
+    </button>
+  </div>
 </header>
