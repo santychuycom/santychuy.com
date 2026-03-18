@@ -22,10 +22,21 @@ const feedConfig = {
 	},
 } as const;
 
+export interface FeedContext {
+	site?: URL;
+}
+
+/**
+ * Creates a localized RSS feed based on the provided locale and context.
+ *
+ * @param locale - The locale for the feed (e.g., 'en' or 'es').
+ * @param context - The context containing the site URL for link generation.
+ * @returns A promise that resolves to the RSS feed object.
+ */
 export const createLocalizedFeed = async (
 	locale: Locale,
-	context: { site?: URL },
-) => {
+	context: FeedContext,
+): Promise<ReturnType<typeof rss>> => {
 	const posts = await getPostsByLocale(locale);
 	const config = feedConfig[locale];
 

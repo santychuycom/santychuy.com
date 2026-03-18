@@ -35,7 +35,7 @@ const {
 	absoluteAlternates,
 } = page;
 
-const homeURL = new URL(getLocaleHomeUrl(entry.data.lang), siteURL).toString();
+const homeURL = new URL(homeHref, siteURL).toString();
 
 const articleSchema = {
 	"@context": "https://schema.org",
