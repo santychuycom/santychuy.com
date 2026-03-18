@@ -1,3 +1,14 @@
+## [2.2.0](https://github.com/santychuycom/santychuy.com/compare/v2.1.1...v2.2.0) (2026-03-18)
+
+### Features
+
+* **i18n:** add bilingual english and spanish content flow ([4bc233e](https://github.com/santychuycom/santychuy.com/commit/4bc233e9a39e754609883850fb7a4fd02a3b9dd0))
+
+### Bug Fixes
+
+* **i18n:** preserve localized slugs and metadata ([3997682](https://github.com/santychuycom/santychuy.com/commit/3997682e12d655f97a354186b85975658bad7db7))
+* **seo:** strip fragments from homeURL in structured data ([1979285](https://github.com/santychuycom/santychuy.com/commit/1979285263d3fe16b9d88779a9fc7b904ac60e44))
+
 ## [2.1.1](https://github.com/santychuycom/santychuy.com/compare/v2.1.0...v2.1.1) (2026-03-18)
 
 ### Bug Fixes

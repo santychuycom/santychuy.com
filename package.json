@@ -1,6 +1,6 @@
 {
 	"name": "santychuy.com",
-	"version": "2.1.1",
+	"version": "2.2.0",
 	"description": "Santychuy's Website",
 	"main": "index.js",
 	"scripts": {
