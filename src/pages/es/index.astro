@@ -2,13 +2,13 @@
 import HomeContent from "@components/pages/Home/index.astro";
 import BaseLayout from "@layouts/Base.astro";
 import { getLocaleHomeUrl } from "@ts/i18n";
-import { getLocaleMessages } from "../i18n";
+import { getLocaleMessages } from "../../i18n";
 
-const lang = "en";
+const lang = "es";
 const messages = getLocaleMessages(lang);
 const siteURL = Astro.site ?? Astro.url;
 const canonicalURL = new URL(getLocaleHomeUrl(lang), siteURL).toString();
-const spanishURL = new URL(getLocaleHomeUrl("es"), siteURL).toString();
+const englishURL = new URL(getLocaleHomeUrl("en"), siteURL).toString();
 const pageDescription = messages.home.pageDescription;
 
 const personSchema = {
@@ -25,13 +25,13 @@ const websiteSchema = {
 	"@context": "https://schema.org",
 	"@type": "WebSite",
 	name: "Santiago Carrasco (Santychuy)",
-	url: new URL("/", siteURL).toString(),
+	url: canonicalURL,
 	description: pageDescription,
 	publisher: {
 		"@type": "Person",
 		name: "Santiago Carrasco",
 	},
-	inLanguage: "en-US",
+	inLanguage: "es-MX",
 };
 ---
 
@@ -39,7 +39,7 @@ const websiteSchema = {
   lang={lang}
   description={pageDescription}
   url={canonicalURL}
-  alternates={{ en: canonicalURL, es: spanishURL, 'x-default': canonicalURL }}
+  alternates={{ en: englishURL, es: canonicalURL, 'x-default': englishURL }}
   languageSwitcher={{ en: getLocaleHomeUrl('en'), es: getLocaleHomeUrl('es') }}
   schema={[websiteSchema, personSchema]}
 >

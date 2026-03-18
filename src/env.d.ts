@@ -18,3 +18,6 @@ declare namespace App {
 		env: Record<string, string>;
 	}
 }
+
+declare module "markdown-it";
+declare module "sanitize-html";

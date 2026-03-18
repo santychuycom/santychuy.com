@@ -14,6 +14,13 @@ export default defineConfig({
 			path: "./src/worker.ts",
 		},
 	}),
+	i18n: {
+		locales: ["en", "es"],
+		defaultLocale: "en",
+		routing: {
+			prefixDefaultLocale: false,
+		},
+	},
 	site: "https://santychuy.com",
 	vite: {
 		plugins: [tailwindcss()],

@@ -1,12 +1,12 @@
 ---
 import BaseLayout from "@layouts/Base.astro";
-import { getLocaleFromPathname, getLocaleHomeUrl } from "@ts/i18n";
-import { getMessagesForPathname } from "../i18n";
+import { getLocaleHomeUrl } from "@ts/i18n";
+import { getLocaleMessages } from "../../i18n";
 
-const lang = getLocaleFromPathname(Astro.url.pathname);
-const messages = getMessagesForPathname(Astro.url.pathname);
+const lang = "es";
+const messages = getLocaleMessages(lang);
 const siteURL = Astro.site ?? Astro.url;
-const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
+const canonicalURL = new URL(getLocaleHomeUrl("es"), siteURL).toString();
 ---
 
 <BaseLayout

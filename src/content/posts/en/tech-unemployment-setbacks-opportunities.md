@@ -41,7 +41,7 @@ A thought that I now recognize as erroneous crossed my mind: "If at some point I
 
 The day came when, without warning, I was laid off from the company. I didn't inquire about the reasons, I simply went through the exit process. At that moment, two thoughts dominated my mind:
 
-1. I felt a great relief, as if a weight had been lifted off my shoulders. In my article [Overcome Burnout in Software Development: Key Tips](https://santychuy.com/blog/managing-burnout-in-software-development-methods-to-prevent-and-solve-it), I share how I felt about this, and this change was a big step in overcoming that situation.
+1. I felt a great relief, as if a weight had been lifted off my shoulders. In my article [Overcome Burnout in Software Development: Key Tips](/blog/managing-burnout-in-software-development-methods-to-prevent-and-solve-it), I share how I felt about this, and this change was a big step in overcoming that situation.
 2. I saw an opportunity to take a significant break, recover mentally, but knowing that at some point I would have to look for a job again, because <mark>money isn't infinite</mark>.
 
 As the days passed, I realized it was the best thing that could have happened to me. Comparing my current self with the one from 9 months ago, <mark>I feel really good mentally and physically</mark>. Both aspects were in a bad state and needed to hit rock bottom to improve.

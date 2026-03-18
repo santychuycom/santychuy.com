@@ -25,9 +25,17 @@ interface Props {
 	headings?: Heading[];
 	readingTime: ReadingTime;
 	canonicalURL: string;
+	homeHref: string;
 }
 
-const { post, id, headings = [], readingTime, canonicalURL } = Astro.props;
+const {
+	post,
+	id,
+	headings = [],
+	readingTime,
+	canonicalURL,
+	homeHref,
+} = Astro.props;
 
 const hasUpdatedDate =
 	post.updatedDate instanceof Date &&
@@ -46,7 +54,7 @@ const tocHeadings = headings.filter(
 );
 const hasTableOfContents = tocHeadings.length > 0;
 
-const backHref = "/#latest-posts";
+const backHref = homeHref;
 const encodedURL = encodeURIComponent(canonicalURL);
 const encodedTitle = encodeURIComponent(post.title);
 const shareXURL = `https://x.com/intent/tweet?text=${encodedTitle}&url=${encodedURL}`;
@@ -59,20 +67,28 @@ const labels =
 				back: "Volver al blog",
 				onThisPage: "En esta pagina",
 				share: "Compartir",
+				shareOnX: "Compartir en X",
+				shareOnLinkedin: "Compartir en LinkedIn",
 				copyLink: "Copiar enlace",
 				copySuccess: "Copiado",
+				copyPrompt: "Copia este enlace",
 				published: "Publicado",
 				updated: "Actualizado",
+				postMetadata: "Metadatos del post",
 				readingProgress: "Progreso de lectura",
 			}
 		: {
 				back: "Back to blog",
 				onThisPage: "On this page",
 				share: "Share",
+				shareOnX: "Share on X",
+				shareOnLinkedin: "Share on LinkedIn",
 				copyLink: "Copy link",
 				copySuccess: "Copied",
+				copyPrompt: "Copy this link",
 				published: "Published",
 				updated: "Updated",
+				postMetadata: "Post metadata",
 				readingProgress: "Reading progress",
 			};
 ---
@@ -113,7 +129,7 @@ const labels =
 						data-link-type="share_x"
 					>
 						<XIcon aria-hidden="true" class="w-4 h-4" />
-						<span class="sr-only">Share on X</span>
+						<span class="sr-only">{labels.shareOnX}</span>
 					</a>
 					<a
 						class="icon-action inline-flex items-center justify-center size-[calc(var(--touch-target-min)+var(--space-1))] border border-line rounded-pill bg-transparent text-ink-faint transition-[border-color] duration-fast ease-standard hover:border-[var(--text-muted)] hover:text-ink focus-ring"
@@ -125,7 +141,7 @@ const labels =
 						data-link-type="share_linkedin"
 					>
 						<LinkedinIcon aria-hidden="true" class="w-4 h-4" />
-						<span class="sr-only">Share on LinkedIn</span>
+						<span class="sr-only">{labels.shareOnLinkedin}</span>
 					</a>
 					<button
 						type="button"
@@ -134,6 +150,7 @@ const labels =
 						data-copy-url={canonicalURL}
 						data-default-label={labels.copyLink}
 						data-success-label={labels.copySuccess}
+						data-copy-prompt={labels.copyPrompt}
 						data-analytics-event="post_share_click"
 						data-share-network="copy"
 					>
@@ -149,7 +166,7 @@ const labels =
 				<h1 class="m-0 text-display leading-tight max-w-[var(--measure-hero-max)]" data-article-headline>{post.title}</h1>
 				<p class="m-0 max-w-[var(--reading-max-width)] text-lg leading-copy text-ink-muted" {...(!post.tldr ? {'data-article-summary': ''} : {})}>{post.description}</p>
 
-				<div class="flex flex-wrap gap-x-[var(--space-4)] gap-y-[var(--space-2)] text-sm text-ink-faint" aria-label="Post metadata">
+				<div class="flex flex-wrap gap-x-[var(--space-4)] gap-y-[var(--space-2)] text-sm text-ink-faint" aria-label={labels.postMetadata}>
 					<span>{labels.published} {publishedDate}</span>
 					{updatedDate && <span>{labels.updated} {updatedDate}</span>}
 					<span>{readingTime.text}</span>
@@ -328,6 +345,7 @@ const labels =
 				const copyURL = button.dataset.copyUrl ?? window.location.href;
 				const defaultLabel = button.dataset.defaultLabel ?? "Copy link";
 				const successLabel = button.dataset.successLabel ?? "Copied";
+				const copyPrompt = button.dataset.copyPrompt ?? "Copy this link";
 				const copyTargets = root.querySelectorAll<HTMLElement>("[data-copy-label]");
 
 				try {
@@ -341,7 +359,7 @@ const labels =
 						}
 					}, 1600);
 				} catch {
-					window.prompt("Copy this link", copyURL);
+					window.prompt(copyPrompt, copyURL);
 				}
 			};
 

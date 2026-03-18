@@ -1,5 +1,5 @@
 import { createLocalizedFeed } from "@ts/feed";
 
 export async function GET(context) {
-	return createLocalizedFeed("en", context);
+	return createLocalizedFeed("es", context);
 }

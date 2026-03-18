@@ -22,6 +22,15 @@ biome check .          # Lint + format check
 biome check --write .  # Auto-fix lint + format
 ```
 
+## Bilingual Content Flow
+
+- English lives at `/`; Spanish lives at `/es/`.
+- Posts live in `src/content/posts/en/` and `src/content/posts/es/`.
+- Use the same filename and slug in both languages.
+- English posts are required; Spanish posts are optional.
+- Missing Spanish posts redirect from `/es/blog/<slug>` to `/blog/<slug>`, and that post should not show the language switcher.
+- Use `lang: en` or `lang: es` in frontmatter and keep metadata aligned across both versions.
+
 ## Project Context
 
 CRITICAL: When you encounter a file reference below, use your Read tool to load it on a need-to-know basis. They are relevant to SPECIFIC tasks at hand. Do NOT preemptively load all references.
