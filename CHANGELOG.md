@@ -1,3 +1,12 @@
+## [2.1.1](https://github.com/santychuycom/santychuy.com/compare/v2.1.0...v2.1.1) (2026-03-18)
+
+### Bug Fixes
+
+* **ci:** handle stale SST locks in preview deploy ([dde095e](https://github.com/santychuycom/santychuy.com/commit/dde095ee4234faa782e54db8e05fafe368222c30))
+* **ci:** harden preview deploy lock retry handling ([ae403c9](https://github.com/santychuycom/santychuy.com/commit/ae403c96ac21c69740ed104b26e7cafc8db491c1))
+* **check:** resolve Astro check type diagnostics ([1dc26f1](https://github.com/santychuycom/santychuy.com/commit/1dc26f126584954a978079cbc39b83da1078e4ad))
+* **ci:** retry preview deploy after SST lock failures ([ee7d89f](https://github.com/santychuycom/santychuy.com/commit/ee7d89f4ba954530a29848e01f755c0a180c8c89))
+
 ## [2.1.0](https://github.com/santychuycom/santychuy.com/compare/v2.0.1...v2.1.0) (2026-03-16)
 
 ### Features
