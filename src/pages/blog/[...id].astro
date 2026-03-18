@@ -5,7 +5,6 @@ import { render } from "astro:content";
 import Note from "@components/mdx/Note.astro";
 import BlogContent from "@components/pages/Blog/index.astro";
 import BlogLayout from "@layouts/Blog.astro";
-import { getLocaleHomeUrl } from "@ts/i18n";
 import { resolvePostPage } from "@ts/post-page";
 
 const siteURL = Astro.site ?? Astro.url;
@@ -35,7 +34,9 @@ const {
 	absoluteAlternates,
 } = page;
 
-const homeURL = new URL(homeHref, siteURL).toString();
+const homeURL = new URL(homeHref, siteURL);
+homeURL.hash = "";
+const homeURLString = homeURL.toString();
 
 const articleSchema = {
 	"@context": "https://schema.org",
@@ -55,12 +56,12 @@ const articleSchema = {
 		"@type": "Person",
 		name: entry.data.author.name,
 		image: authorImageURL,
-		url: homeURL,
+		url: homeURLString,
 	},
 	publisher: {
 		"@type": "Person",
 		name: "Santiago Carrasco",
-		url: homeURL,
+		url: homeURLString,
 	},
 	speakable: {
 		"@type": "SpeakableSpecification",
@@ -93,7 +94,7 @@ const breadcrumbSchema = {
 			"@type": "ListItem",
 			position: 1,
 			name: entry.data.lang === "es" ? "Inicio" : "Home",
-			item: homeURL,
+			item: homeURLString,
 		},
 		{
 			"@type": "ListItem",
