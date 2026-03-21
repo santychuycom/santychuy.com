@@ -96,10 +96,20 @@
 			"sourceType": "github",
 			"computedHash": "139b3e3c9d43b79b4e6ccffaeb874265bc916d7d90662950e9f05581d6e0c06a"
 		},
+		"research": {
+			"source": "santychuycom/skills",
+			"sourceType": "github",
+			"computedHash": "929c54dd6b6ebb919474f0de2013a507ae0e2e71a7856aeccbf24e96b34421b2"
+		},
 		"responsive-design": {
 			"source": "wshobson/agents",
 			"sourceType": "github",
 			"computedHash": "9df1908623814c4c93cc1fde25caa211b2d28c8ffcdc2b5a12c6b7ae456f0f89"
+		},
+		"ship": {
+			"source": "santychuycom/skills",
+			"sourceType": "github",
+			"computedHash": "b54410e50e8e44cd22b50afd93054be04855d4168e94a1e6a478595a6af79f38"
 		},
 		"skill-creator": {
 			"source": "anthropics/skills",

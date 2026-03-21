@@ -23,7 +23,15 @@ git log --oneline -5
 
 If there are zero changes (clean working tree, nothing staged), tell the user and stop.
 
-## Step 2 — Analyze and group
+## Step 2 — Ask for target branch
+
+Before doing anything else, ask the user:
+
+> Which branch should this PR target? (e.g. `main`, `dev`, `staging`)
+
+Wait for their answer. Never assume. This avoids pushing work toward the wrong base.
+
+## Step 3 — Analyze and group
 
 Read every diff hunk and group related changes into logical commits. Each commit = one coherent idea.
 
@@ -36,7 +44,7 @@ Read every diff hunk and group related changes into logical commits. Each commit
 
 If everything is one logical change, make one commit. Don't split artificially — atomicity means "one idea per commit", not "one file per commit".
 
-## Step 3 — Commit each group
+## Step 4 — Commit each group
 
 For each group, stage and commit:
 
@@ -60,7 +68,7 @@ Commit directly — no pausing for confirmation. The user trusts the analysis.
 
 **Safety:** Stage specific files only. Never use `git add .` or `git add -A`. Never skip hooks. If a hook fails, fix the issue and create a new commit (don't amend).
 
-## Step 4 — Push
+## Step 5 — Push
 
 ```bash
 git push origin HEAD
@@ -72,42 +80,50 @@ If the branch has no upstream yet:
 git push -u origin HEAD
 ```
 
-## Step 5 — Ask for target branch
-
-Before creating the PR, ask the user:
-
-> Which branch should this PR target?
-
-Wait for their answer. Never assume.
-
 ## Step 6 — Create the PR
 
-Detect the GitHub user:
+Run these in parallel to gather what you need for the PR:
 
 ```bash
 gh api user --jq '.login'
+gh label list --json name,description
 ```
 
-Analyze all commits from the target branch to HEAD. Use this to write the title and description.
+Check whether a PR template exists:
 
-**Title:** A short conventional-commit-style summary that captures the overall change. If there's one commit, match its message. If there are several, synthesize the theme. Keep it under 70 characters.
+```bash
+cat .github/pull_request_template.md 2>/dev/null
+```
 
-**Description:** The repo uses a PR template (`.github/pull_request_template.md`). Follow its structure, but write with substance — the description section is where the value is:
+**If a template exists:** follow its structure and fill every section with substance.
 
-- **Description**: Start from the beginning. Explain what the idea is, what problem it solves, and how it's being solved. Someone reading this should understand the full context without opening the code. When it helps clarity, use analogies to explain abstract concepts or include mermaid diagrams to illustrate architecture, data flow, or component relationships.
-- **Type of Change**: Check the box(es) that apply.
-- **Additional Notes**: Only include if there's something reviewers genuinely need to know.
+**If no template exists:** write a clear freeform PR with a title and description that explains the purpose of the changes — what problem it solves, what was changed, and any context a reviewer would need.
+
+---
+
+**Title:** A short conventional-commit-style summary of the overall change. If there's one commit, match its message. If there are several, synthesize the theme. Under 70 characters.
+
+**Description (template or freeform):**
+- Start from the beginning — explain the idea, the problem, and how it's solved
+- Someone reading this should understand the full context without opening the code
+- When it helps, use analogies or Mermaid diagrams to illustrate architecture, data flow, or component relationships
+- Be thorough but not padded — every sentence should earn its place
+
+**Labels:** From the list returned by `gh label list`, pick the ones that fit. Use the label names and descriptions to decide — don't apply labels that don't match the nature of the change. It's fine to apply multiple labels if they all apply.
 
 ```bash
 gh pr create \
   --title "<title>" \
   --body "$(cat <<'EOF'
-<filled PR template>
+<filled description>
 EOF
 )" \
   --base <target-branch> \
-  --assignee <detected-username>
+  --assignee <detected-username> \
+  --label "<label1>" --label "<label2>"
 ```
+
+Omit `--label` flags if no labels are a good fit.
 
 ## Step 7 — Done
 
