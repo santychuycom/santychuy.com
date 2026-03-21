@@ -1,3 +1,9 @@
+## [2.3.0](https://github.com/santychuycom/santychuy.com/compare/v2.2.0...v2.3.0) (2026-03-21)
+
+### Features
+
+* **content:** add Spanish translation of eslint essentials post ([29fcc18](https://github.com/santychuycom/santychuy.com/commit/29fcc180abe6a815081ecb193059845cd3c9f34c))
+
 ## [2.2.0](https://github.com/santychuycom/santychuy.com/compare/v2.1.1...v2.2.0) (2026-03-18)
 
 ### Features
