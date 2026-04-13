@@ -19,6 +19,7 @@ const umamiWebsiteId = import.meta.env.UMAMI_WEBSITE_ID;
 	<script is:inline>
 		(() => {
 			const root = document.documentElement;
+			const trackerScript = document.querySelector('script[src="/stats/script.js"]');
 
 			if (root.dataset.umamiTrackingBound === "true") {
 				return;
@@ -28,13 +29,56 @@ const umamiWebsiteId = import.meta.env.UMAMI_WEBSITE_ID;
 
 			const BLOG_PATH_PATTERN = /^\/(?:es\/)?blog\/([^/?#]+)/;
 			const PROGRESS_MARKERS = [25, 50, 75, 100];
+			const pendingEvents = [];
 
 			let cleanupPostReadProgress = null;
+			let flushTimer = null;
+
+			const flushPendingEvents = () => {
+				const tracker = window.umami;
+
+				if (!tracker || typeof tracker.track !== "function") {
+					return false;
+				}
+
+				while (pendingEvents.length > 0) {
+					const event = pendingEvents.shift();
+
+					if (!event) {
+						continue;
+					}
+
+					if (event.name) {
+						tracker.track(event.name, event.data);
+						continue;
+					}
+
+					tracker.track();
+				}
+
+				return true;
+			};
+
+			const schedulePendingFlush = () => {
+				if (flushTimer !== null) {
+					return;
+				}
+
+				flushTimer = window.setTimeout(() => {
+					flushTimer = null;
+
+					if (pendingEvents.length > 0) {
+						flushPendingEvents();
+					}
+				}, 250);
+			};
 
 			const trackEvent = (name, data) => {
 				const tracker = window.umami;
 
 				if (!tracker || typeof tracker.track !== "function") {
+					pendingEvents.push({ data, name });
+					schedulePendingFlush();
 					return;
 				}
 
@@ -45,6 +89,9 @@ const umamiWebsiteId = import.meta.env.UMAMI_WEBSITE_ID;
 
 				tracker.track();
 			};
+
+			trackerScript?.addEventListener("load", flushPendingEvents, { once: true });
+			schedulePendingFlush();
 
 			const getBlogMeta = () => {
 				const match = window.location.pathname.match(BLOG_PATH_PATTERN);
