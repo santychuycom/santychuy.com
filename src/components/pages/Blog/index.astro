@@ -70,12 +70,17 @@ const labels =
 				shareOnX: "Compartir en X",
 				shareOnLinkedin: "Compartir en LinkedIn",
 				copyLink: "Copiar enlace",
+				copyCode: "Copiar",
+				copyCodeSuccess: "Copiado",
 				copySuccess: "Copiado",
 				copyPrompt: "Copia este enlace",
+				copyCodePrompt: "Copia este bloque de codigo",
 				published: "Publicado",
 				updated: "Actualizado",
 				postMetadata: "Metadatos del post",
 				readingProgress: "Progreso de lectura",
+				expandImage: "Ampliar imagen",
+				closeImage: "Cerrar imagen",
 			}
 		: {
 				back: "Back to blog",
@@ -84,16 +89,29 @@ const labels =
 				shareOnX: "Share on X",
 				shareOnLinkedin: "Share on LinkedIn",
 				copyLink: "Copy link",
+				copyCode: "Copy",
+				copyCodeSuccess: "Copied",
 				copySuccess: "Copied",
 				copyPrompt: "Copy this link",
+				copyCodePrompt: "Copy this code block",
 				published: "Published",
 				updated: "Updated",
 				postMetadata: "Post metadata",
 				readingProgress: "Reading progress",
+				expandImage: "Expand image",
+				closeImage: "Close image",
 			};
 ---
 
-<article class="post-page shell-width pt-[var(--space-9)] pb-[var(--space-13)] tablet:pt-[var(--space-10)] tablet:pb-[var(--space-14)] desktop:pt-[var(--space-11)] desktop:pb-[var(--space-15)]" data-post-page>
+<article
+	class="post-page shell-width pt-[var(--space-9)] pb-[var(--space-13)] tablet:pt-[var(--space-10)] tablet:pb-[var(--space-14)] desktop:pt-[var(--space-11)] desktop:pb-[var(--space-15)]"
+	data-post-page
+	data-copy-code-label={labels.copyCode}
+	data-copy-code-success-label={labels.copyCodeSuccess}
+	data-copy-code-prompt={labels.copyCodePrompt}
+	data-expand-image-label={labels.expandImage}
+	data-close-image-label={labels.closeImage}
+>
 	<div class="post-grid grid grid-cols-[minmax(0,1fr)] gap-[var(--space-8)] tablet:gap-[var(--space-10)] desktop:grid-cols-[auto_minmax(0,1fr)_minmax(10rem,12.5rem)] desktop:justify-center desktop:items-start desktop:gap-[var(--space-8)]">
 		<aside class="post-utilities hidden desktop:block desktop:self-start desktop:sticky desktop:top-[var(--sticky-left-offset)]" aria-label={labels.readingProgress}>
 			<div class="desktop:grid desktop:gap-[var(--space-3)] desktop:justify-items-center">
@@ -340,6 +358,37 @@ const labels =
 
 		const copyButtons = root.querySelectorAll<HTMLButtonElement>("[data-copy-link]");
 		const copyHandlers = new Map<HTMLButtonElement, EventListener>();
+		const codeCopyButtons = new Set<HTMLButtonElement>();
+		const codeCopyHandlers = new Map<HTMLButtonElement, EventListener>();
+		const zoomableImages = new Map<
+			HTMLImageElement,
+			{ click: EventListener; keydown: EventListener }
+		>();
+		const copyCodeLabel = root.dataset.copyCodeLabel ?? "Copy";
+		const copyCodeSuccessLabel =
+			root.dataset.copyCodeSuccessLabel ?? "Copied";
+		const copyCodePrompt =
+			root.dataset.copyCodePrompt ?? "Copy this code block";
+		const expandImageLabel =
+			root.dataset.expandImageLabel ?? "Expand image";
+		const closeImageLabel = root.dataset.closeImageLabel ?? "Close image";
+		let imageLightbox: HTMLDialogElement | null = null;
+		let lightboxImage: HTMLImageElement | null = null;
+		let lightboxCloseButton: HTMLButtonElement | null = null;
+		let lightboxBackdropHandler: EventListener | null = null;
+		let lightboxCloseHandler: EventListener | null = null;
+		let lightboxKeyHandler: ((event: KeyboardEvent) => void) | null = null;
+
+		const copyText = async (value: string, fallbackPrompt: string) => {
+			try {
+				await navigator.clipboard.writeText(value);
+				return true;
+			} catch {
+				window.prompt(fallbackPrompt, value);
+				return false;
+			}
+		};
+
 		for (const button of copyButtons) {
 			const onCopy: EventListener = async () => {
 				const copyURL = button.dataset.copyUrl ?? window.location.href;
@@ -348,8 +397,8 @@ const labels =
 				const copyPrompt = button.dataset.copyPrompt ?? "Copy this link";
 				const copyTargets = root.querySelectorAll<HTMLElement>("[data-copy-label]");
 
-				try {
-					await navigator.clipboard.writeText(copyURL);
+				const copied = await copyText(copyURL, copyPrompt);
+				if (copied) {
 					for (const node of copyTargets) {
 						node.textContent = successLabel;
 					}
@@ -358,14 +407,138 @@ const labels =
 							node.textContent = defaultLabel;
 						}
 					}, 1600);
-				} catch {
-					window.prompt(copyPrompt, copyURL);
 				}
 			};
 
 			copyHandlers.set(button, onCopy);
 			button.addEventListener("click", onCopy);
 		}
+
+		const ensureImageLightbox = () => {
+			if (imageLightbox && lightboxImage && lightboxCloseButton) {
+				return {
+					dialog: imageLightbox,
+					image: lightboxImage,
+					closeButton: lightboxCloseButton,
+				};
+			}
+
+			const dialog = document.createElement("dialog");
+			dialog.className = "post-image-lightbox";
+			dialog.setAttribute("aria-label", expandImageLabel);
+
+			const frame = document.createElement("div");
+			frame.className = "post-image-lightbox__frame";
+
+			const closeButton = document.createElement("button");
+			closeButton.type = "button";
+			closeButton.className = "post-image-lightbox__close focus-ring";
+			closeButton.setAttribute("aria-label", closeImageLabel);
+			closeButton.textContent = "×";
+
+			const image = document.createElement("img");
+			image.className = "post-image-lightbox__image";
+
+			frame.append(closeButton, image);
+			dialog.append(frame);
+			document.body.append(dialog);
+
+			const closeLightbox = () => {
+				if (dialog.open) dialog.close();
+			};
+
+			const onBackdropClick: EventListener = (event) => {
+				if (event.target === dialog) closeLightbox();
+			};
+
+			const onKeyDown = (event: KeyboardEvent) => {
+				if (event.key === "Escape") closeLightbox();
+			};
+
+			closeButton.addEventListener("click", closeLightbox);
+			dialog.addEventListener("click", onBackdropClick);
+			dialog.addEventListener("keydown", onKeyDown);
+
+			imageLightbox = dialog;
+			lightboxImage = image;
+			lightboxCloseButton = closeButton;
+			lightboxBackdropHandler = onBackdropClick;
+			lightboxCloseHandler = closeLightbox;
+			lightboxKeyHandler = onKeyDown;
+
+			return { dialog, image, closeButton };
+		};
+
+		const enhanceImages = () => {
+			const images = root.querySelectorAll<HTMLImageElement>(
+				".post-content img, [data-post-cover] img",
+			);
+
+			for (const image of images) {
+				if (image.dataset.zoomEnhanced === "true") continue;
+				image.dataset.zoomEnhanced = "true";
+				image.tabIndex = 0;
+				image.setAttribute("role", "button");
+				image.setAttribute("aria-label", expandImageLabel);
+
+				const openImage = () => {
+					const { dialog, image: lightboxTarget, closeButton } = ensureImageLightbox();
+					lightboxTarget.src = image.currentSrc || image.src;
+					lightboxTarget.alt = image.alt;
+					if (!dialog.open) dialog.showModal();
+					window.requestAnimationFrame(() => closeButton.focus());
+				};
+
+				const onClick: EventListener = () => {
+					openImage();
+				};
+
+				const onKeyDown: EventListener = (event) => {
+					const keyboardEvent = event as KeyboardEvent;
+					if (keyboardEvent.key === "Enter" || keyboardEvent.key === " ") {
+						keyboardEvent.preventDefault();
+						openImage();
+					}
+				};
+
+				image.addEventListener("click", onClick);
+				image.addEventListener("keydown", onKeyDown);
+				zoomableImages.set(image, { click: onClick, keydown: onKeyDown });
+			}
+		};
+
+		const enhanceCodeBlocks = () => {
+			const blocks = root.querySelectorAll<HTMLPreElement>(".post-content pre");
+
+			for (const block of blocks) {
+				if (block.dataset.copyEnhanced === "true") continue;
+				block.dataset.copyEnhanced = "true";
+				block.tabIndex = 0;
+
+				const code = block.querySelector("code");
+				const button = document.createElement("button");
+				button.type = "button";
+				button.className = "post-code-copy-button focus-ring";
+				button.textContent = copyCodeLabel;
+				button.setAttribute("aria-label", copyCodePrompt);
+
+				const onCopy: EventListener = async () => {
+					const value = code?.textContent ?? block.textContent ?? "";
+					const copied = await copyText(value, copyCodePrompt);
+					if (!copied) return;
+
+					button.textContent = copyCodeSuccessLabel;
+					window.setTimeout(() => {
+						button.textContent = copyCodeLabel;
+					}, 1600);
+				};
+
+				button.addEventListener("click", onCopy);
+				codeCopyButtons.add(button);
+				codeCopyHandlers.set(button, onCopy);
+				block.prepend(button);
+			}
+		};
 
 		const renderMermaid = async () => {
 			const codeBlocks = Array.from(
@@ -422,10 +595,40 @@ const labels =
 			for (const [button, handler] of copyHandlers) {
 				button.removeEventListener("click", handler);
 			}
+
+			for (const [button, handler] of codeCopyHandlers) {
+				button.removeEventListener("click", handler);
+			}
+
+			for (const [image, handlers] of zoomableImages) {
+				image.removeEventListener("click", handlers.click);
+				image.removeEventListener("keydown", handlers.keydown);
+			}
+
+			for (const button of codeCopyButtons) {
+				button.remove();
+			}
+
+			if (
+				imageLightbox &&
+				lightboxCloseButton &&
+				lightboxCloseHandler &&
+				lightboxBackdropHandler &&
+				lightboxKeyHandler
+			) {
+				lightboxCloseButton.removeEventListener("click", lightboxCloseHandler);
+				imageLightbox.removeEventListener("click", lightboxBackdropHandler);
+				imageLightbox.removeEventListener("keydown", lightboxKeyHandler);
+				if (imageLightbox.open) imageLightbox.close();
+				imageLightbox.remove();
+			}
 		};
 
+		enhanceImages();
+		void renderMermaid().then(() => {
+			enhanceCodeBlocks();
+		});
 		document.addEventListener("astro:before-swap", cleanup, { once: true });
-		void renderMermaid();
 	};
 
 	setupPostPage();
@@ -740,6 +943,7 @@ const labels =
 	}
 
 	:global(.post-content pre) {
+		position: relative;
 		border-radius: var(--shape-radius-xl);
 		padding-block: var(--space-5);
 		padding-inline: var(--space-5);
@@ -749,9 +953,51 @@ const labels =
 		overflow-x: auto;
 	}
 
+	:global(.post-content pre[data-copy-enhanced="true"]) {
+		padding-block-start: calc(var(--space-5) + var(--space-8));
+	}
+
+	:global(.post-code-copy-button) {
+		position: absolute;
+		top: var(--space-3);
+		right: var(--space-3);
+		z-index: 1;
+		border: var(--border-width-default) solid var(--border-subtle);
+		border-radius: var(--shape-radius-pill);
+		background: color-mix(in srgb, var(--surface-elevated) 88%, transparent);
+		color: var(--text-secondary);
+		padding: var(--space-2) var(--space-3);
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-semibold);
+		line-height: 1;
+		opacity: 0;
+		transform: translateY(calc(var(--space-1) * -1));
+		pointer-events: none;
+		transition-property: opacity, transform, color, border-color;
+		transition-duration: var(--motion-duration-fast);
+		transition-timing-function: var(--motion-ease-standard);
+	}
+
+	:global(.post-content pre:hover .post-code-copy-button),
+	:global(.post-content pre:focus-within .post-code-copy-button) {
+		opacity: 1;
+		transform: translateY(0);
+		pointer-events: auto;
+	}
+
+	:global(.post-code-copy-button:hover) {
+		color: var(--text-primary);
+		border-color: var(--border-strong);
+	}
+
 	:global(.post-content pre code) {
 		background-color: transparent;
+		color: white;
 		padding: 0;
+	}
+
+	:global(.dark .post-content pre code) {
+		color: var(--text-primary);
 	}
 
 	:global(.post-content pre.mermaid) {
@@ -801,8 +1047,76 @@ const labels =
 		margin-block-end: var(--space-2);
 	}
 
+	:global(.post-content img[data-zoom-enhanced="true"]),
+	:global([data-post-cover] img[data-zoom-enhanced="true"]) {
+		cursor: zoom-in;
+		transition: transform var(--motion-duration-fast)
+			var(--motion-ease-standard);
+	}
+
+	:global(.post-content img[data-zoom-enhanced="true"]:hover),
+	:global([data-post-cover] img[data-zoom-enhanced="true"]:hover) {
+		transform: translateY(calc(var(--space-1) * -1));
+	}
+
+	:global(.post-content img[data-zoom-enhanced="true"]:focus-visible),
+	:global([data-post-cover] img[data-zoom-enhanced="true"]:focus-visible) {
+		outline: var(--focus-outline-width) solid var(--focus-ring);
+		outline-offset: var(--focus-outline-offset);
+	}
+
+	:global(.post-image-lightbox) {
+		margin: auto;
+		max-width: min(92vw, 80rem);
+		max-height: 92vh;
+		padding: 0;
+		border: none;
+		background: transparent;
+	}
+
+	:global(.post-image-lightbox[open]) {
+		display: grid;
+		place-items: center;
+	}
+
+	:global(.post-image-lightbox::backdrop) {
+		background: rgb(10 11 13 / 78%);
+		backdrop-filter: blur(8px);
+	}
+
+	:global(.post-image-lightbox__frame) {
+		position: relative;
+		margin: 0;
+	}
+
+	:global(.post-image-lightbox__image) {
+		display: block;
+		max-width: min(92vw, 80rem);
+		max-height: 88vh;
+		border-radius: var(--shape-radius-xl);
+		box-shadow: var(--elevation-lg);
+	}
+
+	:global(.post-image-lightbox__close) {
+		position: absolute;
+		top: var(--space-3);
+		right: var(--space-3);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: calc(var(--touch-target-min) + var(--space-1));
+		height: calc(var(--touch-target-min) + var(--space-1));
+		border: none;
+		border-radius: 999px;
+		background: rgb(10 11 13 / 64%);
+		color: white;
+		font-size: clamp(1.25rem, 1rem + 0.8vw, 1.8rem);
+		line-height: 1;
+		cursor: pointer;
+	}
+
 	:global(.post-content mark) {
-		color: inherit;
+		color: white;
 		padding-inline: 0.22em;
 		border-radius: var(--shape-radius-xs);
 		background: var(--mark-highlight);
@@ -811,7 +1125,7 @@ const labels =
 	}
 
 	:global(.dark .post-content mark) {
-		color: var(--text-primary);
+		color: hsl(123deg, 33%, 22%);
 	}
 
 	:global(.post-content .markdown-alert) {
