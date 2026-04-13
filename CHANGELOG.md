@@ -1,3 +1,10 @@
+## [2.4.1](https://github.com/santychuycom/santychuy.com/compare/v2.4.0...v2.4.1) (2026-04-13)
+
+### Bug Fixes
+
+* **blog:** improve post image alt text ([926f0bb](https://github.com/santychuycom/santychuy.com/commit/926f0bb2dca18107701299f13ede562f0f830a11))
+* **blog:** restore post assets and copy feedback ([9c5d17c](https://github.com/santychuycom/santychuy.com/commit/9c5d17c8adc217c51f324863f8e2dc4f6c7b35ca))
+
 ## [2.4.0](https://github.com/santychuycom/santychuy.com/compare/v2.3.0...v2.4.0) (2026-04-13)
 
 ### Features
