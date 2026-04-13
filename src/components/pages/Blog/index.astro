@@ -73,6 +73,7 @@ const labels =
 				copyCode: "Copiar",
 				copyCodeSuccess: "Copiado",
 				copySuccess: "Copiado",
+				copyToast: "Enlace copiado",
 				copyPrompt: "Copia este enlace",
 				copyCodePrompt: "Copia este bloque de codigo",
 				published: "Publicado",
@@ -92,6 +93,7 @@ const labels =
 				copyCode: "Copy",
 				copyCodeSuccess: "Copied",
 				copySuccess: "Copied",
+				copyToast: "Link copied",
 				copyPrompt: "Copy this link",
 				copyCodePrompt: "Copy this code block",
 				published: "Published",
@@ -108,6 +110,7 @@ const labels =
 	data-post-page
 	data-copy-code-label={labels.copyCode}
 	data-copy-code-success-label={labels.copyCodeSuccess}
+	data-copy-toast-label={labels.copyToast}
 	data-copy-code-prompt={labels.copyCodePrompt}
 	data-expand-image-label={labels.expandImage}
 	data-close-image-label={labels.closeImage}
@@ -266,6 +269,15 @@ const labels =
 	</div>
 </article>
 
+<div
+	class="post-copy-toast"
+	data-copy-toast
+	data-visible="false"
+	role="status"
+	aria-live="polite"
+	aria-atomic="true"
+></div>
+
 <script>
 	const setupPostPage = () => {
 		const root = document.querySelector<HTMLElement>("[data-post-page]");
@@ -357,6 +369,7 @@ const labels =
 		};
 
 		const copyButtons = root.querySelectorAll<HTMLButtonElement>("[data-copy-link]");
+		const copyToast = document.querySelector<HTMLElement>("[data-copy-toast]");
 		const copyHandlers = new Map<HTMLButtonElement, EventListener>();
 		const codeCopyButtons = new Set<HTMLButtonElement>();
 		const codeCopyHandlers = new Map<HTMLButtonElement, EventListener>();
@@ -378,6 +391,34 @@ const labels =
 		let lightboxBackdropHandler: EventListener | null = null;
 		let lightboxCloseHandler: EventListener | null = null;
 		let lightboxKeyHandler: ((event: KeyboardEvent) => void) | null = null;
+		let copyToastTimeout: number | null = null;
+
+		const hideCopyToast = () => {
+			if (!copyToast) return;
+			copyToast.dataset.visible = "false";
+		};
+
+		const showCopyToast = (message: string) => {
+			if (!copyToast) return;
+
+			if (copyToastTimeout !== null) {
+				window.clearTimeout(copyToastTimeout);
+			}
+
+			copyToast.textContent = "";
+			copyToast.dataset.visible = "false";
+
+			window.requestAnimationFrame(() => {
+				if (!copyToast) return;
+				copyToast.textContent = message;
+				copyToast.dataset.visible = "true";
+			});
+
+			copyToastTimeout = window.setTimeout(() => {
+				hideCopyToast();
+				copyToastTimeout = null;
+			}, 1800);
+		};
 
 		const copyText = async (value: string, fallbackPrompt: string) => {
 			try {
@@ -394,11 +435,13 @@ const labels =
 				const copyURL = button.dataset.copyUrl ?? window.location.href;
 				const defaultLabel = button.dataset.defaultLabel ?? "Copy link";
 				const successLabel = button.dataset.successLabel ?? "Copied";
+				const toastLabel = root.dataset.copyToastLabel ?? successLabel;
 				const copyPrompt = button.dataset.copyPrompt ?? "Copy this link";
 				const copyTargets = root.querySelectorAll<HTMLElement>("[data-copy-label]");
 
 				const copied = await copyText(copyURL, copyPrompt);
 				if (copied) {
+					showCopyToast(toastLabel);
 					for (const node of copyTargets) {
 						node.textContent = successLabel;
 					}
@@ -592,6 +635,13 @@ const labels =
 				frame = null;
 			}
 
+			if (copyToastTimeout !== null) {
+				window.clearTimeout(copyToastTimeout);
+				copyToastTimeout = null;
+			}
+
+			hideCopyToast();
+
 			for (const [button, handler] of copyHandlers) {
 				button.removeEventListener("click", handler);
 			}
@@ -639,6 +689,40 @@ const labels =
 	.post-page {
 		--sticky-left-offset: calc(var(--sticky-rail-offset) + 3rem);
 		--sticky-rail-offset: calc(var(--space-4) + 4.5rem);
+	}
+
+	.post-copy-toast {
+		position: fixed;
+		left: 50%;
+		bottom: var(--space-5);
+		z-index: var(--z-overlay);
+		transform: translateX(-50%) translateY(var(--space-3));
+		padding: var(--space-3) var(--space-4);
+		border: var(--border-width-default) solid var(--border-subtle);
+		border-radius: var(--shape-radius-pill);
+		background: color-mix(in srgb, var(--surface-elevated) 92%, transparent);
+		box-shadow: var(--elevation-2);
+		color: var(--text-primary);
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-medium);
+		line-height: 1;
+		white-space: nowrap;
+		opacity: 0;
+		pointer-events: none;
+		transition-property: opacity, transform;
+		transition-duration: var(--motion-duration-fast);
+		transition-timing-function: var(--motion-ease-standard);
+	}
+
+	.post-copy-toast[data-visible="true"] {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.post-copy-toast {
+			transition: none;
+		}
 	}
 
 	.post-toc-mobile[open] .toc-chevron {

@@ -44,7 +44,7 @@ The real game is preserving useful context.
 
 For me, that is the main job every time I start a new session with an agent. Manage the context window well, spend it <mark style="background: #9CD89F;">on the things that matter</mark>, and stay as far away as possible from filling it with noise too early. Once that starts happening, output quality drops. And if you use these tools for software work every day, that is how you end up generating slop, and worse, shipping that slop into your codebase.
 
-![CleanShot 2026-04-10 at 17.00.19.gif](../../../assets/posts/2026-04-10-cleanshot-2026-04-10-at-1700.19.gif)
+![Animation showing an AI agent with limited visible context compared with the much larger codebase it needs to work on](/uploads/posts/2026-04-10-cleanshot-2026-04-10-at-1700.19.gif)
 > Twitter (X) - [@asidorenko_](https://x.com/asidorenko_) [link post](https://x.com/asidorenko_/status/2036903238998343842?s=20)
 
 Before going further, when I say "AI agent," I mean something simple: an LLM that can call tools, get results back, and keep iterating in a loop.
@@ -53,9 +53,9 @@ If that is the model we are working with, then each session becomes a <mark styl
 
 That is why I like the way this talk frames the problem as the ["smart zone" and the "dumb zone"](https://www.youtube.com/watch?v=rmvDxxNubIg). There is a part of the context window where the model is still sharp, still able to attend well, retrieve what matters, and compose a strong answer. But as the session gets more crowded, the model has to work through more noise, more irrelevant state, and more positional bias. That is when you start moving out of the smart zone and closer to the dumb zone.
 
-![CleanShot 2026-04-10 at 16.16.09@2x.png](../../../assets/posts/2026-04-10-cleanshot-2026-04-10-at-1616.09@2x.png)
+![Video thumbnail for a Code Summit talk on harness engineering and solving hard problems with context engineering](/uploads/posts/2026-04-10-cleanshot-2026-04-10-at-1616.09@2x.png)
 
-![Pasted image 20260410162644.png](../../../assets/posts/2026-04-10-pasted-image-20260410162644.png)
+![Diagram of a context window moving from a smart zone into a degrading middle area and then a dumb zone as the session fills up](/uploads/posts/2026-04-10-pasted-image-20260410162644.png)
 
 The human version feels familiar. You start your day fresh and use that clear attention on the hardest task first. Most likely the result will be better, not because the task changed, but because your head was <mark style="background: #9CD89F;">still clean</mark>. Now compare that with the opposite case: email, Slack, meetings, interruptions, context switching, and only after all of that do you come back to the same hard task. You can still do it, sure, but not with the same clarity. For LLMs, it is similar. A crowded context window does not make the model useless, but it does make it harder for the model to attend, retrieve, and compose from what is actually relevant.
 
@@ -121,13 +121,13 @@ With an MCP server, you are not just giving the agent execution. You are also gi
 
 So if I had to compress the whole article into one line, it would be this: the real difference is not command line vs protocol, it is <mark style="background: #9CD89F;">direct execution vs context architecture</mark>.
 
-![Pasted image 20260410163011.png](../../../assets/posts/2026-04-10-pasted-image-20260410163011-1.png)
+![Side-by-side comparison showing CLI as direct execution and MCP as context architecture for shaping and routing context](/uploads/posts/2026-04-10-pasted-image-20260410163011-1.png)
 
 ## Trade-offs
 
 And this is where software engineering goes back to being software engineering: trade-offs.
 
-![Pasted image 20260410163324.png](../../../assets/posts/2026-04-10-pasted-image-20260410163324.png)
+![Trade-off chart comparing when CLI or MCP wins across context cost, discoverability, trust boundaries, reuse, and setup](/uploads/posts/2026-04-10-pasted-image-20260410163324.png)
 
 ### Context cost
 
@@ -251,15 +251,15 @@ Execution notes:
 
 ### Result
 
-![CleanShot 2026-04-10 at 15.08.32@2x.png](../../../assets/posts/2026-04-10-cleanshot-2026-04-10-at-1508.32@2x.png)
+![Benchmark report section showing both CLI and MCP workers completed the Playwright workflow, with CLI finishing faster](/uploads/posts/2026-04-10-cleanshot-2026-04-10-at-1508.32@2x.png)
 
-![CleanShot 2026-04-10 at 15.09.13@2x.png](../../../assets/posts/2026-04-10-cleanshot-2026-04-10-at-1509.13@2x.png)
+![Benchmark report section showing the identical Playwright test scenario run by both the CLI and MCP workers](/uploads/posts/2026-04-10-cleanshot-2026-04-10-at-1509.13@2x.png)
 
-![CleanShot 2026-04-10 at 15.10.28@2x.png](../../../assets/posts/2026-04-10-cleanshot-2026-04-10-at-1510.28@2x.png)
+![Benchmark report section showing token instrumentation checkpoints, with per-step token granularity marked as unknown](/uploads/posts/2026-04-10-cleanshot-2026-04-10-at-1510.28@2x.png)
 
-![CleanShot 2026-04-10 at 15.10.57@2x.png](../../../assets/posts/2026-04-10-cleanshot-2026-04-10-at-1510.57@2x.png)
+![Benchmark report table comparing total tokens, tool uses, and duration, where CLI uses fewer tokens and completes faster than MCP](/uploads/posts/2026-04-10-cleanshot-2026-04-10-at-1510.57@2x.png)
 
-![CleanShot 2026-04-10 at 15.11.48@2x.png](../../../assets/posts/2026-04-10-cleanshot-2026-04-10-at-1511.48@2x.png)
+![Benchmark report winner table showing CLI ahead on token efficiency, speed, and tool calls while both approaches pass the test](/uploads/posts/2026-04-10-cleanshot-2026-04-10-at-1511.48@2x.png)
 
 ### Why
 
@@ -285,7 +285,7 @@ I also think people undersell how far a CLI can go once you make it more agent-f
 
 So, just to double check and verify the opinions of others, when I was running the test that e already saw, you find an explanation from the Playwright docs answering the same question of this whole post:
 
-![CleanShot 2026-04-10 at 14.53.31@2x.png](../../../assets/posts/2026-04-10-cleanshot-2026-04-10-at-1453.31@2x.png)
+![Excerpt from the Playwright MCP documentation recommending CLI plus skills for coding agents when token efficiency matters](/uploads/posts/2026-04-10-cleanshot-2026-04-10-at-1453.31@2x.png)
 > [Link](https://github.com/microsoft/playwright-mcp#playwright-mcp-vs-playwright-cli) ( 04-10-2026 )
 
 So my position is not "always choose CLI". It is simpler than that: if the problem is mostly about operating software inside a known environment, I start with CLI and only reach for MCP when the integration problem is actually bigger than the execution problem.
