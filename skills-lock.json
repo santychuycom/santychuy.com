@@ -130,6 +130,11 @@
 			"source": "vercel-labs/agent-skills",
 			"sourceType": "github",
 			"computedHash": "a6a44d5498f7e8f68289902f3dedfc6f38ae0cee1e96527c80724cf27f727c2a"
+		},
+		"writing-guide": {
+			"source": "santychuycom/skills",
+			"sourceType": "github",
+			"computedHash": "2eeca95610ef371bc5fe16ffc37c8df2ae2785d10a2eb7d540a2338249311fb3"
 		}
 	}
 }
