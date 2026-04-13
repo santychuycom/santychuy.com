@@ -1,3 +1,16 @@
+## [2.4.0](https://github.com/santychuycom/santychuy.com/compare/v2.3.0...v2.4.0) (2026-04-13)
+
+### Features
+
+* **blog:** improve post reading interactions ([3854850](https://github.com/santychuycom/santychuy.com/commit/3854850b735478f4f70670e8c414b35e723274bb))
+* **content:** publish cli vs mcp benchmark post ([d6725e6](https://github.com/santychuycom/santychuy.com/commit/d6725e63385fb8d8640ece13c2bfe2db63cbad86))
+
+### Bug Fixes
+
+* **blog:** inherit fenced code block text color ([2adf485](https://github.com/santychuycom/santychuy.com/commit/2adf485af00871f97583d769146649601bf26c7f))
+* **analytics:** queue initial umami pageviews ([17cd2f4](https://github.com/santychuycom/santychuy.com/commit/17cd2f41e407832ab071a64d483a69aa06919d7b))
+* **blog:** use defined lightbox elevation token ([22a156c](https://github.com/santychuycom/santychuy.com/commit/22a156ce65b90fe78a1e64079987003a9cca8923))
+
 ## [2.3.0](https://github.com/santychuycom/santychuy.com/compare/v2.2.0...v2.3.0) (2026-03-21)
 
 ### Features
