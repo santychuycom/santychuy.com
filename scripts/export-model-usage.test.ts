@@ -4,6 +4,11 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { type RankedModel, validateRankings } from "../src/data/ai-models";
 import {
+	mostUsedSource,
+	summarizeUsage,
+	unrankedUsage,
+} from "../src/ts/ai-model-usage";
+import {
 	buildUsageDocument,
 	exportReport,
 	FORBIDDEN_KEYS,
@@ -13,6 +18,7 @@ import {
 } from "./export-model-usage";
 
 interface FixtureEvent {
+	machine?: string;
 	source: string;
 	timestamp_ms: number;
 	provider: string | null;
@@ -184,6 +190,16 @@ describe("model usage export", () => {
 		expect(usage.coverage.conservativeEvents).toBe(1);
 	});
 
+	test("selects the source with most observed usage events", () => {
+		const usage = build([
+			fixtureEvent({ source: "pi" }),
+			fixtureEvent({ source: "pi" }),
+			fixtureEvent({ source: "codex" }),
+		]);
+		expect(mostUsedSource(usage.daily)).toBe("pi");
+		expect(mostUsedSource([])).toBeUndefined();
+	});
+
 	test("constructs output from an allowlist", () => {
 		const event = fixtureEvent({
 			source_path: "/home/SECRET-SENTINEL/transcript.jsonl",
@@ -207,6 +223,22 @@ describe("model usage export", () => {
 		expect(JSON.stringify(build(events))).toBe(
 			JSON.stringify(build(events.toReversed())),
 		);
+	});
+
+	test("accepts Memex federated authority only when every event is local", () => {
+		const local = fixtureReport([fixtureEvent({ machine: "local" })]);
+		local.authority =
+			"multi-machine reconstructed usage (not subscription quota)";
+		expect(() =>
+			buildUsageDocument(local, "0.11.3", "2026-08-23T00:00:00.000Z"),
+		).not.toThrow();
+
+		const remote = fixtureReport([fixtureEvent({ machine: "rpi-and" })]);
+		remote.authority =
+			"multi-machine reconstructed usage (not subscription quota)";
+		expect(() =>
+			buildUsageDocument(remote, "0.11.3", "2026-08-23T00:00:00.000Z"),
+		).toThrow("Non-local usage event");
 	});
 
 	test("fails closed on warnings, malformed buckets, and reconciliation", () => {
@@ -241,6 +273,52 @@ describe("model usage export", () => {
 		expect(await readFile(destination, "utf8")).toBe("UNCHANGED\n");
 		expect(await readdir(directory)).toEqual(["model-usage.json"]);
 		await rm(directory, { recursive: true, force: true });
+	});
+});
+
+describe("model usage summaries", () => {
+	test("joins ranked keys without assigning rank and keeps unowned keys separate", () => {
+		const daily = [
+			{
+				date: "2026-08-22",
+				usageKey: "one/a",
+				provider: "one",
+				model: "a",
+				sources: ["pi"],
+				usageEvents: 1,
+				uncachedInput: 1,
+				cacheRead: 2,
+				cacheWrite: 3,
+				output: 4,
+				reasoning: 2,
+				totalProcessed: 10,
+				pricedEvents: 1,
+				unpricedEvents: 0,
+				costNanoUsd: 1,
+			},
+			{
+				date: "2026-08-23",
+				usageKey: "two/b",
+				provider: "two",
+				model: "b",
+				sources: ["pi"],
+				usageEvents: 1,
+				uncachedInput: 1,
+				cacheRead: 2,
+				cacheWrite: 3,
+				output: 4,
+				reasoning: 2,
+				totalProcessed: 10,
+				pricedEvents: 1,
+				unpricedEvents: 0,
+				costNanoUsd: 1,
+			},
+		];
+		const summary = summarizeUsage(daily, ["one/a", "two/b"]);
+		expect(summary.usageEvents).toBe(2);
+		expect(summary.totalProcessed).toBe(20);
+		const unranked = unrankedUsage(daily, new Set(["one/a"]));
+		expect(unranked.map(({ key }) => key)).toEqual(["two/b"]);
 	});
 });
 

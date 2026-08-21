@@ -5,6 +5,7 @@ export const TIMEZONE = "America/Mexico_City" as const;
 export const UNKNOWN_PROVIDER = "__unknown_provider__";
 export const UNKNOWN_MODEL = "__unknown_model__";
 export const FORBIDDEN_KEYS = [
+	"machine",
 	"source_path",
 	"source_record_id",
 	"project",
@@ -20,6 +21,7 @@ export interface DailyUsage {
 	provider: string | null;
 	model: string | null;
 	sources: string[];
+	sourceUsageEvents: Record<string, number>;
 	usageEvents: number;
 	uncachedInput: number;
 	cacheRead: number;
@@ -64,6 +66,9 @@ export interface ModelUsage {
 }
 
 type UnknownRecord = Record<string, unknown>;
+
+const FEDERATED_USAGE_AUTHORITY =
+	"multi-machine reconstructed usage (not subscription quota)";
 
 const mexicoDateFormatter = new Intl.DateTimeFormat("en-CA", {
 	timeZone: TIMEZONE,
@@ -171,7 +176,10 @@ export function buildUsageDocument(
 	generatedAt = new Date().toISOString(),
 ): ModelUsage {
 	const report = record(input, "Memex report");
-	if (report.authority !== "local_log") throw new Error("Invalid authority");
+	const federatedReport = report.authority === FEDERATED_USAGE_AUTHORITY;
+	if (report.authority !== "local_log" && !federatedReport) {
+		throw new Error("Invalid authority");
+	}
 	if (report.cost_mode !== "source") throw new Error("Invalid cost mode");
 	validateWarnings(report.warnings);
 	nonemptyString(report.price_catalog, "price_catalog");
@@ -208,6 +216,9 @@ export function buildUsageDocument(
 
 	for (const [index, value] of details.entries()) {
 		const event = record(value, `event ${index}`);
+		if (federatedReport && event.machine !== "local") {
+			throw new Error("Non-local usage event");
+		}
 		const provider = nullableIdentity(event.provider, "provider");
 		const model = nullableIdentity(event.model, "model");
 		const source = nonemptyString(event.source, "source");
@@ -248,6 +259,7 @@ export function buildUsageDocument(
 			provider,
 			model,
 			sources: [],
+			sourceUsageEvents: {},
 			usageEvents: 0,
 			uncachedInput: 0,
 			cacheRead: 0,
@@ -270,6 +282,11 @@ export function buildUsageDocument(
 		row.unpricedEvents = add(row.unpricedEvents, Number(!isPriced));
 		row.costNanoUsd = add(row.costNanoUsd, costNanoUsd);
 		if (!row.sources.includes(source)) row.sources.push(source);
+		row.sourceUsageEvents[source] = add(
+			row.sourceUsageEvents[source] ?? 0,
+			1,
+			"source usage events",
+		);
 		rows.set(groupKey, row);
 
 		usageEvents = add(usageEvents, 1);
@@ -290,7 +307,15 @@ export function buildUsageDocument(
 	}
 
 	const daily = [...rows.values()]
-		.map((row) => ({ ...row, sources: row.sources.toSorted() }))
+		.map((row) => ({
+			...row,
+			sources: row.sources.toSorted(),
+			sourceUsageEvents: Object.fromEntries(
+				Object.entries(row.sourceUsageEvents).toSorted(([left], [right]) =>
+					left.localeCompare(right),
+				),
+			),
+		}))
 		.sort(
 			(left, right) =>
 				left.date.localeCompare(right.date) ||
@@ -411,6 +436,8 @@ async function main(): Promise<void> {
 			await runMemex([
 				"memex",
 				"usage",
+				"--machine",
+				"local",
 				"--json",
 				"--events",
 				"--cost",
