@@ -1,6 +1,7 @@
 const en = {
 	header: {
 		homeLabel: "Go to homepage",
+		aiModelsLabel: "AI Models",
 		languageLabel: "Change language",
 		localeLabel: {
 			en: "English",
@@ -39,6 +40,70 @@ const en = {
 		emptyState: "New posts are on the way.",
 		pageDescription:
 			"Santiago Carrasco is a software engineer sharing practical notes on web development, AI, and the projects shaping how he works and thinks.",
+	},
+	aiModels: {
+		metaTitle: "AI Model Ranking and Usage Evidence",
+		metaDescription:
+			"Santiago’s manually ordered AI model opinions, supported by privacy-safe daily usage evidence reconstructed from local agent logs.",
+		eyebrow: "Current opinion · observed usage",
+		title: "AI Models",
+		intro:
+			"My current, manually ordered view of the models I use. The evidence below shows experience with a model—not objective model quality or proof that an opinion is correct.",
+		generated: "Evidence generated",
+		ranked: "Ranked models",
+		rankedIntro:
+			"The order below is set manually. Usage never changes the ranking automatically.",
+		rank: "Rank",
+		bestFor: "Best for:",
+		tradeoff: "Tradeoff:",
+		activeDays: "Active days",
+		events: "Usage events",
+		uncachedInput: "Uncached input",
+		cacheRead: "Cache reads",
+		cacheWrite: "Cache writes",
+		output: "Output",
+		reasoning: "Reasoning subset",
+		total: "Total processed tokens",
+		apiEstimate: "API-equivalent estimate",
+		firstObserved: "First observed",
+		lastObserved: "Last observed",
+		costCoverage: "Cost coverage",
+		noEvidence: "No matching usage evidence yet.",
+		unranked: "Used but not ranked",
+		unrankedIntro:
+			"Exact usage keys observed by Memex that do not belong to a manually ranked card.",
+		emptyRanked:
+			"No models are ranked yet. Santiago will add rankings and bilingual opinions when ready.",
+		emptyUnranked: "No unranked usage yet.",
+		history: "Daily history",
+		historyIntro:
+			"All published daily aggregates, collapsed by default to keep this page editorial.",
+		historyCaption: "Daily aggregate model usage reconstructed by Memex",
+		date: "Date",
+		model: "Model",
+		sources: "Sources",
+		methodology: "Methodology",
+		opinionNote:
+			"Every opinion on this page is written and ordered manually by Santiago. It is subjective, expected to change, and never calculated from tokens, cost, activity, or request volume.",
+		evidenceNote:
+			"Usage is self-reported evidence reconstructed from local agent logs by Memex. It shows familiarity with a model, not objective model quality. Only counters grouped by local calendar day and model are published.",
+		tokensNote:
+			"Total processed tokens include uncached input, cache reads, cache writes, and output. Cache reads can dominate the total, so the token breakdown is shown separately.",
+		costNote:
+			"Costs are analytical API-equivalent estimates reconstructed from local provider telemetry. They do not represent subscription charges, subscription quotas, invoices, or confirmed money paid.",
+		collector: "Collector",
+		timezone: "Calendar timezone",
+		overallCoverage: "Source-cost coverage",
+		unknownProviders: "Unknown-provider events",
+		unknownModels: "Unknown-model events",
+		conservative: "Conservative events",
+		warnings: "Warnings",
+		none: "None",
+		unavailable: "Unavailable",
+		unknownProvider: "Unknown provider",
+		unknownModel: "Unknown model",
+		dataLink: "Download the public evidence JSON",
+		repositoryLink: "View the source repository",
 	},
 	notFound: {
 		title: "Page not found",

@@ -1,0 +1,13 @@
+---
+import AIModels from "@components/pages/AIModels/index.astro";
+import BaseLayout from "@layouts/Base.astro";
+import { getLocalizedPath } from "@ts/i18n";
+import { getLocaleMessages } from "../../i18n";
+
+const lang = "es";
+const m = getLocaleMessages(lang);
+const site = Astro.site ?? Astro.url;
+const en = new URL(getLocalizedPath("en", "ai-models"), site).toString();
+const es = new URL(getLocalizedPath("es", "ai-models"), site).toString();
+---
+<BaseLayout lang={lang} title={m.aiModels.metaTitle} description={m.aiModels.metaDescription} url={es} alternates={{en,es,"x-default":en}} languageSwitcher={{en:getLocalizedPath("en","ai-models"),es:getLocalizedPath("es","ai-models")}}><AIModels lang={lang}/></BaseLayout>

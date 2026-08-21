@@ -1,6 +1,7 @@
 const es = {
 	header: {
 		homeLabel: "Ir al inicio",
+		aiModelsLabel: "Modelos de IA",
 		languageLabel: "Cambiar idioma",
 		localeLabel: {
 			en: "English",
@@ -39,6 +40,70 @@ const es = {
 		emptyState: "Adaptando los posts a español.",
 		pageDescription:
 			"Santiago Carrasco es un ingeniero de software que comparte notas prácticas sobre desarrollo web, IA y los proyectos que moldean cómo trabaja y piensa.",
+	},
+	aiModels: {
+		metaTitle: "Clasificación de Modelos de IA y Evidencia de Uso",
+		metaDescription:
+			"Opiniones de Santiago sobre modelos de IA, ordenadas manualmente y acompañadas por evidencia diaria de uso reconstruida de registros locales.",
+		eyebrow: "Opinión actual · uso observado",
+		title: "Modelos de IA",
+		intro:
+			"Mi perspectiva actual y ordenada manualmente de los modelos que uso. La evidencia muestra experiencia con un modelo, no calidad objetiva ni prueba de que una opinión sea correcta.",
+		generated: "Evidencia generada",
+		ranked: "Modelos clasificados",
+		rankedIntro:
+			"El orden se establece manualmente. El uso nunca cambia la clasificación automáticamente.",
+		rank: "Puesto",
+		bestFor: "Mejor para:",
+		tradeoff: "Desventaja:",
+		activeDays: "Días activos",
+		events: "Eventos de uso",
+		uncachedInput: "Entrada sin caché",
+		cacheRead: "Lecturas de caché",
+		cacheWrite: "Escrituras de caché",
+		output: "Salida",
+		reasoning: "Subconjunto de razonamiento",
+		total: "Total de tokens procesados",
+		apiEstimate: "Estimación equivalente de API",
+		firstObserved: "Primera observación",
+		lastObserved: "Última observación",
+		costCoverage: "Cobertura de costos",
+		noEvidence: "Aún no hay evidencia de uso coincidente.",
+		unranked: "Usados pero no clasificados",
+		unrankedIntro:
+			"Claves exactas observadas por Memex que no pertenecen a una tarjeta clasificada manualmente.",
+		emptyRanked:
+			"Aún no hay modelos clasificados. Santiago agregará la clasificación y las opiniones bilingües cuando estén listas.",
+		emptyUnranked: "Aún no hay uso sin clasificar.",
+		history: "Historial diario",
+		historyIntro:
+			"Todos los agregados diarios publicados, contraídos por defecto para mantener el enfoque editorial.",
+		historyCaption: "Uso diario agregado de modelos reconstruido por Memex",
+		date: "Fecha",
+		model: "Modelo",
+		sources: "Fuentes",
+		methodology: "Metodología",
+		opinionNote:
+			"Cada opinión en esta página está escrita y ordenada manualmente por Santiago. Es subjetiva, puede cambiar y nunca se calcula a partir de tokens, costos, actividad o volumen de solicitudes.",
+		evidenceNote:
+			"El uso es evidencia autorreportada reconstruida por Memex desde registros locales de agentes. Muestra familiaridad con un modelo, no calidad objetiva. Solo se publican contadores agrupados por día calendario local y modelo.",
+		tokensNote:
+			"El total de tokens procesados incluye entrada sin caché, lecturas de caché, escrituras de caché y salida. Las lecturas de caché pueden dominar el total, por eso el desglose se muestra por separado.",
+		costNote:
+			"Los costos son estimaciones analíticas equivalentes a API reconstruidas de telemetría local del proveedor. No representan cargos de suscripción, cuotas de suscripción, facturas ni dinero pagado confirmado.",
+		collector: "Recolector",
+		timezone: "Zona horaria del calendario",
+		overallCoverage: "Cobertura de costos de fuente",
+		unknownProviders: "Eventos con proveedor desconocido",
+		unknownModels: "Eventos con modelo desconocido",
+		conservative: "Eventos conservadores",
+		warnings: "Advertencias",
+		none: "Ninguna",
+		unavailable: "No disponible",
+		unknownProvider: "Proveedor desconocido",
+		unknownModel: "Modelo desconocido",
+		dataLink: "Descargar el JSON de evidencia pública",
+		repositoryLink: "Ver el repositorio fuente",
 	},
 	notFound: {
 		title: "Página no encontrada",

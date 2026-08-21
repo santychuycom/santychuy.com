@@ -11,7 +11,9 @@
 		"check": "astro check",
 		"format": "biome check --write .",
 		"lint": "biome check .",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"models:usage": "bun scripts/export-model-usage.ts",
+		"test:models": "bun test scripts/export-model-usage.test.ts"
 	},
 	"keywords": [],
 	"author": "Santiago Carrasco <hello@santychuy.com>",

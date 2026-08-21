@@ -2,7 +2,12 @@
 import MoonIcon from "@components/icons/moon.astro";
 import SantychuyLogo from "@components/icons/santychuyISO.astro";
 import SunIcon from "@components/icons/sun.astro";
-import { getLocaleHomeUrl, type Locale, type LocaleUrlMap } from "@ts/i18n";
+import {
+	getLocaleHomeUrl,
+	getLocalizedPath,
+	type Locale,
+	type LocaleUrlMap,
+} from "@ts/i18n";
 import { getLocaleMessages } from "../../i18n";
 
 interface Props {
@@ -27,6 +32,7 @@ const showLanguageSwitcher = Boolean(
   </a>
 
 	<div class="flex items-center gap-2 desktop:gap-3">
+		<a href={getLocalizedPath(lang, "ai-models")} class="touch-target inline-flex items-center text-sm text-ink-muted no-underline hover:text-ink focus-ring">{messages.header.aiModelsLabel}</a>
 		{showLanguageSwitcher && (
 			<nav
 				class="inline-flex items-center gap-1"
