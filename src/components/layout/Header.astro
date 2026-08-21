@@ -27,12 +27,14 @@ const showLanguageSwitcher = Boolean(
 ---
 
 <header class="flex items-center justify-between gap-4 shell-width py-5 border-b border-line desktop:py-6">
-  <a href={getLocaleHomeUrl(lang)} class="inline-flex items-center justify-center rounded-pill text-ink transition-[transform,color] duration-base ease-standard hover-lift hover:text-brand focus-ring" aria-label={messages.header.homeLabel}>
-    <SantychuyLogo class="w-[var(--brand-logo-size)] h-auto desktop:w-[var(--brand-logo-size-desktop)]" />
-  </a>
-
-	<div class="flex items-center gap-2 desktop:gap-3">
+	<div class="flex min-w-0 items-center gap-2 desktop:gap-3">
+		<a href={getLocaleHomeUrl(lang)} class="inline-flex items-center justify-center rounded-pill text-ink transition-[transform,color] duration-base ease-standard hover-lift hover:text-brand focus-ring" aria-label={messages.header.homeLabel}>
+			<SantychuyLogo class="w-[var(--brand-logo-size)] h-auto desktop:w-[var(--brand-logo-size-desktop)]" />
+		</a>
 		<a href={getLocalizedPath(lang, "ai-models")} class="touch-target inline-flex items-center text-sm text-ink-muted no-underline hover:text-ink focus-ring">{messages.header.aiModelsLabel}</a>
+	</div>
+
+	<div class="flex shrink-0 items-center gap-2 desktop:gap-3">
 		{showLanguageSwitcher && (
 			<nav
 				class="inline-flex items-center gap-1"

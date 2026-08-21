@@ -1,0 +1,166 @@
+---
+import DownloadIcon from "@components/icons/download.astro";
+import type { RankedModel } from "../../../data/ai-models";
+import { getLocaleMessages } from "../../../i18n";
+import {
+	type ModelUsageData,
+	mostUsedSource,
+	type UsageSummary,
+} from "../../../ts/ai-model-usage";
+import { getLocalizedPath, type Locale } from "../../../ts/i18n";
+
+interface Props {
+	lang: Locale;
+	model: RankedModel;
+	rank: number;
+	usage: ModelUsageData;
+	summary: UsageSummary;
+}
+
+const { lang, model, rank, usage, summary } = Astro.props;
+const messages = getLocaleMessages(lang).aiModels;
+const opinion = model.opinion[lang];
+const integer = new Intl.NumberFormat(lang);
+const compact = new Intl.NumberFormat(lang, {
+	notation: "compact",
+	maximumFractionDigits: 1,
+});
+const currency = new Intl.NumberFormat(lang, {
+	style: "currency",
+	currency: "USD",
+	minimumFractionDigits: 2,
+	maximumFractionDigits: 2,
+});
+const calendarDate = new Intl.DateTimeFormat(lang, {
+	dateStyle: "medium",
+	timeZone: usage.timezone,
+});
+const formatDate = (value?: string) =>
+	value
+		? calendarDate.format(new Date(`${value}T12:00:00Z`))
+		: messages.unavailable;
+const formatMoney = (nanoUsd: number) =>
+	currency.format(nanoUsd / 1_000_000_000);
+const coverage = summary.usageEvents
+	? new Intl.NumberFormat(lang, {
+			style: "percent",
+			maximumFractionDigits: 1,
+		}).format(summary.pricedEvents / summary.usageEvents)
+	: messages.unavailable;
+const primarySource = mostUsedSource(summary.rows);
+const historyRows = summary.rows.toReversed();
+---
+
+<div class="review">
+	<a class="back-link" href={getLocalizedPath(lang, "ai-models")}>{messages.backToRanking}</a>
+	<header class="model-header">
+		<div>
+			<p class="eyebrow">{messages.rank} {rank}</p>
+			<h1>{model.name}</h1>
+			<p class="provider">{model.provider}</p>
+		</div>
+		<a class="download-link" href="/data/model-usage.json" aria-label={messages.dataLink}>
+			<DownloadIcon aria-hidden="true" />
+		</a>
+	</header>
+
+	<section class="section review-copy" aria-labelledby="review-heading">
+		<h2 id="review-heading">{messages.review}</h2>
+		<p>{opinion.summary}</p>
+		{opinion.bestFor && <p><strong>{messages.bestFor}</strong> {opinion.bestFor}</p>}
+		{opinion.tradeoff && <p><strong>{messages.tradeoff}</strong> {opinion.tradeoff}</p>}
+	</section>
+
+	<section class="section" aria-labelledby="overview-heading">
+		<h2 id="overview-heading">{messages.evidenceAtGlance}</h2>
+		{summary.rows.length === 0 ? (
+			<p class="empty-note">{messages.noEvidence}</p>
+		) : (
+			<dl class="facts">
+				<div><dt>{messages.activeDays}</dt><dd>{integer.format(summary.activeDays)}</dd></div>
+				<div><dt>{messages.events}</dt><dd>{integer.format(summary.usageEvents)}</dd></div>
+				<div><dt>{messages.firstObserved}</dt><dd>{formatDate(summary.firstObserved)}</dd></div>
+				<div><dt>{messages.lastObserved}</dt><dd>{formatDate(summary.lastObserved)}</dd></div>
+			</dl>
+		)}
+	</section>
+
+	{summary.rows.length > 0 && <section class="section" aria-labelledby="usage-heading">
+		<h2 id="usage-heading">{messages.detailedEvidence}</h2>
+		<dl class="facts">
+			<div><dt>{messages.total}</dt><dd>{compact.format(summary.totalProcessed)}</dd></div>
+			<div><dt>{messages.apiEstimate}</dt><dd>{formatMoney(summary.costNanoUsd)}</dd></div>
+			<div><dt>{messages.uncachedInput}</dt><dd>{compact.format(summary.uncachedInput)}</dd></div>
+			<div><dt>{messages.output}</dt><dd>{compact.format(summary.output)}</dd></div>
+			<div><dt>{messages.cacheRead}</dt><dd>{compact.format(summary.cacheRead)}</dd></div>
+			<div><dt>{messages.cacheWrite}</dt><dd>{compact.format(summary.cacheWrite)}</dd></div>
+			<div><dt>{messages.mostUsedSource}</dt><dd>{primarySource ?? messages.unavailable}</dd></div>
+			<div><dt>{messages.reasoning}</dt><dd>{compact.format(summary.reasoning)}</dd></div>
+			{summary.unpricedEvents > 0 && <div><dt>{messages.costCoverage}</dt><dd>{coverage}</dd></div>}
+		</dl>
+		<p class="note">{messages.tokensNote}</p>
+		<p class="note">{messages.costNote}</p>
+	</section>}
+
+	{summary.rows.length > 0 && <section class="section" aria-labelledby="history-heading">
+		<h2 id="history-heading">{messages.history}</h2>
+		<div class="table-scroll" tabindex="0">
+			<table>
+				<caption>{messages.historyCaption}</caption>
+				<thead><tr><th scope="col">{messages.date}</th><th scope="col">{messages.sources}</th><th scope="col">{messages.events}</th><th scope="col">{messages.total}</th><th scope="col">{messages.apiEstimate}</th></tr></thead>
+				<tbody id="model-history-rows">{historyRows.map((row) => <tr data-history-row><td><time datetime={row.date}>{formatDate(row.date)}</time></td><td>{row.sources.join(", ")}</td><td>{integer.format(row.usageEvents)}</td><td>{integer.format(row.totalProcessed)}</td><td>{formatMoney(row.costNanoUsd)}</td></tr>)}</tbody>
+			</table>
+		</div>
+		{historyRows.length > 6 && <button class="history-toggle" type="button" data-history-toggle data-label-expand={messages.showAllHistory} data-label-collapse={messages.collapseHistory} aria-controls="model-history-rows" aria-expanded="false">{messages.showAllHistory}</button>}
+	</section>}
+
+<script>
+	const toggle = document.querySelector<HTMLButtonElement>("[data-history-toggle]");
+	const rows = [...document.querySelectorAll<HTMLTableRowElement>("[data-history-row]")];
+	const hiddenRows = rows.slice(6);
+	if (toggle && hiddenRows.length > 0) {
+		const setExpanded = (expanded: boolean) => {
+			for (const row of hiddenRows) row.hidden = !expanded;
+			toggle.ariaExpanded = String(expanded);
+			toggle.textContent = expanded
+			? (toggle.dataset.labelCollapse ?? "")
+			: (toggle.dataset.labelExpand ?? "");
+		};
+		setExpanded(false);
+		toggle.addEventListener("click", () =>
+			setExpanded(toggle.ariaExpanded !== "true"),
+		);
+	}
+</script>
+
+</div>
+
+<style>
+	.review { width: 100%; max-width: var(--measure-content-max); margin-inline: auto; }
+	.back-link { display: inline-flex; min-height: var(--touch-target-min); align-items: center; color: var(--text-primary); text-underline-offset: var(--space-2); }
+	.model-header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-5); }
+	.eyebrow, .provider, dt, .empty-note, .note { color: var(--text-secondary); }
+	.eyebrow { margin: 0 0 var(--space-3); font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); text-transform: uppercase; }
+	h1 { margin: 0; font-size: var(--font-size-display); line-height: var(--leading-tight); }
+	.provider { margin: var(--space-3) 0 0; }
+	.section { margin-top: var(--layout-section-gap-mobile); padding-top: var(--space-8); border-top: var(--border-width-default) solid var(--border-subtle); }
+	h2 { margin: 0; }
+	.review-copy { max-width: var(--measure-section-max); }
+	.review-copy p, .note { margin: var(--space-5) 0 0; line-height: var(--leading-copy); }
+	.facts { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 var(--space-6); margin: var(--space-6) 0 0; }
+	.facts > div { padding-block: var(--space-4); border-top: var(--border-width-default) solid var(--border-subtle); }
+	dt { font-size: var(--font-size-xs); font-weight: var(--font-weight-medium); }
+	dd { margin: var(--space-1) 0 0; font-variant-numeric: tabular-nums; font-weight: var(--font-weight-medium); }
+	.table-scroll { overflow-x: auto; margin-top: var(--space-6); border: var(--border-width-default) solid var(--border-subtle); border-radius: var(--shape-radius-sm); }
+	table { width: 100%; border-collapse: collapse; font-size: var(--font-size-sm); font-variant-numeric: tabular-nums; white-space: nowrap; }
+	caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+	th, td { padding: var(--space-3) var(--space-4); border-bottom: var(--border-width-default) solid var(--border-subtle); text-align: left; }
+	th { background: var(--surface-muted); color: var(--text-secondary); }
+	tbody tr:last-child td { border-bottom: 0; }
+	.download-link { display: inline-flex; min-width: var(--touch-target-min); min-height: var(--touch-target-min); align-items: center; justify-content: center; color: var(--text-secondary); }
+	.download-link:hover { color: var(--text-primary); }
+	.history-toggle { min-height: var(--touch-target-min); margin-top: var(--space-4); padding: 0; border: 0; background: transparent; color: var(--text-primary); cursor: pointer; font: inherit; text-decoration: underline; text-underline-offset: var(--space-2); }
+	a:focus-visible, .history-toggle:focus-visible, .table-scroll:focus-visible { outline: var(--focus-outline-width) solid var(--focus-ring); outline-offset: var(--focus-outline-offset-sm); }
+	@media (min-width: 34.375rem) { .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+	@media (min-width: 68.75rem) { .section { margin-top: var(--layout-section-gap); } .facts { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+</style>

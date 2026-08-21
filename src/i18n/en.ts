@@ -1,7 +1,7 @@
 const en = {
 	header: {
 		homeLabel: "Go to homepage",
-		aiModelsLabel: "AI Models",
+		aiModelsLabel: "Ranking AI Models",
 		languageLabel: "Change language",
 		localeLabel: {
 			en: "English",
@@ -42,18 +42,27 @@ const en = {
 			"Santiago Carrasco is a software engineer sharing practical notes on web development, AI, and the projects shaping how he works and thinks.",
 	},
 	aiModels: {
-		metaTitle: "AI Model Ranking and Usage Evidence",
+		metaTitle: "Ranking AI Models",
 		metaDescription:
 			"Santiago’s manually ordered AI model opinions, supported by privacy-safe daily usage evidence reconstructed from local agent logs.",
-		eyebrow: "Current opinion · observed usage",
-		title: "AI Models",
+		title: "Ranking AI Models",
 		intro:
-			"My current, manually ordered view of the models I use. The evidence below shows experience with a model—not objective model quality or proof that an opinion is correct.",
-		generated: "Evidence generated",
+			"My current, manually ordered view of the models I use. The evidence below shows experience with a model, based on my personal usage and evidence.",
+		generated: "Updated",
 		ranked: "Ranked models",
 		rankedIntro:
-			"The order below is set manually. Usage never changes the ranking automatically.",
+			"The order below is set manually, based on usage and personal experience with the model.",
 		rank: "Rank",
+		reviewLink: "Review and evidence",
+		backToRanking: "Back to ranking",
+		review: "Review",
+		evidenceAtGlance: "Evidence at a glance",
+		detailedEvidence: "Detailed evidence",
+		evidence: "Evidence",
+		notRanked: "Not ranked",
+		unrankedCount: "Used but not ranked — {count} models",
+		directoryDisclosure:
+			"Ranking is Santiago’s manual, subjective opinion. Usage shows familiarity with a model, not objective quality.",
 		bestFor: "Best for:",
 		tradeoff: "Tradeoff:",
 		activeDays: "Active days",
@@ -76,12 +85,15 @@ const en = {
 			"No models are ranked yet. Santiago will add rankings and bilingual opinions when ready.",
 		emptyUnranked: "No unranked usage yet.",
 		history: "Daily history",
+		showAllHistory: "Show all history",
+		collapseHistory: "Show less history",
 		historyIntro:
 			"All published daily aggregates, collapsed by default to keep this page editorial.",
 		historyCaption: "Daily aggregate model usage reconstructed by Memex",
 		date: "Date",
 		model: "Model",
 		sources: "Sources",
+		mostUsedSource: "Most used source",
 		methodology: "Methodology",
 		opinionNote:
 			"Every opinion on this page is written and ordered manually by Santiago. It is subjective, expected to change, and never calculated from tokens, cost, activity, or request volume.",

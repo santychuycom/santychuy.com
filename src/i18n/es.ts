@@ -1,7 +1,7 @@
 const es = {
 	header: {
 		homeLabel: "Ir al inicio",
-		aiModelsLabel: "Modelos de IA",
+		aiModelsLabel: "Ranking Modelos de IA",
 		languageLabel: "Cambiar idioma",
 		localeLabel: {
 			en: "English",
@@ -42,18 +42,27 @@ const es = {
 			"Santiago Carrasco es un ingeniero de software que comparte notas prácticas sobre desarrollo web, IA y los proyectos que moldean cómo trabaja y piensa.",
 	},
 	aiModels: {
-		metaTitle: "Clasificación de Modelos de IA y Evidencia de Uso",
+		metaTitle: "Ranking Modelos de IA",
 		metaDescription:
 			"Opiniones de Santiago sobre modelos de IA, ordenadas manualmente y acompañadas por evidencia diaria de uso reconstruida de registros locales.",
-		eyebrow: "Opinión actual · uso observado",
-		title: "Modelos de IA",
+		title: "Ranking Modelos de IA",
 		intro:
-			"Mi perspectiva actual y ordenada manualmente de los modelos que uso. La evidencia muestra experiencia con un modelo, no calidad objetiva ni prueba de que una opinión sea correcta.",
-		generated: "Evidencia generada",
+			"Mi perspectiva actual y ordenada manualmente de los modelos que uso. La evidencia muestra experiencia con un modelo, basada en mi uso personal y evidencia.",
+		generated: "Actualizado",
 		ranked: "Modelos clasificados",
 		rankedIntro:
-			"El orden se establece manualmente. El uso nunca cambia la clasificación automáticamente.",
+			"El orden se establece manualmente, basado en uso y experiencia personal con el modelo.",
 		rank: "Puesto",
+		reviewLink: "Reseña y evidencia",
+		backToRanking: "Volver al ranking",
+		review: "Reseña",
+		evidenceAtGlance: "Evidencia de un vistazo",
+		detailedEvidence: "Evidencia detallada",
+		evidence: "Evidencia",
+		notRanked: "Sin clasificar",
+		unrankedCount: "Usados pero no clasificados — {count} modelos",
+		directoryDisclosure:
+			"El ranking es una opinión manual y subjetiva de Santiago. El uso muestra familiaridad con un modelo, no calidad objetiva.",
 		bestFor: "Mejor para:",
 		tradeoff: "Desventaja:",
 		activeDays: "Días activos",
@@ -76,12 +85,15 @@ const es = {
 			"Aún no hay modelos clasificados. Santiago agregará la clasificación y las opiniones bilingües cuando estén listas.",
 		emptyUnranked: "Aún no hay uso sin clasificar.",
 		history: "Historial diario",
+		showAllHistory: "Mostrar todo el historial",
+		collapseHistory: "Mostrar menos historial",
 		historyIntro:
 			"Todos los agregados diarios publicados, contraídos por defecto para mantener el enfoque editorial.",
 		historyCaption: "Uso diario agregado de modelos reconstruido por Memex",
 		date: "Fecha",
 		model: "Modelo",
 		sources: "Fuentes",
+		mostUsedSource: "Fuente más usada",
 		methodology: "Metodología",
 		opinionNote:
 			"Cada opinión en esta página está escrita y ordenada manualmente por Santiago. Es subjetiva, puede cambiar y nunca se calcula a partir de tokens, costos, actividad o volumen de solicitudes.",

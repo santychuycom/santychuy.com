@@ -22,9 +22,54 @@ const RESERVED_USAGE_SEGMENTS = new Set([
 	"__unknown_model__",
 ]);
 
-// Owner-managed: array position + 1 is rank. Keep empty until Santiago supplies
-// the initial ordered entries and bilingual opinions.
-export const rankedModels: readonly RankedModel[] = [];
+// Owner-managed: array position + 1 is rank.
+export const rankedModels: readonly RankedModel[] = [
+	{
+		id: "gpt-5-6-sol",
+		usageKeys: ["openai-codex/gpt-5.6-sol"],
+		name: "GPT-5.6 Sol",
+		provider: "OpenAI Codex",
+		opinion: {
+			en: {
+				summary:
+					"Mock example: my current first choice for demanding coding work. Replace this with your own experience.",
+				bestFor: "Large implementations and careful repository-wide changes.",
+				tradeoff:
+					"Higher usage and cost do not automatically mean better results.",
+			},
+			es: {
+				summary:
+					"Ejemplo: mi primera opción actual para trabajo de programación exigente. Sustituye esto con tu propia experiencia.",
+				bestFor:
+					"Implementaciones grandes y cambios cuidadosos en todo el repositorio.",
+				tradeoff:
+					"Un mayor uso y costo no significa automáticamente mejores resultados.",
+			},
+		},
+	},
+	{
+		id: "kimi-k3",
+		usageKeys: ["opencode-go/kimi-k3"],
+		name: "Kimi K3",
+		provider: "OpenCode Go",
+		opinion: {
+			en: {
+				summary:
+					"Mock example: a useful alternative when I want to compare another model's approach. Replace this with your own experience.",
+				bestFor: "Second opinions and alternative implementation ideas.",
+				tradeoff:
+					"I have less usage evidence for it than my first-ranked model.",
+			},
+			es: {
+				summary:
+					"Ejemplo: una alternativa útil cuando quiero comparar el enfoque de otro modelo. Sustituye esto con tu propia experiencia.",
+				bestFor: "Segundas opiniones e ideas alternativas de implementación.",
+				tradeoff:
+					"Tengo menos evidencia de uso que para mi modelo mejor clasificado.",
+			},
+		},
+	},
+];
 
 function requireText(value: string | undefined, label: string): void {
 	if (!value?.trim()) throw new Error(`Missing ${label}`);

@@ -1,0 +1,29 @@
+---
+import ModelReview from "@components/pages/AIModels/ModelReview.astro";
+import BaseLayout from "@layouts/Base.astro";
+import { getLocalizedPath } from "@ts/i18n";
+import { rankedModels } from "@/data/ai-models";
+import usageJson from "@/data/model-usage.json";
+import { type ModelUsageData, summarizeUsage } from "@/ts/ai-model-usage";
+import { getLocaleMessages } from "../../../i18n";
+
+export function getStaticPaths() {
+	return rankedModels.map((model, index) => ({
+		params: { id: model.id },
+		props: { model, rank: index + 1 },
+	}));
+}
+
+const { model, rank } = Astro.props;
+const lang = "es";
+const messages = getLocaleMessages(lang).aiModels;
+const site = Astro.site ?? Astro.url;
+const path = `ai-models/${model.id}`;
+const en = new URL(getLocalizedPath("en", path), site).toString();
+const es = new URL(getLocalizedPath("es", path), site).toString();
+const usage = usageJson as ModelUsageData;
+const summary = summarizeUsage(usage.daily, model.usageKeys);
+---
+<BaseLayout lang={lang} title={`${model.name} | ${messages.title}`} description={model.opinion.es.summary} url={es} alternates={{ en, es, "x-default": en }} languageSwitcher={{ en: getLocalizedPath("en", path), es: getLocalizedPath("es", path) }}>
+	<ModelReview lang={lang} model={model} rank={rank} usage={usage} summary={summary} />
+</BaseLayout>

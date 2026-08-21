@@ -2,180 +2,38 @@
 import { rankedModels, validateRankings } from "../../../data/ai-models";
 import usageJson from "../../../data/model-usage.json";
 import { getLocaleMessages } from "../../../i18n";
-import type { Locale } from "../../../ts/i18n";
-
-interface DailyRow {
-	date: string;
-	usageKey: string;
-	provider: string | null;
-	model: string | null;
-	sources: string[];
-	usageEvents: number;
-	uncachedInput: number;
-	cacheRead: number;
-	cacheWrite: number;
-	output: number;
-	reasoning: number;
-	totalProcessed: number;
-	pricedEvents: number;
-	unpricedEvents: number;
-	costNanoUsd: number;
-}
-
-interface UsageData {
-	generatedAt: string;
-	timezone: string;
-	collector: { version: string };
-	coverage: {
-		usageEvents: number;
-		pricedEvents: number;
-		unpricedEvents: number;
-		unknownProviderEvents: number;
-		unknownModelEvents: number;
-		conservativeEvents: number;
-		warnings: string[];
-	};
-	daily: DailyRow[];
-}
-
-interface LifetimeSummary {
-	key: string;
-	provider: string | null;
-	model: string | null;
-	rows: DailyRow[];
-	activeDays: number;
-	usageEvents: number;
-	uncachedInput: number;
-	cacheRead: number;
-	cacheWrite: number;
-	output: number;
-	reasoning: number;
-	totalProcessed: number;
-	pricedEvents: number;
-	unpricedEvents: number;
-	costNanoUsd: number;
-	firstObserved?: string;
-	lastObserved?: string;
-}
+import {
+	type ModelUsageData,
+	summarizeUsage,
+	unrankedUsage,
+} from "../../../ts/ai-model-usage";
+import { getLocalizedPath, type Locale } from "../../../ts/i18n";
 
 const { lang } = Astro.props as { lang: Locale };
 const messages = getLocaleMessages(lang).aiModels;
-const usage = usageJson as UsageData;
-validateRankings();
-
+const usage = usageJson as ModelUsageData;
 const integer = new Intl.NumberFormat(lang);
-const percent = new Intl.NumberFormat(lang, {
-	style: "percent",
-	maximumFractionDigits: 1,
-});
-const currency = new Intl.NumberFormat(lang, {
-	style: "currency",
-	currency: "USD",
-	minimumFractionDigits: 2,
-	maximumFractionDigits: 6,
-});
 const calendarDate = new Intl.DateTimeFormat(lang, {
 	dateStyle: "medium",
 	timeZone: usage.timezone,
 });
-
 const formatDate = (value?: string) =>
 	value
 		? calendarDate.format(
 				new Date(value.includes("T") ? value : `${value}T12:00:00Z`),
 			)
 		: messages.unavailable;
-const formatMoney = (nanoUsd: number) =>
-	currency.format(nanoUsd / 1_000_000_000);
-const costTitle = (nanoUsd: number) =>
-	`USD ${(nanoUsd / 1_000_000_000).toFixed(9)}`;
-const formatCoverage = (priced: number, events: number) =>
-	events ? percent.format(priced / events) : messages.unavailable;
 const displayModel = (provider: string | null, model: string | null) =>
 	`${provider ?? messages.unknownProvider}/${model ?? messages.unknownModel}`;
 
-const summarize = (keys: readonly string[]): LifetimeSummary => {
-	const rows = usage.daily.filter(({ usageKey }) => keys.includes(usageKey));
-	const first = rows[0];
-	const last = rows.at(-1);
-	return {
-		key: keys.join(", "),
-		provider: first?.provider ?? null,
-		model: first?.model ?? null,
-		rows,
-		activeDays: new Set(rows.map(({ date }) => date)).size,
-		usageEvents: rows.reduce((total, row) => total + row.usageEvents, 0),
-		uncachedInput: rows.reduce((total, row) => total + row.uncachedInput, 0),
-		cacheRead: rows.reduce((total, row) => total + row.cacheRead, 0),
-		cacheWrite: rows.reduce((total, row) => total + row.cacheWrite, 0),
-		output: rows.reduce((total, row) => total + row.output, 0),
-		reasoning: rows.reduce((total, row) => total + row.reasoning, 0),
-		totalProcessed: rows.reduce((total, row) => total + row.totalProcessed, 0),
-		pricedEvents: rows.reduce((total, row) => total + row.pricedEvents, 0),
-		unpricedEvents: rows.reduce((total, row) => total + row.unpricedEvents, 0),
-		costNanoUsd: rows.reduce((total, row) => total + row.costNanoUsd, 0),
-		firstObserved: first?.date,
-		lastObserved: last?.date,
-	};
-};
-
-const evidenceMetrics = (summary: LifetimeSummary) => {
-	const metrics: Array<{ label: string; value: string; title?: string }> = [
-		{ label: messages.activeDays, value: integer.format(summary.activeDays) },
-		{ label: messages.events, value: integer.format(summary.usageEvents) },
-		{
-			label: messages.uncachedInput,
-			value: integer.format(summary.uncachedInput),
-		},
-		{ label: messages.cacheRead, value: integer.format(summary.cacheRead) },
-		{ label: messages.cacheWrite, value: integer.format(summary.cacheWrite) },
-		{ label: messages.output, value: integer.format(summary.output) },
-		{ label: messages.reasoning, value: integer.format(summary.reasoning) },
-		{
-			label: messages.total,
-			value: integer.format(summary.totalProcessed),
-		},
-		{
-			label: messages.apiEstimate,
-			value: formatMoney(summary.costNanoUsd),
-			title: costTitle(summary.costNanoUsd),
-		},
-		{
-			label: messages.firstObserved,
-			value: formatDate(summary.firstObserved),
-		},
-		{
-			label: messages.lastObserved,
-			value: formatDate(summary.lastObserved),
-		},
-	];
-	if (summary.unpricedEvents > 0) {
-		metrics.push({
-			label: messages.costCoverage,
-			value: formatCoverage(summary.pricedEvents, summary.usageEvents),
-		});
-	}
-	return metrics;
-};
-
+validateRankings();
 const ownedKeys = new Set(rankedModels.flatMap(({ usageKeys }) => usageKeys));
-const unranked = [...new Set(usage.daily.map(({ usageKey }) => usageKey))]
-	.filter((key) => !ownedKeys.has(key))
-	.map((key) => summarize([key]))
-	.sort(
-		(left, right) =>
-			right.totalProcessed - left.totalProcessed ||
-			left.key.localeCompare(right.key),
-	);
-const overallCostCoverage = formatCoverage(
-	usage.coverage.pricedEvents,
-	usage.coverage.usageEvents,
-);
+const unranked = unrankedUsage(usage.daily, ownedKeys);
+const collapseUnranked = unranked.length > 8;
 ---
 
 <div class="ai-models">
 	<header class="introduction">
-		<p class="eyebrow">{messages.eyebrow}</p>
 		<h1>{messages.title}</h1>
 		<p class="lede">{messages.intro}</p>
 		<p class="generated">
@@ -190,43 +48,34 @@ const overallCostCoverage = formatCoverage(
 		</div>
 		{
 			rankedModels.length > 0 ? (
-				<div class="ranked-list">
+				<ol class="ranked-list">
 					{rankedModels.map((model, index) => {
-						const summary = summarize(model.usageKeys);
+						const summary = summarizeUsage(usage.daily, model.usageKeys);
 						const opinion = model.opinion[lang];
+						const href = getLocalizedPath(lang, `ai-models/${model.id}`);
 						return (
-							<article class="model-card">
-								<div class="rank-heading">
-									<p class="rank-number" aria-label={`${messages.rank} ${index + 1}`}>
-										{String(index + 1).padStart(2, "0")}
-									</p>
-									<div>
-										<h3>{model.name}</h3>
-										<p class="provider">{model.provider}</p>
-									</div>
-								</div>
-								<div class="opinion-copy">
-									<p>{opinion.summary}</p>
-									{opinion.bestFor && (
-										<p><strong>{messages.bestFor}</strong> {opinion.bestFor}</p>
+							<li class="model-row">
+								<p class="rank-number">{messages.rank} {index + 1}</p>
+								<div class="model-main">
+									<h3>{model.name}</h3>
+									<p class="provider">{model.provider}</p>
+									<p class="summary">{opinion.summary}</p>
+									{opinion.bestFor && <p class="best-for"><strong>{messages.bestFor}</strong> {opinion.bestFor}</p>}
+									{summary.rows.length === 0 ? (
+										<p class="empty-note">{messages.noEvidence}</p>
+									) : (
+										<dl class="quick-evidence">
+											<div><dt>{messages.activeDays}</dt><dd>{integer.format(summary.activeDays)}</dd></div>
+											<div><dt>{messages.events}</dt><dd>{integer.format(summary.usageEvents)}</dd></div>
+											<div><dt>{messages.lastObserved}</dt><dd>{formatDate(summary.lastObserved)}</dd></div>
+										</dl>
 									)}
-									{opinion.tradeoff && (
-										<p><strong>{messages.tradeoff}</strong> {opinion.tradeoff}</p>
-									)}
+									<a class="review-link" href={href}>{messages.reviewLink}</a>
 								</div>
-								{summary.rows.length === 0 && <p class="empty-note">{messages.noEvidence}</p>}
-								<dl class="evidence-grid">
-									{evidenceMetrics(summary).map((metric) => (
-										<div>
-											<dt>{metric.label}</dt>
-											<dd title={metric.title}>{metric.value}</dd>
-										</div>
-									))}
-								</dl>
-							</article>
+							</li>
 						);
 					})}
-				</div>
+				</ol>
 			) : (
 				<p class="empty-state">{messages.emptyRanked}</p>
 			)
@@ -240,357 +89,61 @@ const overallCostCoverage = formatCoverage(
 		</div>
 		{
 			unranked.length > 0 ? (
-				<div class="unranked-list">
-					{unranked.map((summary) => (
-						<article class="unranked-model">
-							<h3>{displayModel(summary.provider, summary.model)}</h3>
-							<code>{summary.key}</code>
-							<dl class="evidence-grid compact-grid">
-								{evidenceMetrics(summary).map((metric) => (
-									<div>
-										<dt>{metric.label}</dt>
-										<dd title={metric.title}>{metric.value}</dd>
-									</div>
-								))}
-							</dl>
-						</article>
-					))}
-				</div>
+				<details class="unranked-details" open={!collapseUnranked}>
+					{collapseUnranked && <summary>{messages.unrankedCount.replace("{count}", integer.format(unranked.length))}</summary>}
+					<div class="unranked-list">
+						{unranked.map((summary) => (
+							<article class="unranked-row">
+								<div>
+									<h3>{displayModel(summary.provider, summary.model)}</h3>
+									<code>{summary.key}</code>
+								</div>
+								<p class="not-ranked">{messages.notRanked}</p>
+								<dl class="quick-evidence">
+									<div><dt>{messages.activeDays}</dt><dd>{integer.format(summary.activeDays)}</dd></div>
+									<div><dt>{messages.events}</dt><dd>{integer.format(summary.usageEvents)}</dd></div>
+								</dl>
+							</article>
+						))}
+					</div>
+				</details>
 			) : (
 				<p class="empty-state">{messages.emptyUnranked}</p>
 			)
 		}
 	</section>
 
-	<section class="page-section" aria-labelledby="daily-history-heading">
-		<div class="section-heading">
-			<h2 id="daily-history-heading">{messages.history}</h2>
-			<p>{messages.historyIntro}</p>
-		</div>
-		<details class="history-details">
-			<summary>{messages.history}</summary>
-			<div class="table-scroll" tabindex="0">
-				<table>
-					<caption>{messages.historyCaption}</caption>
-					<thead>
-						<tr>
-							<th scope="col">{messages.date}</th>
-							<th scope="col">{messages.model}</th>
-							<th scope="col">{messages.sources}</th>
-							<th scope="col">{messages.events}</th>
-							<th scope="col">{messages.uncachedInput}</th>
-							<th scope="col">{messages.cacheRead}</th>
-							<th scope="col">{messages.cacheWrite}</th>
-							<th scope="col">{messages.output}</th>
-							<th scope="col">{messages.reasoning}</th>
-							<th scope="col">{messages.total}</th>
-							<th scope="col">{messages.apiEstimate}</th>
-							<th scope="col">{messages.costCoverage}</th>
-						</tr>
-					</thead>
-					<tbody>
-						{usage.daily.map((row) => (
-							<tr>
-								<td><time datetime={row.date}>{formatDate(row.date)}</time></td>
-								<td><code>{row.usageKey}</code></td>
-								<td>{row.sources.join(", ")}</td>
-								<td>{integer.format(row.usageEvents)}</td>
-								<td>{integer.format(row.uncachedInput)}</td>
-								<td>{integer.format(row.cacheRead)}</td>
-								<td>{integer.format(row.cacheWrite)}</td>
-								<td>{integer.format(row.output)}</td>
-								<td>{integer.format(row.reasoning)}</td>
-								<td>{integer.format(row.totalProcessed)}</td>
-								<td title={costTitle(row.costNanoUsd)}>{formatMoney(row.costNanoUsd)}</td>
-								<td>{formatCoverage(row.pricedEvents, row.usageEvents)}</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</div>
-		</details>
-	</section>
-
-	<section class="page-section methodology" aria-labelledby="methodology-heading">
-		<div class="section-heading">
-			<h2 id="methodology-heading">{messages.methodology}</h2>
-		</div>
-		<div class="method-copy">
-			<p>{messages.opinionNote}</p>
-			<p>{messages.evidenceNote}</p>
-			<p>{messages.tokensNote}</p>
-			<p>{messages.costNote}</p>
-		</div>
-		<dl class="method-facts">
-			<div><dt>{messages.collector}</dt><dd>Memex {usage.collector.version}</dd></div>
-			<div><dt>{messages.timezone}</dt><dd>{usage.timezone}</dd></div>
-			<div><dt>{messages.overallCoverage}</dt><dd>{overallCostCoverage}</dd></div>
-			<div><dt>{messages.unknownProviders}</dt><dd>{integer.format(usage.coverage.unknownProviderEvents)}</dd></div>
-			<div><dt>{messages.unknownModels}</dt><dd>{integer.format(usage.coverage.unknownModelEvents)}</dd></div>
-			<div><dt>{messages.conservative}</dt><dd>{integer.format(usage.coverage.conservativeEvents)}</dd></div>
-			<div><dt>{messages.warnings}</dt><dd>{usage.coverage.warnings.length ? usage.coverage.warnings.length : messages.none}</dd></div>
-		</dl>
-		<p class="method-links">
-			<a href="/data/model-usage.json">{messages.dataLink}</a>
-			<a href="https://github.com/santychuycom/santychuy.com">{messages.repositoryLink}</a>
-		</p>
-	</section>
 </div>
 
 <style>
-	.ai-models {
-		width: 100%;
-		max-width: var(--measure-content-max);
-		margin-inline: auto;
-	}
-
-	.introduction {
-		max-width: var(--measure-hero-max);
-	}
-
-	.eyebrow,
-	.generated,
-	.provider,
-	.section-heading p,
-	.empty-note {
-		color: var(--text-secondary);
-	}
-
-	.eyebrow {
-		margin: 0 0 var(--space-3);
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-semibold);
-		text-transform: uppercase;
-	}
-
-	h1 {
-		margin: 0;
-		font-size: var(--font-size-display);
-		line-height: var(--leading-tight);
-	}
-
-	.lede {
-		margin: var(--space-5) 0 0;
-		font-size: var(--font-size-lg);
-		line-height: var(--leading-copy);
-	}
-
-	.generated {
-		margin: var(--space-4) 0 0;
-		font-size: var(--font-size-sm);
-	}
-
-	.page-section {
-		margin-top: var(--layout-section-gap-mobile);
-		padding-top: var(--space-8);
-		border-top: var(--border-width-default) solid var(--border-subtle);
-	}
-
-	.section-heading {
-		max-width: var(--measure-section-max);
-	}
-
-	.section-heading h2,
-	.model-card h3,
-	.unranked-model h3 {
-		margin: 0;
-	}
-
-	.section-heading p {
-		margin: var(--space-3) 0 0;
-		line-height: var(--leading-copy);
-	}
-
-	.ranked-list,
-	.unranked-list {
-		display: grid;
-		gap: var(--space-11);
-		margin-top: var(--space-8);
-	}
-
-	.model-card,
-	.unranked-model {
-		padding-top: var(--space-6);
-		border-top: var(--border-width-default) solid var(--border-strong);
-	}
-
-	.rank-heading {
-		display: grid;
-		grid-template-columns: auto minmax(0, 1fr);
-		gap: var(--space-5);
-		align-items: start;
-	}
-
-	.rank-number {
-		margin: 0;
-		color: var(--text-tertiary);
-		font-size: var(--font-size-hero);
-		font-weight: var(--font-weight-medium);
-		font-variant-numeric: tabular-nums;
-		line-height: var(--leading-tight);
-	}
-
-	.provider,
-	.unranked-model code {
-		margin: var(--space-2) 0 0;
-		font-size: var(--font-size-sm);
-	}
-
-	.opinion-copy {
-		max-width: var(--measure-card-copy-max);
-		margin-top: var(--space-6);
-		line-height: var(--leading-copy);
-	}
-
-	.opinion-copy p,
-	.method-copy p {
-		margin: 0;
-	}
-
-	.opinion-copy p + p,
-	.method-copy p + p {
-		margin-top: var(--space-4);
-	}
-
-	.empty-note,
-	.empty-state {
-		margin: var(--space-6) 0 0;
-	}
-
-	.empty-state {
-		padding: var(--space-6);
-		border: var(--border-width-default) solid var(--border-subtle);
-		border-radius: var(--shape-radius-sm);
-		background: var(--surface-muted);
-		color: var(--text-secondary);
-	}
-
-	.evidence-grid,
-	.method-facts {
-		display: grid;
-		grid-template-columns: minmax(0, 1fr);
-		gap: 0 var(--space-6);
-		margin: var(--space-7) 0 0;
-	}
-
-	.evidence-grid > div,
-	.method-facts > div {
-		padding-block: var(--space-4);
-		border-top: var(--border-width-default) solid var(--border-subtle);
-	}
-
-	dt {
-		color: var(--text-secondary);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-medium);
-		line-height: var(--leading-copy-compact);
-	}
-
-	dd {
-		margin: var(--space-1) 0 0;
-		font-variant-numeric: tabular-nums;
-		font-weight: var(--font-weight-medium);
-	}
-
-	.history-details {
-		margin-top: var(--space-6);
-	}
-
-	summary {
-		display: inline-flex;
-		min-height: var(--touch-target-min);
-		align-items: center;
-		cursor: pointer;
-		font-weight: var(--font-weight-semibold);
-	}
-
-	summary:focus-visible,
-	a:focus-visible,
-	.table-scroll:focus-visible {
-		outline: var(--focus-outline-width) solid var(--focus-ring);
-		outline-offset: var(--focus-outline-offset-sm);
-	}
-
-	.table-scroll {
-		overflow-x: auto;
-		margin-top: var(--space-4);
-		border: var(--border-width-default) solid var(--border-subtle);
-		border-radius: var(--shape-radius-sm);
-	}
-
-	table {
-		width: 100%;
-		border-collapse: collapse;
-		font-size: var(--font-size-xs);
-		font-variant-numeric: tabular-nums;
-		white-space: nowrap;
-	}
-
-	caption {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		overflow: hidden;
-		clip: rect(0 0 0 0);
-		white-space: nowrap;
-		clip-path: inset(50%);
-	}
-
-	th,
-	td {
-		padding: var(--space-3) var(--space-4);
-		border-bottom: var(--border-width-default) solid var(--border-subtle);
-		text-align: left;
-	}
-
-	th {
-		background: var(--surface-muted);
-		color: var(--text-secondary);
-		font-weight: var(--font-weight-semibold);
-	}
-
-	tbody tr:last-child td {
-		border-bottom: 0;
-	}
-
-	.method-copy {
-		max-width: var(--measure-section-max);
-		margin-top: var(--space-6);
-		line-height: var(--leading-copy);
-	}
-
-	.method-links {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-3) var(--space-6);
-		margin: var(--space-7) 0 0;
-	}
-
-	.method-links a {
-		color: var(--text-primary);
-		text-decoration-thickness: var(--text-decoration-thickness-thin);
-		text-underline-offset: var(--space-2);
-	}
-
-	@media (min-width: 34.375rem) {
-		.evidence-grid,
-		.method-facts {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-	}
-
-	@media (min-width: 68.75rem) {
-		.page-section {
-			margin-top: var(--layout-section-gap);
-		}
-
-		.evidence-grid {
-			grid-template-columns: repeat(4, minmax(0, 1fr));
-		}
-
-		.compact-grid,
-		.method-facts {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
-		}
-	}
+	.ai-models { width: 100%; max-width: var(--measure-content-max); margin-inline: auto; }
+	.introduction, .section-heading { max-width: var(--measure-section-max); }
+	.generated, .provider, .section-heading p, .empty-note, dt, .not-ranked, code { color: var(--text-secondary); }
+	h1 { margin: 0; font-size: var(--font-size-display); line-height: var(--leading-tight); }
+	.lede { margin: var(--space-5) 0 0; font-size: var(--font-size-lg); line-height: var(--leading-copy); }
+	.generated { margin: var(--space-4) 0 0; font-size: var(--font-size-sm); }
+	.page-section { margin-top: var(--layout-section-gap-mobile); padding-top: var(--space-8); border-top: var(--border-width-default) solid var(--border-subtle); }
+	.section-heading h2, .model-row h3, .unranked-row h3 { margin: 0; }
+	.model-row h3 { font-size: var(--font-size-display); line-height: var(--leading-tight); }
+	.section-heading p { margin: var(--space-3) 0 0; line-height: var(--leading-copy); }
+	.ranked-list, .unranked-list { display: grid; gap: var(--space-6); margin: var(--space-8) 0 0; padding: 0; list-style: none; }
+	.model-row { display: grid; grid-template-columns: minmax(4.5rem, auto) minmax(0, 1fr); gap: var(--space-5); padding-top: var(--space-6); border-top: var(--border-width-default) solid var(--border-strong); }
+	.rank-number { margin: 0; color: var(--text-tertiary); font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); font-variant-numeric: tabular-nums; }
+	.provider, code { margin: var(--space-2) 0 0; font-size: var(--font-size-sm); }
+	.summary, .best-for { max-width: var(--measure-card-copy-max); margin: var(--space-4) 0 0; line-height: var(--leading-copy); }
+	.quick-evidence { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); margin: var(--space-5) 0 0; }
+	.quick-evidence div { display: grid; gap: var(--space-1); }
+	dt { font-size: var(--font-size-xs); font-weight: var(--font-weight-medium); }
+	dd { margin: 0; font-size: var(--font-size-sm); font-variant-numeric: tabular-nums; font-weight: var(--font-weight-medium); }
+	.review-link { display: inline-flex; min-height: var(--touch-target-min); align-items: center; margin-top: var(--space-5); color: var(--text-primary); text-underline-offset: var(--space-2); }
+	.empty-note, .empty-state { margin: var(--space-5) 0 0; }
+	.empty-state { padding: var(--space-6); border: var(--border-width-default) solid var(--border-subtle); border-radius: var(--shape-radius-sm); background: var(--surface-muted); }
+	.unranked-details { margin-top: var(--space-6); }
+	summary { display: inline-flex; min-height: var(--touch-target-min); align-items: center; cursor: pointer; font-weight: var(--font-weight-semibold); }
+	.unranked-row { display: grid; gap: var(--space-3); padding-top: var(--space-5); border-top: var(--border-width-default) solid var(--border-subtle); }
+	.unranked-row .quick-evidence { margin-top: 0; }
+	.not-ranked { margin: 0; font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); }
+	summary:focus-visible, a:focus-visible { outline: var(--focus-outline-width) solid var(--focus-ring); outline-offset: var(--focus-outline-offset-sm); }
+	@media (min-width: 34.375rem) { .unranked-row { grid-template-columns: minmax(0, 1fr) auto; } .unranked-row .quick-evidence { grid-column: 1 / -1; } }
+	@media (min-width: 68.75rem) { .page-section { margin-top: var(--layout-section-gap); } .model-row { grid-template-columns: 7rem minmax(0, 1fr); } }
 </style>
