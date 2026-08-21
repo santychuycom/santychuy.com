@@ -1,3 +1,9 @@
+## [2.5.0](https://github.com/santychuycom/santychuy.com/compare/v2.4.1...v2.5.0) (2026-08-21)
+
+### Features
+
+* **ai-models:** add ranking and usage evidence ([2ea9744](https://github.com/santychuycom/santychuy.com/commit/2ea9744c82ee20873ce0dcdc8899cbe81f5d4498))
+
 ## [2.4.1](https://github.com/santychuycom/santychuy.com/compare/v2.4.0...v2.4.1) (2026-04-13)
 
 ### Bug Fixes
