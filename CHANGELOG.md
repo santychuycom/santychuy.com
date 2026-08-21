@@ -1,3 +1,10 @@
+## [2.6.0](https://github.com/santychuycom/santychuy.com/compare/v2.5.0...v2.6.0) (2026-08-21)
+
+### Features
+
+* **ai-models:** add ranked model review pages ([9ce0f86](https://github.com/santychuycom/santychuy.com/commit/9ce0f862702a797013ab7f7cb10b0d8aa66439d1))
+* **ai-models:** export local usage source counts ([a65c565](https://github.com/santychuycom/santychuy.com/commit/a65c5654f81f30b6011005a92a34f0d14d38a863))
+
 ## [2.5.0](https://github.com/santychuycom/santychuy.com/compare/v2.4.1...v2.5.0) (2026-08-21)
 
 ### Features
