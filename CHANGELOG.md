@@ -1,3 +1,9 @@
+## [2.7.0](https://github.com/santychuycom/santychuy.com/compare/v2.6.0...v2.7.0) (2026-08-22)
+
+### Features
+
+* **ai-models:** refine ranked model presentation ([87a4312](https://github.com/santychuycom/santychuy.com/commit/87a4312261070d515c23c8150cb49ff1749649c1))
+
 ## [2.6.0](https://github.com/santychuycom/santychuy.com/compare/v2.5.0...v2.6.0) (2026-08-21)
 
 ### Features
