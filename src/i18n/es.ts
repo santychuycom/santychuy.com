@@ -59,8 +59,7 @@ const es = {
 		evidenceAtGlance: "Evidencia de un vistazo",
 		detailedEvidence: "Evidencia detallada",
 		evidence: "Evidencia",
-		notRanked: "Sin clasificar",
-		unrankedCount: "Usados pero no clasificados — {count} modelos",
+		unrankedCount: "Ver: {count} modelos",
 		directoryDisclosure:
 			"El ranking es una opinión manual y subjetiva de Santiago. El uso muestra familiaridad con un modelo, no calidad objetiva.",
 		bestFor: "Mejor para:",
@@ -80,7 +79,7 @@ const es = {
 		noEvidence: "Aún no hay evidencia de uso coincidente.",
 		unranked: "Usados pero no clasificados",
 		unrankedIntro:
-			"Claves exactas observadas por Memex que no pertenecen a una tarjeta clasificada manualmente.",
+			"El uso observado por Memax no pertenece a una tarjeta clasificada manualmente.",
 		emptyRanked:
 			"Aún no hay modelos clasificados. Santiago agregará la clasificación y las opiniones bilingües cuando estén listas.",
 		emptyUnranked: "Aún no hay uso sin clasificar.",

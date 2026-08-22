@@ -57,21 +57,20 @@ const historyRows = summary.rows.toReversed();
 		<div>
 			<p class="eyebrow">{messages.rank} {rank}</p>
 			<h1>{model.name}</h1>
-			<p class="provider">{model.provider}</p>
 		</div>
 		<a class="download-link" href="/data/model-usage.json" aria-label={messages.dataLink}>
 			<DownloadIcon aria-hidden="true" />
 		</a>
 	</header>
 
-	<section class="section review-copy" aria-labelledby="review-heading">
+	<section class="section section--borderless review-copy" aria-labelledby="review-heading">
 		<h2 id="review-heading">{messages.review}</h2>
 		<p>{opinion.summary}</p>
 		{opinion.bestFor && <p><strong>{messages.bestFor}</strong> {opinion.bestFor}</p>}
 		{opinion.tradeoff && <p><strong>{messages.tradeoff}</strong> {opinion.tradeoff}</p>}
 	</section>
 
-	<section class="section" aria-labelledby="overview-heading">
+	<section class="section section--borderless" aria-labelledby="overview-heading">
 		<h2 id="overview-heading">{messages.evidenceAtGlance}</h2>
 		{summary.rows.length === 0 ? (
 			<p class="empty-note">{messages.noEvidence}</p>
@@ -85,7 +84,7 @@ const historyRows = summary.rows.toReversed();
 		)}
 	</section>
 
-	{summary.rows.length > 0 && <section class="section" aria-labelledby="usage-heading">
+	{summary.rows.length > 0 && <section class="section section--borderless" aria-labelledby="usage-heading">
 		<h2 id="usage-heading">{messages.detailedEvidence}</h2>
 		<dl class="facts">
 			<div><dt>{messages.total}</dt><dd>{compact.format(summary.totalProcessed)}</dd></div>
@@ -139,11 +138,11 @@ const historyRows = summary.rows.toReversed();
 	.review { width: 100%; max-width: var(--measure-content-max); margin-inline: auto; }
 	.back-link { display: inline-flex; min-height: var(--touch-target-min); align-items: center; color: var(--text-primary); text-underline-offset: var(--space-2); }
 	.model-header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-5); }
-	.eyebrow, .provider, dt, .empty-note, .note { color: var(--text-secondary); }
+	.eyebrow, dt, .empty-note, .note { color: var(--text-secondary); }
 	.eyebrow { margin: 0 0 var(--space-3); font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); text-transform: uppercase; }
 	h1 { margin: 0; font-size: var(--font-size-display); line-height: var(--leading-tight); }
-	.provider { margin: var(--space-3) 0 0; }
 	.section { margin-top: var(--layout-section-gap-mobile); padding-top: var(--space-8); border-top: var(--border-width-default) solid var(--border-subtle); }
+	.section--borderless { border-top: 0; }
 	h2 { margin: 0; }
 	.review-copy { max-width: var(--measure-section-max); }
 	.review-copy p, .note { margin: var(--space-5) 0 0; line-height: var(--leading-copy); }

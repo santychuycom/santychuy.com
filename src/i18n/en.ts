@@ -59,8 +59,7 @@ const en = {
 		evidenceAtGlance: "Evidence at a glance",
 		detailedEvidence: "Detailed evidence",
 		evidence: "Evidence",
-		notRanked: "Not ranked",
-		unrankedCount: "Used but not ranked — {count} models",
+		unrankedCount: "See: {count} models",
 		directoryDisclosure:
 			"Ranking is Santiago’s manual, subjective opinion. Usage shows familiarity with a model, not objective quality.",
 		bestFor: "Best for:",
@@ -80,7 +79,7 @@ const en = {
 		noEvidence: "No matching usage evidence yet.",
 		unranked: "Used but not ranked",
 		unrankedIntro:
-			"Exact usage keys observed by Memex that do not belong to a manually ranked card.",
+			"Usage observed by Memax, do not belong to a manually ranked card.",
 		emptyRanked:
 			"No models are ranked yet. Santiago will add rankings and bilingual opinions when ready.",
 		emptyUnranked: "No unranked usage yet.",

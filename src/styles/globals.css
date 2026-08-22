@@ -267,6 +267,9 @@
 	--focus-ring-soft: var(--focus-ring-soft-dark);
 	--surface-hover: var(--surface-hover-dark);
 	--mark-highlight: var(--mark-highlight-dark);
+	--rank-medal-gold: var(--rank-medal-gold-dark);
+	--rank-medal-silver: var(--rank-medal-silver-dark);
+	--rank-medal-bronze: var(--rank-medal-bronze-dark);
 	--atmosphere-accent: var(--atmosphere-accent-dark);
 	--atmosphere-cool: var(--atmosphere-cool-dark);
 	--atmosphere-layer: var(--atmosphere-layer-dark);

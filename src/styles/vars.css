@@ -176,6 +176,14 @@
 	--status-success: var(--supporting---success--8);
 	--status-info: var(--supporting---info--8);
 
+	--rank-medal-gold: oklch(0.716 0.142 83.75);
+	--rank-medal-silver: oklch(0.71 0.02 248.11);
+	--rank-medal-bronze: oklch(0.647 0.13 50.2);
+	--rank-medal-ink: hsl(var(--paper-ink-hsl));
+	--rank-medal-gold-dark: oklch(0.809 0.145 86.1);
+	--rank-medal-silver-dark: oklch(0.778 0.018 248.06);
+	--rank-medal-bronze-dark: oklch(0.718 0.109 52.09);
+
 	--chart-tone-1: var(--paper-accent);
 	--chart-tone-2: var(--primary---blue--5);
 	--chart-tone-3: var(--secondary---dark--green--3);
