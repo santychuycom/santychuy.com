@@ -47,11 +47,36 @@ const en = {
 			"Santiago’s manually ordered AI model opinions, supported by privacy-safe daily usage evidence reconstructed from local agent logs.",
 		title: "Ranking AI Models",
 		intro:
-			"My current, manually ordered view of the models I use. The evidence below shows experience with a model, based on my personal usage and evidence.",
-		generated: "Updated",
-		ranked: "Ranked models",
-		rankedIntro:
-			"The order below is set manually, based on usage and personal experience with the model.",
+			"My current view of the AI models I use. Favorites reflect my personal preference; Memex evidence shows how much firsthand experience sits behind each opinion.",
+		generated: "Evidence updated",
+		favoritesTab: "My favorites",
+		byRoleTab: "By role",
+		favoritesTitle: "Models I reach for first",
+		favoritesIntro:
+			"This order is manual. Usage evidence shows familiarity, not model quality.",
+		rolesTitle: "Choose by the job",
+		rolesIntro:
+			"Each reviewed model has one primary role. This is a field guide, not another ranking.",
+		roles: {
+			frontier: {
+				label: "Frontier",
+				badge: "Frontier",
+				description:
+					"Best capability when quality matters more than speed or cost.",
+			},
+			workhorse: {
+				label: "Daily drivers",
+				badge: "Daily driver",
+				description: "Dependable defaults for most serious work.",
+			},
+			lightweight: {
+				label: "Fast & light",
+				badge: "Fast & light",
+				description: "Quick options for bounded tasks and rapid iteration.",
+			},
+		},
+		roleEmpty: "No reviewed model in this role yet.",
+		observedUsage: "Observed by Memex",
 		rank: "Rank",
 		reviewLink: "Review and evidence",
 		backToRanking: "Back to ranking",
@@ -59,7 +84,7 @@ const en = {
 		evidenceAtGlance: "Evidence at a glance",
 		detailedEvidence: "Detailed evidence",
 		evidence: "Evidence",
-		unrankedCount: "See: {count} models",
+		unrankedCount: "See {count} models",
 		directoryDisclosure:
 			"Ranking is Santiago’s manual, subjective opinion. Usage shows familiarity with a model, not objective quality.",
 		bestFor: "Best for:",
@@ -77,9 +102,9 @@ const en = {
 		lastObserved: "Last observed",
 		costCoverage: "Cost coverage",
 		noEvidence: "No matching usage evidence yet.",
-		unranked: "Used but not ranked",
+		unranked: "Used, not reviewed",
 		unrankedIntro:
-			"Usage observed by Memax, do not belong to a manually ranked card.",
+			"Models observed by Memex that do not have a manually written review yet.",
 		emptyRanked:
 			"No models are ranked yet. Santiago will add rankings and bilingual opinions when ready.",
 		emptyUnranked: "No unranked usage yet.",

@@ -1,8 +1,11 @@
+export type ModelRole = "frontier" | "workhorse" | "lightweight";
+
 export interface RankedModel {
 	id: string;
 	usageKeys: readonly string[];
 	name: string;
 	provider: string;
+	role: ModelRole;
 	opinion: {
 		en: {
 			summary: string;
@@ -21,6 +24,11 @@ const RESERVED_USAGE_SEGMENTS = new Set([
 	"__unknown_provider__",
 	"__unknown_model__",
 ]);
+const MODEL_ROLES = new Set<ModelRole>([
+	"frontier",
+	"workhorse",
+	"lightweight",
+]);
 
 // Owner-managed: array position + 1 is rank.
 export const rankedModels: readonly RankedModel[] = [
@@ -29,17 +37,17 @@ export const rankedModels: readonly RankedModel[] = [
 		usageKeys: ["openai-codex/gpt-5.6-sol"],
 		name: "GPT-5.6 Sol",
 		provider: "OpenAI Codex",
+		role: "frontier",
 		opinion: {
 			en: {
-				summary:
-					"Mock example: my current first choice for demanding coding work. Replace this with your own experience.",
+				summary: "My current first choice for demanding coding work.",
 				bestFor: "Large implementations and careful repository-wide changes.",
 				tradeoff:
 					"Higher usage and cost do not automatically mean better results.",
 			},
 			es: {
 				summary:
-					"Ejemplo: mi primera opción actual para trabajo de programación exigente. Sustituye esto con tu propia experiencia.",
+					"Mi primera opción actual para trabajo de programación exigente.",
 				bestFor:
 					"Implementaciones grandes y cambios cuidadosos en todo el repositorio.",
 				tradeoff:
@@ -52,17 +60,18 @@ export const rankedModels: readonly RankedModel[] = [
 		usageKeys: ["opencode-go/kimi-k3"],
 		name: "Kimi K3",
 		provider: "OpenCode Go",
+		role: "workhorse",
 		opinion: {
 			en: {
 				summary:
-					"Mock example: a useful alternative when I want to compare another model's approach. Replace this with your own experience.",
+					"A useful alternative when I want to compare another model's approach.",
 				bestFor: "Second opinions and alternative implementation ideas.",
 				tradeoff:
 					"I have less usage evidence for it than my first-ranked model.",
 			},
 			es: {
 				summary:
-					"Ejemplo: una alternativa útil cuando quiero comparar el enfoque de otro modelo. Sustituye esto con tu propia experiencia.",
+					"Una alternativa útil cuando quiero comparar el enfoque de otro modelo.",
 				bestFor: "Segundas opiniones e ideas alternativas de implementación.",
 				tradeoff:
 					"Tengo menos evidencia de uso que para mi modelo mejor clasificado.",
@@ -87,6 +96,9 @@ export function validateRankings(
 		ids.add(model.id);
 		requireText(model.name, `${model.id} name`);
 		requireText(model.provider, `${model.id} provider`);
+		if (!MODEL_ROLES.has(model.role)) {
+			throw new Error(`Invalid model role: ${model.role}`);
+		}
 		requireText(model.opinion.en.summary, `${model.id} English summary`);
 		requireText(model.opinion.es.summary, `${model.id} Spanish summary`);
 		for (const [locale, opinion] of Object.entries(model.opinion)) {

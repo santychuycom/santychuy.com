@@ -47,11 +47,37 @@ const es = {
 			"Opiniones de Santiago sobre modelos de IA, ordenadas manualmente y acompañadas por evidencia diaria de uso reconstruida de registros locales.",
 		title: "Ranking Modelos de IA",
 		intro:
-			"Mi perspectiva actual y ordenada manualmente de los modelos que uso. La evidencia muestra experiencia con un modelo, basada en mi uso personal y evidencia.",
-		generated: "Actualizado",
-		ranked: "Modelos clasificados",
-		rankedIntro:
-			"El orden se establece manualmente, basado en uso y experiencia personal con el modelo.",
+			"Mi perspectiva actual de los modelos de IA que uso. Mis favoritos reflejan mi preferencia personal; la evidencia de Memex muestra cuánta experiencia directa respalda cada opinión.",
+		generated: "Evidencia actualizada",
+		favoritesTab: "Mis favoritos",
+		byRoleTab: "Por función",
+		favoritesTitle: "Los modelos que elijo primero",
+		favoritesIntro:
+			"Este orden es manual. La evidencia de uso muestra familiaridad, no calidad del modelo.",
+		rolesTitle: "Elige según la tarea",
+		rolesIntro:
+			"Cada modelo reseñado tiene una función principal. Es una guía práctica, no otro ranking.",
+		roles: {
+			frontier: {
+				label: "Frontera",
+				badge: "Frontera",
+				description:
+					"La mejor capacidad cuando la calidad importa más que la velocidad o el costo.",
+			},
+			workhorse: {
+				label: "Uso diario",
+				badge: "Uso diario",
+				description:
+					"Opciones confiables para la mayor parte del trabajo serio.",
+			},
+			lightweight: {
+				label: "Rápidos y ligeros",
+				badge: "Rápido y ligero",
+				description: "Opciones ágiles para tareas acotadas e iteración rápida.",
+			},
+		},
+		roleEmpty: "Aún no hay un modelo reseñado en esta función.",
+		observedUsage: "Observado por Memex",
 		rank: "Puesto",
 		reviewLink: "Reseña y evidencia",
 		backToRanking: "Volver al ranking",
@@ -59,7 +85,7 @@ const es = {
 		evidenceAtGlance: "Evidencia de un vistazo",
 		detailedEvidence: "Evidencia detallada",
 		evidence: "Evidencia",
-		unrankedCount: "Ver: {count} modelos",
+		unrankedCount: "Ver {count} modelos",
 		directoryDisclosure:
 			"El ranking es una opinión manual y subjetiva de Santiago. El uso muestra familiaridad con un modelo, no calidad objetiva.",
 		bestFor: "Mejor para:",
@@ -77,9 +103,9 @@ const es = {
 		lastObserved: "Última observación",
 		costCoverage: "Cobertura de costos",
 		noEvidence: "Aún no hay evidencia de uso coincidente.",
-		unranked: "Usados pero no clasificados",
+		unranked: "Usados, sin reseña",
 		unrankedIntro:
-			"El uso observado por Memax no pertenece a una tarjeta clasificada manualmente.",
+			"Modelos observados por Memex que aún no tienen una reseña escrita manualmente.",
 		emptyRanked:
 			"Aún no hay modelos clasificados. Santiago agregará la clasificación y las opiniones bilingües cuando estén listas.",
 		emptyUnranked: "Aún no hay uso sin clasificar.",

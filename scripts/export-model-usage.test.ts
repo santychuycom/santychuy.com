@@ -328,6 +328,7 @@ describe("manual ranking validation", () => {
 		usageKeys: ["provider/model"],
 		name: "Model",
 		provider: "Provider",
+		role: "workhorse",
 		opinion: {
 			en: { summary: "Owner-written English summary." },
 			es: { summary: "Resumen en español escrito por el propietario." },
@@ -345,7 +346,10 @@ describe("manual ranking validation", () => {
 		).toThrow();
 	});
 
-	test("rejects reserved unknown keys and missing bilingual summaries", () => {
+	test("rejects invalid roles, reserved unknown keys, and missing bilingual summaries", () => {
+		expect(() =>
+			validateRankings([ranked({ role: "invalid" as RankedModel["role"] })]),
+		).toThrow();
 		expect(() =>
 			validateRankings([ranked({ usageKeys: [`${UNKNOWN_PROVIDER}/model`] })]),
 		).toThrow();

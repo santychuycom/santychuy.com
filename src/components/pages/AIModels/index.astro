@@ -1,5 +1,9 @@
 ---
-import { rankedModels, validateRankings } from "../../../data/ai-models";
+import {
+	type ModelRole,
+	rankedModels,
+	validateRankings,
+} from "../../../data/ai-models";
 import usageJson from "../../../data/model-usage.json";
 import { getLocaleMessages } from "../../../i18n";
 import {
@@ -23,13 +27,25 @@ const formatDate = (value?: string) =>
 				new Date(value.includes("T") ? value : `${value}T12:00:00Z`),
 			)
 		: messages.unavailable;
+const roles = [
+	"frontier",
+	"workhorse",
+	"lightweight",
+] as const satisfies readonly ModelRole[];
+
 validateRankings();
+const reviewedModels = rankedModels.map((model, index) => ({
+	...model,
+	rank: index + 1,
+	summary: summarizeUsage(usage.daily, model.usageKeys),
+	href: getLocalizedPath(lang, `ai-models/${model.id}`),
+}));
 const ownedKeys = new Set(rankedModels.flatMap(({ usageKeys }) => usageKeys));
 const unranked = unrankedUsage(usage.daily, ownedKeys);
 const collapseUnranked = unranked.length > 8;
 ---
 
-<div class="ai-models">
+<div class="ai-models" data-model-views>
 	<header class="introduction">
 		<h1>{messages.title}</h1>
 		<p class="lede">{messages.intro}</p>
@@ -38,44 +54,77 @@ const collapseUnranked = unranked.length > 8;
 		</p>
 	</header>
 
-	<section class="page-section" aria-labelledby="ranked-models-heading">
-		<div class="section-heading">
-			<h2 id="ranked-models-heading">{messages.ranked}</h2>
-			<p>{messages.rankedIntro}</p>
+	<div class="view-tabs" role="tablist" aria-label={messages.title}>
+		<button
+			id="favorites-tab"
+			type="button"
+			role="tab"
+			aria-controls="favorites-panel"
+			aria-selected="true"
+			data-model-tab="favorites"
+		>
+			{messages.favoritesTab}
+		</button>
+		<button
+			id="roles-tab"
+			type="button"
+			role="tab"
+			aria-controls="roles-panel"
+			aria-selected="false"
+			tabindex="-1"
+			data-model-tab="roles"
+		>
+			{messages.byRoleTab}
+		</button>
+	</div>
+
+	<section
+		id="favorites-panel"
+		class="view-panel"
+		role="tabpanel"
+		aria-labelledby="favorites-tab"
+		tabindex="0"
+		data-model-panel="favorites"
+	>
+		<div class="view-heading">
+			<h2>{messages.favoritesTitle}</h2>
+			<p>{messages.favoritesIntro}</p>
 		</div>
 		{
-			rankedModels.length > 0 ? (
-				<ol class="ranked-list">
-					{rankedModels.map((model, index) => {
-						const summary = summarizeUsage(usage.daily, model.usageKeys);
+			reviewedModels.length > 0 ? (
+				<ol class="favorites-list">
+					{reviewedModels.map((model) => {
+						const role = messages.roles[model.role];
 						const opinion = model.opinion[lang];
-						const href = getLocalizedPath(lang, `ai-models/${model.id}`);
 						return (
-							<li class="model-row">
-								{
-									index < 3 ? (
-										<p class={`rank-number rank-badge rank-badge--${index + 1}`}>
-											<span class="rank-badge__number" aria-hidden="true">{index + 1}</span>
-											<span class="sr-only">{messages.rank} {index + 1}</span>
-										</p>
-									) : (
-										<p class="rank-number">{messages.rank} {index + 1}</p>
-									)
-								}
-								<h3>{model.name}</h3>
+							<li class="favorite-row">
+								<p class="rank-number">
+									<span aria-hidden="true">{String(model.rank).padStart(2, "0")}</span>
+									<span class="sr-only">{messages.rank} {model.rank}</span>
+								</p>
 								<div class="model-main">
+									<div class="model-identity">
+										<h3>{model.name}</h3>
+										<span class="role-badge">{role.badge}</span>
+									</div>
+									<p class="provider">{model.provider}</p>
 									<p class="summary">{opinion.summary}</p>
-									{opinion.bestFor && <p class="best-for"><strong>{messages.bestFor}</strong> {opinion.bestFor}</p>}
-									{summary.rows.length === 0 ? (
+									{opinion.bestFor && (
+										<p class="best-for"><strong>{messages.bestFor}</strong> {opinion.bestFor}</p>
+									)}
+									<a class="review-link" href={model.href}>{messages.reviewLink}</a>
+								</div>
+								<div class="evidence-block">
+									<p class="evidence-label">{messages.observedUsage}</p>
+									{model.summary.rows.length === 0 ? (
 										<p class="empty-note">{messages.noEvidence}</p>
 									) : (
-										<dl class="quick-evidence">
-											<div><dt>{messages.activeDays}</dt><dd>{integer.format(summary.activeDays)}</dd></div>
-											<div><dt>{messages.events}</dt><dd>{integer.format(summary.usageEvents)}</dd></div>
-											<div><dt>{messages.lastObserved}</dt><dd>{formatDate(summary.lastObserved)}</dd></div>
+										<dl class="evidence-list">
+											<div><dt>{messages.events}</dt><dd>{integer.format(model.summary.usageEvents)}</dd></div>
+											<div><dt>{messages.activeDays}</dt><dd>{integer.format(model.summary.activeDays)}</dd></div>
+											<div><dt>{messages.lastObserved}</dt><dd>{formatDate(model.summary.lastObserved)}</dd></div>
 										</dl>
 									)}
-									<a class="review-link" href={href}>{messages.reviewLink}</a>
 								</div>
 							</li>
 						);
@@ -87,20 +136,80 @@ const collapseUnranked = unranked.length > 8;
 		}
 	</section>
 
-	<section class="page-section" aria-labelledby="unranked-models-heading">
+	<section
+		id="roles-panel"
+		class="view-panel"
+		role="tabpanel"
+		aria-labelledby="roles-tab"
+		tabindex="0"
+		hidden
+		data-model-panel="roles"
+	>
+		<div class="view-heading">
+			<h2>{messages.rolesTitle}</h2>
+			<p>{messages.rolesIntro}</p>
+		</div>
+		<div class="role-groups">
+			{
+				roles.map((roleKey) => {
+					const role = messages.roles[roleKey];
+					const models = reviewedModels.filter((model) => model.role === roleKey);
+					return (
+						<section class={`role-group role-group--${roleKey}`} aria-labelledby={`role-${roleKey}`}>
+							<header class="role-heading">
+								<h3 id={`role-${roleKey}`}>{role.label}</h3>
+								<p>{role.description}</p>
+							</header>
+							{models.length > 0 ? (
+								<ul class="role-models">
+									{models.map((model) => {
+										const opinion = model.opinion[lang];
+										return (
+											<li>
+												<p class="role-rank">#{model.rank}</p>
+												<div class="role-model-copy">
+													<h4>{model.name}</h4>
+													<p>{opinion.summary}</p>
+													<a class="review-link" href={model.href}>{messages.reviewLink}</a>
+												</div>
+												{model.summary.rows.length > 0 ? (
+													<dl class="role-evidence">
+														<div><dt>{messages.events}</dt><dd>{integer.format(model.summary.usageEvents)}</dd></div>
+														<div><dt>{messages.activeDays}</dt><dd>{integer.format(model.summary.activeDays)}</dd></div>
+													</dl>
+												) : (
+													<p class="empty-note role-empty-note">{messages.noEvidence}</p>
+												)}
+											</li>
+										);
+									})}
+								</ul>
+							) : (
+								<p class="empty-note role-empty">{messages.roleEmpty}</p>
+							)}
+						</section>
+					);
+				})
+			}
+		</div>
+	</section>
+
+	<section class="unreviewed-section" aria-labelledby="unreviewed-models-heading">
 		<div class="section-heading">
-			<h2 id="unranked-models-heading">{messages.unranked}</h2>
+			<h2 id="unreviewed-models-heading">{messages.unranked}</h2>
 			<p>{messages.unrankedIntro}</p>
 		</div>
 		{
 			unranked.length > 0 ? (
-				<details class="unranked-details" open={!collapseUnranked}>
-					{collapseUnranked && <summary>{messages.unrankedCount.replace("{count}", integer.format(unranked.length))}</summary>}
-					<div class="unranked-list">
+				<details class="unreviewed-details" open={!collapseUnranked}>
+					{collapseUnranked && (
+						<summary>{messages.unrankedCount.replace("{count}", integer.format(unranked.length))}</summary>
+					)}
+					<div class="unreviewed-list">
 						{unranked.map((summary) => (
-							<article class="unranked-row">
+							<article class="unreviewed-row">
 								<h3>{summary.model ?? messages.unknownModel}</h3>
-								<dl class="quick-evidence">
+								<dl class="unreviewed-evidence">
 									<div><dt>{messages.activeDays}</dt><dd>{integer.format(summary.activeDays)}</dd></div>
 									<div><dt>{messages.events}</dt><dd>{integer.format(summary.usageEvents)}</dd></div>
 								</dl>
@@ -113,45 +222,115 @@ const collapseUnranked = unranked.length > 8;
 			)
 		}
 	</section>
-
 </div>
+
+<script>
+	function initializeModelViews() {
+		document.querySelectorAll<HTMLElement>("[data-model-views]").forEach((root) => {
+			if (root.dataset.tabsReady === "true") return;
+			root.dataset.tabsReady = "true";
+			const tabs = [...root.querySelectorAll<HTMLButtonElement>("[data-model-tab]")];
+			const panels = [...root.querySelectorAll<HTMLElement>("[data-model-panel]")];
+			const activate = (tab: HTMLButtonElement, focus = false) => {
+				for (const candidate of tabs) {
+					const selected = candidate === tab;
+					candidate.setAttribute("aria-selected", String(selected));
+					candidate.tabIndex = selected ? 0 : -1;
+				}
+				for (const panel of panels) panel.hidden = panel.dataset.modelPanel !== tab.dataset.modelTab;
+				if (focus) tab.focus();
+			};
+			for (const [index, tab] of tabs.entries()) {
+				tab.addEventListener("click", () => activate(tab));
+				tab.addEventListener("keydown", (event) => {
+					let next = index;
+					if (event.key === "ArrowLeft") next = (index - 1 + tabs.length) % tabs.length;
+					else if (event.key === "ArrowRight") next = (index + 1) % tabs.length;
+					else if (event.key === "Home") next = 0;
+					else if (event.key === "End") next = tabs.length - 1;
+					else return;
+					event.preventDefault();
+					activate(tabs[next], true);
+				});
+			}
+		});
+	}
+
+	initializeModelViews();
+	document.addEventListener("astro:page-load", initializeModelViews);
+</script>
 
 <style>
 	.ai-models { width: 100%; max-width: var(--measure-content-max); margin-inline: auto; }
 	.introduction, .section-heading { max-width: var(--measure-section-max); }
-	.generated, .section-heading p, .empty-note, dt { color: var(--text-secondary); }
-	h1 { margin: 0; font-size: var(--font-size-display); line-height: var(--leading-tight); }
-	.lede { margin: var(--space-5) 0 0; font-size: var(--font-size-lg); line-height: var(--leading-copy); }
+	h1 { margin: 0; font-size: var(--font-size-display); line-height: var(--leading-tight); letter-spacing: var(--tracking-tight); text-wrap: balance; }
+	.lede { margin: var(--space-5) 0 0; font-size: var(--font-size-lg); line-height: var(--leading-copy); text-wrap: pretty; }
+	.generated, .view-heading p, .section-heading p, .provider, .empty-note, dt { color: var(--text-secondary); }
 	.generated { margin: var(--space-4) 0 0; font-size: var(--font-size-sm); }
-	.page-section { margin-top: var(--layout-section-gap-mobile); padding-top: var(--space-8); border-top: var(--border-width-default) solid var(--border-subtle); }
-	.page-section:first-of-type { border-top: 0; }
-	.section-heading h2, .model-row h3, .unranked-row h3 { margin: 0; }
-	.model-row h3 { font-size: var(--font-size-display); line-height: var(--leading-tight); }
-	.section-heading p { margin: var(--space-3) 0 0; line-height: var(--leading-copy); }
-	.ranked-list, .unranked-list { display: grid; gap: var(--space-6); margin: var(--space-8) 0 0; padding: 0; list-style: none; }
-	.model-row { display: grid; grid-template-columns: minmax(4.5rem, auto) minmax(0, 1fr); column-gap: var(--space-5); padding-top: var(--space-6); border-top: var(--border-width-default) solid var(--border-strong); }
-	.model-main { grid-column: 2; }
-	.rank-number { align-self: center; margin: 0; color: var(--text-tertiary); font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); font-variant-numeric: tabular-nums; }
-	.rank-badge { position: relative; isolation: isolate; display: grid; inline-size: calc(var(--space-10) * 1.1547); block-size: var(--space-10); place-items: center; color: var(--rank-medal-ink); font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); }
-	.rank-badge::before, .rank-badge::after { position: absolute; content: ""; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); }
-	.rank-badge::before { z-index: -2; inset: 0; background: linear-gradient(145deg, var(--rank-badge-highlight), var(--rank-badge-edge) 52%, var(--rank-badge-shadow)); filter: drop-shadow(0 calc(var(--border-width-default) * 2) var(--space-1) color-mix(in oklch, var(--rank-badge-shadow) 42%, transparent)); }
-	.rank-badge::after { z-index: -1; inset: calc(var(--border-width-default) * 2); background: radial-gradient(circle at 32% 24%, color-mix(in oklch, var(--neutrals---black--1) 34%, transparent), transparent 42%), linear-gradient(145deg, var(--rank-badge-highlight), var(--rank-badge-color) 48%, var(--rank-badge-shadow)); }
-	.rank-badge__number { line-height: 1; text-shadow: 0 var(--border-width-default) 0 color-mix(in oklch, var(--neutrals---black--1) 34%, transparent); }
-	.rank-badge--1 { --rank-badge-color: var(--rank-medal-gold); --rank-badge-highlight: color-mix(in oklch, var(--rank-medal-gold), var(--neutrals---black--1) 32%); --rank-badge-edge: color-mix(in oklch, var(--rank-medal-gold), var(--neutrals---black--13) 15%); --rank-badge-shadow: color-mix(in oklch, var(--rank-medal-gold), var(--neutrals---black--13) 30%); }
-	.rank-badge--2 { --rank-badge-color: var(--rank-medal-silver); --rank-badge-highlight: color-mix(in oklch, var(--rank-medal-silver), var(--neutrals---black--1) 30%); --rank-badge-edge: color-mix(in oklch, var(--rank-medal-silver), var(--neutrals---black--13) 13%); --rank-badge-shadow: color-mix(in oklch, var(--rank-medal-silver), var(--neutrals---black--13) 28%); }
-	.rank-badge--3 { --rank-badge-color: var(--rank-medal-bronze); --rank-badge-highlight: color-mix(in oklch, var(--rank-medal-bronze), var(--neutrals---black--1) 27%); --rank-badge-edge: color-mix(in oklch, var(--rank-medal-bronze), var(--neutrals---black--13) 15%); --rank-badge-shadow: color-mix(in oklch, var(--rank-medal-bronze), var(--neutrals---black--13) 30%); }
-	.summary, .best-for { max-width: var(--measure-card-copy-max); margin: var(--space-4) 0 0; line-height: var(--leading-copy); }
-	.quick-evidence { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); margin: var(--space-5) 0 0; }
-	.quick-evidence div { display: grid; gap: var(--space-1); }
+	.view-tabs { display: inline-grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-1); margin-top: var(--space-10); padding: var(--space-1); border-radius: var(--shape-radius-pill); background: var(--surface-muted); }
+	.view-tabs button { min-height: var(--touch-target-min); padding-inline: var(--space-5); border: 0; border-radius: var(--shape-radius-pill); background: transparent; color: var(--text-secondary); cursor: pointer; font: inherit; font-weight: var(--font-weight-semibold); white-space: nowrap; transition: color var(--motion-duration-fast) var(--motion-ease-standard), background-color var(--motion-duration-fast) var(--motion-ease-standard), transform var(--motion-duration-fast) var(--motion-ease-standard); }
+	.view-tabs button:hover { color: var(--text-primary); }
+	.view-tabs button[aria-selected="true"] { background: var(--surface-elevated); color: var(--text-primary); box-shadow: var(--elevation-sm); }
+	.view-tabs button:active { transform: scale(0.96); }
+	.view-tabs button:focus-visible, .view-panel:focus-visible, summary:focus-visible, a:focus-visible { outline: var(--focus-outline-width) solid var(--focus-ring); outline-offset: var(--focus-outline-offset-sm); }
+	.view-panel { margin-top: var(--space-10); }
+	.view-panel:focus-visible { border-radius: var(--shape-radius-xs); }
+	.view-heading { display: grid; gap: var(--space-3); padding-bottom: var(--space-6); border-bottom: var(--border-width-default) solid var(--border-strong); }
+	.view-heading h2, .section-heading h2 { margin: 0; }
+	.view-heading p, .section-heading p { max-width: var(--measure-card-copy-max); margin: 0; line-height: var(--leading-copy); text-wrap: pretty; }
+	.favorites-list { margin: 0; padding: 0; list-style: none; }
+	.favorite-row { display: grid; grid-template-columns: minmax(var(--space-10), auto) minmax(0, 1fr); gap: var(--space-4) var(--space-5); padding-block: var(--space-8); border-bottom: var(--border-width-default) solid var(--border-subtle); }
+	.rank-number { margin: 0; color: var(--text-tertiary); font-size: var(--font-size-xl); font-variant-numeric: tabular-nums; font-weight: var(--font-weight-medium); }
+	.model-identity { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); align-items: center; }
+	.model-identity h3 { margin: 0; font-size: var(--font-size-xl); line-height: var(--leading-tight); overflow-wrap: break-word; }
+	.role-badge { padding: var(--space-1) var(--space-3); border-radius: var(--shape-radius-pill); background: var(--surface-muted); color: var(--text-secondary); font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); white-space: nowrap; }
+	.provider { margin: var(--space-1) 0 0; font-size: var(--font-size-sm); }
+	.summary, .best-for { max-width: var(--measure-card-copy-max); margin: var(--space-4) 0 0; line-height: var(--leading-copy); text-wrap: pretty; }
+	.best-for { color: var(--text-secondary); font-size: var(--font-size-sm); }
+	.best-for strong { color: var(--text-primary); }
+	.review-link { display: inline-flex; min-height: var(--touch-target-min); align-items: center; margin-top: var(--space-4); color: var(--text-primary); text-decoration-thickness: from-font; text-underline-offset: var(--space-2); }
+	.evidence-block { grid-column: 2; align-self: center; }
+	.evidence-label { margin: 0; color: var(--text-tertiary); font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); letter-spacing: var(--tracking-wide); text-transform: uppercase; }
+	.evidence-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); margin: var(--space-3) 0 0; }
 	dt { font-size: var(--font-size-xs); font-weight: var(--font-weight-medium); }
-	dd { margin: 0; font-size: var(--font-size-sm); font-variant-numeric: tabular-nums; font-weight: var(--font-weight-medium); }
-	.review-link { display: inline-flex; min-height: var(--touch-target-min); align-items: center; margin-top: var(--space-5); color: var(--text-primary); text-underline-offset: var(--space-2); }
-	.empty-note, .empty-state { margin: var(--space-5) 0 0; }
-	.empty-state { padding: var(--space-6); border: var(--border-width-default) solid var(--border-subtle); border-radius: var(--shape-radius-sm); background: var(--surface-muted); }
-	.unranked-details { margin-top: var(--space-6); }
+	dd { margin: var(--space-1) 0 0; font-size: var(--font-size-sm); font-variant-numeric: tabular-nums; font-weight: var(--font-weight-semibold); }
+	.empty-note { margin: var(--space-3) 0 0; line-height: var(--leading-copy); }
+	.empty-state { margin: var(--space-6) 0 0; padding: var(--space-6); border-radius: var(--shape-radius-sm); background: var(--surface-muted); }
+	.role-groups { display: grid; gap: var(--space-10); margin-top: var(--space-8); }
+	.role-group { --role-color: var(--chart-tone-2); display: grid; gap: var(--space-6); padding-top: var(--space-5); border-top: var(--space-1) solid var(--role-color); }
+	.role-group--workhorse { --role-color: var(--chart-tone-3); }
+	.role-group--lightweight { --role-color: var(--chart-tone-5); }
+	.role-heading h3 { margin: 0; color: var(--role-color); font-size: var(--font-size-xl); line-height: var(--leading-tight); }
+	.role-heading p { max-width: var(--measure-card-copy-max); margin: var(--space-3) 0 0; color: var(--text-secondary); line-height: var(--leading-copy); text-wrap: pretty; }
+	.role-models { margin: 0; padding: 0; list-style: none; }
+	.role-models > li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-3) var(--space-4); padding-block: var(--space-5); border-top: var(--border-width-default) solid var(--border-subtle); }
+	.role-rank { margin: 0; color: var(--text-tertiary); font-size: var(--font-size-sm); font-variant-numeric: tabular-nums; }
+	.role-model-copy h4 { margin: 0; font-size: var(--font-size-lg); line-height: var(--leading-tight); }
+	.role-model-copy > p { margin: var(--space-2) 0 0; color: var(--text-secondary); line-height: var(--leading-copy); text-wrap: pretty; }
+	.role-model-copy .review-link { margin-top: var(--space-3); }
+	.role-evidence { grid-column: 2; display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); margin: 0; }
+	.role-empty-note { grid-column: 2; }
+	.role-empty { margin: 0; }
+	.unreviewed-section { margin-top: var(--layout-section-gap-mobile); padding-top: var(--space-8); border-top: var(--border-width-default) solid var(--border-subtle); }
+	.section-heading { display: grid; gap: var(--space-3); }
+	.unreviewed-details { margin-top: var(--space-6); }
 	summary { display: inline-flex; min-height: var(--touch-target-min); align-items: center; cursor: pointer; font-weight: var(--font-weight-semibold); }
-	.unranked-row { display: grid; gap: var(--space-3); padding-top: var(--space-5); border-top: var(--border-width-default) solid var(--border-subtle); }
-	.unranked-row .quick-evidence { margin-top: 0; }
-	summary:focus-visible, a:focus-visible { outline: var(--focus-outline-width) solid var(--focus-ring); outline-offset: var(--focus-outline-offset-sm); }
-	@media (min-width: 68.75rem) { .page-section { margin-top: var(--layout-section-gap); } .model-row { grid-template-columns: 7rem minmax(0, 1fr); } }
+	.unreviewed-list { display: grid; gap: var(--space-6); margin-top: var(--space-6); }
+	.unreviewed-row { display: grid; gap: var(--space-3); padding-top: var(--space-5); border-top: var(--border-width-default) solid var(--border-subtle); }
+	.unreviewed-row h3 { margin: 0; }
+	.unreviewed-evidence { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); margin: 0; }
+	[hidden] { display: none !important; }
+	@media (min-width: 34.375rem) {
+		.view-heading { grid-template-columns: minmax(15rem, 0.8fr) minmax(0, 1.2fr); align-items: end; gap: var(--space-8); }
+		.favorite-row { grid-template-columns: minmax(var(--space-10), auto) minmax(0, 1fr) minmax(10rem, 13rem); }
+		.evidence-block { grid-column: auto; }
+		.evidence-list { grid-template-columns: minmax(0, 1fr); }
+		.role-group { grid-template-columns: minmax(12rem, 0.7fr) minmax(0, 1.3fr); }
+		.role-models > li { grid-template-columns: auto minmax(0, 1fr) auto; }
+		.role-evidence, .role-empty-note { grid-column: auto; align-self: start; }
+		.role-evidence { display: grid; min-width: 7rem; }
+	}
+	@media (min-width: 68.75rem) {
+		.unreviewed-section { margin-top: var(--layout-section-gap); }
+	}
 </style>
