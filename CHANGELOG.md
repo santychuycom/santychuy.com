@@ -1,3 +1,9 @@
+## [2.8.0](https://github.com/santychuycom/santychuy.com/compare/v2.7.0...v2.8.0) (2026-08-24)
+
+### Features
+
+* **ai-models:** add role-based model views ([91feefd](https://github.com/santychuycom/santychuy.com/commit/91feefdb01c2066c5245baa55b028fe6606065b7))
+
 ## [2.7.0](https://github.com/santychuycom/santychuy.com/compare/v2.6.0...v2.7.0) (2026-08-22)
 
 ### Features
