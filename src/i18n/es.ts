@@ -24,7 +24,7 @@ const es = {
 		currentFocusTitle: "Ahora",
 		currentFocus: [
 			{
-				prefix: "Construyendo @ ",
+				prefix: "SWE @ ",
 				label: "The & Company",
 				href: "https://and.com",
 			},
