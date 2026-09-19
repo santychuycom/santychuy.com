@@ -7,7 +7,7 @@ import "@styles/animations.css";
 import { ClientRouter } from "astro:transitions";
 import UmamiTracker from "@components/analytics/UmamiTracker.astro";
 import Footer from "@components/layout/Footer.astro";
-import Header from "@components/layout/Header.astro";
+import StickyHeader from "@components/layout/StickyHeader.astro";
 import ThemeScript from "@components/ThemeScript.astro";
 import { getFeedUrl, type LocaleUrlMap } from "@ts/i18n";
 
@@ -105,45 +105,7 @@ const feedHref = getFeedUrl(lang);
     <UmamiTracker />
   </head>
   <body class="min-h-svh">
-    <div class="blog-header-shell sticky top-0 z-[var(--z-header)]" data-blog-header-shell data-scrolled="false">
-      <Header lang={lang} languageSwitcher={languageSwitcher} />
-    </div>
-    <script is:inline>
-      (() => {
-        const setupStickyHeaderState = () => {
-          const headerShell = document.querySelector("[data-blog-header-shell]");
-
-          if (!(headerShell instanceof HTMLElement)) {
-            return;
-          }
-
-          if (headerShell.dataset.scrollBound === "true") {
-            headerShell.dataset.scrolled = window.scrollY > 16 ? "true" : "false";
-            return;
-          }
-
-          const updateScrolledState = () => {
-            headerShell.dataset.scrolled = window.scrollY > 16 ? "true" : "false";
-          };
-
-          headerShell.dataset.scrollBound = "true";
-          updateScrolledState();
-
-          window.addEventListener("scroll", updateScrolledState, { passive: true });
-          document.addEventListener(
-            "astro:before-swap",
-            () => {
-              window.removeEventListener("scroll", updateScrolledState);
-              delete headerShell.dataset.scrollBound;
-            },
-            { once: true },
-          );
-        };
-
-        setupStickyHeaderState();
-        document.addEventListener("astro:page-load", setupStickyHeaderState);
-      })();
-    </script>
+    <StickyHeader lang={lang} languageSwitcher={languageSwitcher} />
     <main>
       <slot />
     </main>
@@ -154,49 +116,15 @@ const feedHref = getFeedUrl(lang);
 </html>
 
 <style>
-  .blog-header-shell :global(header),
   .blog-footer-shell :global(footer) {
     @media (width < 68.75rem) {
       width: 100%;
       padding-inline: var(--layout-gutter-mobile);
+      padding-block: var(--space-5);
     }
 
     @media (width >= 34.375rem) and (width < 68.75rem) {
       padding-inline: var(--layout-gutter-tablet);
     }
-  }
-
-  .blog-footer-shell :global(footer) {
-    @media (width < 68.75rem) {
-      padding-block: var(--space-5);
-    }
-  }
-
-  .blog-header-shell :global(header) {
-    background: transparent;
-    position: relative;
-    transition: background-color var(--motion-duration-base) var(--motion-ease-standard);
-  }
-
-  .blog-header-shell :global(header)::after {
-    content: "";
-    position: absolute;
-    inset-inline: 0;
-    bottom: 0;
-    height: 0.75rem;
-    translate: 0 100%;
-    background: linear-gradient(to bottom, var(--surface-base), transparent);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity var(--motion-duration-base) var(--motion-ease-standard);
-  }
-
-  .blog-header-shell[data-scrolled="true"] :global(header) {
-    backdrop-filter: blur(55px);
-    -webkit-backdrop-filter: blur(55px);
-  }
-
-  .blog-header-shell[data-scrolled="true"] :global(header)::after {
-    opacity: 1;
   }
 </style>
