@@ -815,7 +815,7 @@ const labels =
 		}
 
 		.post-toc-inner:hover,
-		.post-toc-inner:focus-within {
+		.post-toc-inner:has(summary:focus-visible) {
 			color: var(--text-primary);
 			border-color: color-mix(in srgb, var(--text-primary) 40%, transparent);
 		}
@@ -872,7 +872,7 @@ const labels =
 		}
 
 		.post-toc-inner:hover a[data-active="true"],
-		.post-toc-inner:focus-within a[data-active="true"] {
+		.post-toc-inner:has(summary:focus-visible) a[data-active="true"] {
 			color: var(--text-primary);
 		}
 	}
