@@ -7,7 +7,7 @@ import "@styles/animations.css";
 import { ClientRouter } from "astro:transitions";
 import UmamiTracker from "@components/analytics/UmamiTracker.astro";
 import Footer from "@components/layout/Footer.astro";
-import Header from "@components/layout/Header.astro";
+import StickyHeader from "@components/layout/StickyHeader.astro";
 import ThemeScript from "@components/ThemeScript.astro";
 import { getFeedUrl, type LocaleUrlMap } from "@ts/i18n";
 
@@ -125,7 +125,7 @@ const feedTitle =
     <UmamiTracker />
   </head>
   <body class="min-h-svh">
-    <Header lang={lang} languageSwitcher={languageSwitcher} />
+    <StickyHeader lang={lang} languageSwitcher={languageSwitcher} />
     <main class="w-full max-w-[var(--layout-max-width)] mx-auto flex-1 relative pt-[var(--layout-main-padding-top)] pb-[var(--layout-main-padding-bottom)] px-[var(--layout-gutter-mobile)] tablet:px-[var(--layout-gutter-tablet)] desktop:pt-[var(--layout-main-padding-top-desktop)] desktop:pb-[var(--layout-main-padding-bottom-desktop)] desktop:px-[var(--layout-gutter-desktop)]">
       <slot />
     </main>
