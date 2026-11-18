@@ -21,7 +21,7 @@ const en = {
 		title: "Why are human beings machines of interpretation?",
 		intro:
 			"I'm Santiago Carrasco, SWE with the plan to share knowledge, thoughts, and things I learn along the way.",
-		currentFocusTitle: "Now",
+		currentFocusTitle: "Currently",
 		currentFocus: [
 			{
 				prefix: "SWE @ ",

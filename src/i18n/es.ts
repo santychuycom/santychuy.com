@@ -21,7 +21,7 @@ const es = {
 		title: "¿Por qué los seres humanos son máquinas de interpretación?",
 		intro:
 			"Soy Santiago Carrasco, SWE con el plan de compartir conocimiento, ideas y cosas que aprendo en el camino.",
-		currentFocusTitle: "Ahora",
+		currentFocusTitle: "Actualmente",
 		currentFocus: [
 			{
 				prefix: "SWE @ ",
