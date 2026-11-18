@@ -21,12 +21,32 @@ export const sortPostsByDate = (posts: PostEntry[]) =>
 			Number(new Date(b.data.pubDate)) - Number(new Date(a.data.pubDate)),
 	);
 
+const WORDS_PER_MINUTE = 200;
+
+export const estimateReadingMinutes = (body: string | undefined) => {
+	const words = (body ?? "")
+		.replace(/^\s*(import|export)\s.+$/gmu, " ")
+		.replace(/<[^>]+>/gu, " ")
+		.replace(/!?\[([^\]]*)\]\([^)]*\)/gu, "$1")
+		.split(/\s+/u)
+		.filter((word) => /[\p{L}\p{N}]/u.test(word)).length;
+
+	return Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
+};
+
+export type PostWithReadingTime = PostEntry & { readingMinutes: number };
+
 export const getAllPosts = () => getCollection("posts");
 
-export const getPostsByLocale = async (locale: Locale) =>
+export const getPostsByLocale = async (
+	locale: Locale,
+): Promise<PostWithReadingTime[]> =>
 	sortPostsByDate(
 		(await getAllPosts()).filter((post) => post.data.lang === locale),
-	);
+	).map((post) => ({
+		...post,
+		readingMinutes: estimateReadingMinutes(post.body),
+	}));
 
 export const getPostBySlug = async (locale: Locale, slug: string) =>
 	(await getAllPosts()).find(
