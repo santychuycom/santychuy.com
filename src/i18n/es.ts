@@ -41,6 +41,9 @@ const es = {
 		pageDescription:
 			"Santiago Carrasco es un ingeniero de software que comparte notas prácticas sobre desarrollo web, IA y los proyectos que moldean cómo trabaja y piensa.",
 	},
+	blog: {
+		backToTop: "Volver arriba",
+	},
 	aiModels: {
 		metaTitle: "Ranking Modelos de IA",
 		metaDescription:
