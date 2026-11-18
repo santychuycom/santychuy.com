@@ -16,6 +16,7 @@ const en = {
 	},
 	footer: {
 		tagline: "Building in public.",
+		viewSource: "View source",
 	},
 	home: {
 		title: "Why are human beings machines of interpretation?",

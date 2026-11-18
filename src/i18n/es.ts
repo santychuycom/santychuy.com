@@ -16,6 +16,7 @@ const es = {
 	},
 	footer: {
 		tagline: "Construyendo en público.",
+		viewSource: "Ver código",
 	},
 	home: {
 		title: "¿Por qué los seres humanos son máquinas de interpretación?",
