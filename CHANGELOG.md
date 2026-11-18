@@ -1,3 +1,9 @@
+## [2.9.0](https://github.com/santychuycom/santychuy.com/compare/v2.8.0...v2.9.0) (2026-11-18)
+
+### Features
+
+* **home:** update intro copy (RIFF-67) ([8979679](https://github.com/santychuycom/santychuy.com/commit/89796794e74f61077ce2107bd09f32d1f080cacf))
+
 ## [2.8.0](https://github.com/santychuycom/santychuy.com/compare/v2.7.0...v2.8.0) (2026-08-24)
 
 ### Features
