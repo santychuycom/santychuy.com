@@ -36,6 +36,7 @@ const en = {
 			},
 		],
 		latestPostsTitle: "Latest posts",
+		readingTime: "{minutes} min read",
 		rssLabel: "RSS Feed",
 		emptyState: "New posts are on the way.",
 		pageDescription:

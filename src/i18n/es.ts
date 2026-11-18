@@ -36,6 +36,7 @@ const es = {
 			},
 		],
 		latestPostsTitle: "Últimos posts",
+		readingTime: "{minutes} min de lectura",
 		rssLabel: "Feed RSS",
 		emptyState: "Adaptando los posts a español.",
 		pageDescription:

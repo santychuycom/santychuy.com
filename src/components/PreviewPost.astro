@@ -1,11 +1,13 @@
 ---
 import { getBlogPostUrl, type Locale } from "@ts/i18n";
+import { getLocaleMessages } from "../i18n";
 import ArrowUpRight from "./icons/arrow-up-right.astro";
 
 interface Props {
 	title: string;
 	date: Date;
 	description: string;
+	readingMinutes?: number;
 	slug: string;
 	lang?: Locale;
 	topics?: string[];
@@ -17,6 +19,7 @@ const {
 	title,
 	date,
 	description,
+	readingMinutes,
 	slug,
 	lang = "en",
 	surface,
@@ -25,13 +28,21 @@ const {
 const dateLabel = new Intl.DateTimeFormat(lang === "es" ? "es-MX" : "en-US", {
 	dateStyle: "medium",
 }).format(date);
+const readingTimeLabel =
+	typeof readingMinutes === "number"
+		? getLocaleMessages(lang).home.readingTime.replace(
+				"{minutes}",
+				String(readingMinutes),
+			)
+		: undefined;
 const readLabel = lang === "es" ? "Leer articulo" : "Read article";
 ---
 
 <article class="group">
   <a href={getBlogPostUrl(lang, slug)} class="flex flex-col gap-2 py-4 no-underline text-inherit hover:text-inherit transition-none outline-none rounded-sm focus-visible:bg-[var(--surface-hover)] focus-visible:shadow-[0_0_0_var(--space-2)_var(--surface-hover)] desktop:flex-row desktop:items-start desktop:gap-8" data-analytics-event={surface ? "post_card_click" : undefined} data-post-slug={slug} data-post-lang={lang} data-surface={surface} data-position={typeof position === "number" ? String(position) : undefined}>
-    <div class="flex flex-col gap-2 desktop:flex-[0_0_120px]">
+    <div class="flex flex-col gap-2 desktop:flex-[0_0_150px]">
       <time class="text-ink-faint text-sm font-[var(--font-mono,monospace)]" datetime={date.toISOString()}>{dateLabel}</time>
+      {readingTimeLabel && <span class="text-ink-faint text-sm font-[var(--font-mono,monospace)]">{readingTimeLabel}</span>}
       <div class="hidden items-center gap-2 text-ink text-xs font-medium desktop:flex desktop:opacity-0 desktop:-translate-y-1 desktop:transition-all desktop:duration-base desktop:ease-standard desktop:pointer-events-none group-hover:opacity-100 group-hover:translate-y-0" aria-hidden="true">
         <span>{readLabel}</span>
         <ArrowUpRight class="rotate-[225deg] w-[0.8em] h-[0.8em] transition-transform duration-base ease-standard group-hover:translate-x-1 group-hover:-translate-y-1" />
