@@ -5,6 +5,7 @@ import ArrowLeftIcon from "@components/icons/arrow-left.astro";
 import LinkIcon from "@components/icons/link.astro";
 import LinkedinIcon from "@components/icons/linkedin.astro";
 import XIcon from "@components/icons/x.astro";
+import { getLocaleMessages } from "../../../i18n";
 
 type Post = CollectionEntry<"posts">["data"];
 
@@ -60,6 +61,8 @@ const encodedTitle = encodeURIComponent(post.title);
 const shareXURL = `https://x.com/intent/tweet?text=${encodedTitle}&url=${encodedURL}`;
 const shareLinkedinURL = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedURL}`;
 const articleContentId = `post-content-${id}`;
+
+const messages = getLocaleMessages(post.lang);
 
 const labels =
 	post.lang === "es"
@@ -242,6 +245,9 @@ const labels =
 				</section>
 			)}
 
+			<p class="m-0 mt-[var(--space-11)]">
+				<a class="inline-flex items-center text-sm font-semibold w-fit text-ink-muted transition-colors duration-fast ease-standard hover:text-ink focus-ring" href="#top" data-link-type="internal_back_to_top">{messages.blog.backToTop}</a>
+			</p>
 		</div>
 
 		<aside class="post-toc hidden desktop:block desktop:self-start desktop:sticky desktop:top-[var(--sticky-left-offset)]" aria-label={labels.onThisPage}>

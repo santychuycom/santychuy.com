@@ -41,6 +41,9 @@ const en = {
 		pageDescription:
 			"Santiago Carrasco is a software engineer sharing practical notes on web development, AI, and the projects shaping how he works and thinks.",
 	},
+	blog: {
+		backToTop: "Back to top",
+	},
 	aiModels: {
 		metaTitle: "Ranking AI Models",
 		metaDescription:
